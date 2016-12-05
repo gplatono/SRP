@@ -9,8 +9,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="css/main.css">        
+        <link rel="stylesheet" type="text/css" href="css/main.css">   
+        <!--<script src="js/scripts.js"></script>
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <title>Login</title>
+        <script type="text/javascript">
+            $(document).ready(function(){	//executed after the page has loaded
+                window.alert("TEST!");});
+        </script>-->
     </head>
     <body class="body">
         <div class="container">
@@ -19,7 +25,7 @@
             <center><h1>Login</h1></center>
             
             <div class="login">
-            <form method="POST" action="LoginManager">
+            <form method="POST" action="Navigator">
                 <table border="0">
                     <!--<thead1>
                         <tr>

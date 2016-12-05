@@ -12,21 +12,7 @@
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <title>JSP Page</title>
     </head>
-    <body class="body">
-        <div class="container">
-            <header>
-                Scene Annotation Tool v0.1
-            </header>
-            <nav>
-                <ul id="menu">
-                    <li><a href="Navigator?addr=index">Home</a></li>
-                    <li><a href="Navigator?addr=annotations">Annotations</a></li>
-                    <li><a href="Navigator?addr=evaluation">Evaluations</a></li>
-                    <li><a href="Navigator?addr=examples">Examples</a></li>                  
-                </ul>
-            </nav>
-
-            <section class="content">
+    <body class="body">    
                 <br>
                 <img class="scene" src="scenes/scene_gl.png" />
                 <br>
@@ -55,21 +41,11 @@
                     <input width=100% type="text" rows="3" />
                     <br>
                     <br>-->
-                    <textarea name="description" rows="10" cols="110"></textarea>
-                    <br>
-                        <div style="text-align: right; width: 98%; border: 2px; padding: 5px; margin: 0 auto;">              
+                    <div style="text-align: right; width: 70%; border: 2px; padding: 5px; margin: 0 auto;">
+                    <textarea style="width: 100%;" name="description" rows="10"></textarea>
+                    <br>                        
                         <input type="submit" name="submit_desc" value="Submit Description" />
                     </div>
-                </form>            
-            </section>        
-            <footer>
-                <div class="outer">
-                Georgiy Platonov
-                <br> <a href="mailto:gplatono@cs.rochester.edu">gplatono@cs.rochester.edu</a>
-                <br> University of Rochester
-                <br> 2016
-                </div>
-            </footer>        
-        </div>
+                </form>
     </body>
 </html>

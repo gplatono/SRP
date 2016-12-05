@@ -44,7 +44,8 @@ public class LoginManager extends HttpServlet {
             //request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
             if(request.getParameter("login_val") != null && request.getParameter("login_val").equals("admin") &&
                     request.getParameter("pass_val") != null && request.getParameter("pass_val").equals("admin"))
-                request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
+                //request.getRequestDispatcher("/Navigator").forward(request, response);
+                response.sendRedirect("Navigator?page=index");
         }
     }
 

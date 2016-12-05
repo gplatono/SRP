@@ -10,7 +10,18 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="css/main.css">
-        <title>JSP Page</title>
+        <script type="text/javascript" src="js/scripts.js"></script>
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        <script>
+            $(document).ready(function(){	//executed after the page has loaded
+                checkURL();	//check if the URL has a reference to a page and load it
+                $('ul li a').click(function (e){	//traverse through all our navigation links..
+                    checkURL(this.hash);	//.. and assign them a new onclick event, using their own hash as a parameter (#page1 for example)
+                });
+                setInterval("checkURL()",250);	//check for a change in the URL every 250 ms to detect if the history buttons have been used
+            });            
+        </script>
+        <title>SRP Annotator tool</title>
     </head>
     <body class="body">
         <div class="container">
@@ -18,16 +29,15 @@
                 Scene Annotation Tool v0.1
             </header>
             <nav>
-                <ul id="menu">
-                    <li><a href="Navigator?addr=index">Home</a></li>
-                    <li><a href="Navigator?addr=annotations">Annotations</a></li>
-                    <li><a href="Navigator?addr=evaluation">Evaluations</a></li>
-                    <li><a href="Navigator?addr=examples">Examples</a></li>                    
+                <ul class="menu">
+                    <li><a href="#description">Home</a></li>
+                    <li><a href="#annotations">Annotations</a></li>
+                    <li><a href="#evaluation">Evaluations</a></li>
+                    <li><a href="#examples">Examples</a></li>                    
                 </ul>
             </nav>
-
-            <section class="content" style="vertical-align: middle;">
-                ...Description goes here...
+            <section id="Content" class="content" style="vertical-align: middle;">
+               
             </section>        
             <footer>
                 <div class="outer">
