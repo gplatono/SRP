@@ -184,7 +184,7 @@ def near(a, b):
                     bbox_b[7][1] - bbox_b[0][1],
                     bbox_b[7][2] - bbox_b[0][2])
     avg = 0
-    for pair in itertools.combinations(entities, r = 2):        
+    for pair in itertools.combinations(entities, r = 2):
         avg += dist_obj(pair[0], pair[1])
     avg = avg * 2 / (len(entities) * (len(entities) - 1))
     return 0.5 * (1 - min(1, dist / avg) + e ** (- (0.005 * math.log(dist) / (max_dim_a + max_dim_b))))
@@ -260,18 +260,21 @@ def compute_over(entities):
     return "\n".join(", ".join(y.name for y in x[1]) + " is over the " + x[0].name for x in obj if x[1] != [])
 
 def gen_data_above():
-    f = open("dataset", "w")
+    data = open("train.data", "a")
+    labels = open("train.labels", "a")
     for pair in itertools.combinations(entities, r = 2):
         a, b = pair
         if a.name != 'plane' and b.name != 'plane':
             a_cen = a.get_bbox_centroid()
             b_cen = b.get_bbox_centroid()
-            outstr = ""
+            outstr = " ".join([str(x) for x in a_cen]) + " " + " ".join([str(x) for x in b_cen]) + "\n"
+            data.write(outstr)
             if above(a, b) > 0.7:
-                f.write(a.name + " above " + b.name + '\n')
-            #else: " below"
-            
-    f.close()
+                labels.write("1\n")
+            else:
+                labels.write("-1\n")
+    data.close()
+    labels.close()
 
 entities = []
 for obj in scene.objects:
