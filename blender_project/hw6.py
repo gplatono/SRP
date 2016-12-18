@@ -36,10 +36,12 @@ def SVM_l2(X, Y, w, C_2, num_iters):
     return w
 
 print ('Reading data files...')
-X_train = np.loadtxt('train.data', dtype=float)
-Y_train = np.loadtxt('train.labels', dtype=int)
-X_test = np.loadtxt('test.data', dtype=float)
-Y_test = np.loadtxt('test.labels', dtype=int)
+train = np.loadtxt('on.train', dtype=float)
+test =  np.loadtxt('on.test', dtype=float)
+X_train = train[:,:-1]
+Y_train = train[:,-1]
+X_test = test[:, :-1]
+Y_test = test[:,-1]
 
 clf = SVC()
 clf.fit(X_train, Y_train) 

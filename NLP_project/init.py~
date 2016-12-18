@@ -227,18 +227,17 @@ def get_formal_query(lf):
         return query
 
                                                 
-ontology, supertypes = build_ontology("trips-ont-lex.xml")
-frames = build_frames("frames.xml")
+#ontology, supertypes = build_ontology("trips-ont-lex.xml")
+#frames = build_frames("frames.xml")
 #print (frames[0])
-tests = [line for line in open("tests", "r").readlines()]
-result = requests.get("http://trips.ihmc.us/parser/cgi/parse?input=" + tests[4])
-root = ET.fromstring(result.text)
-lf = get_lf(root.find('utt').find('terms').find('rdf:RDF', NS))
+#tests = [line for line in open("tests", "r").readlines()]
+#result = requests.get("http://trips.ihmc.us/parser/cgi/parse?input=" + tests[4])
+#root = ET.fromstring(result.text)
+#lf = get_lf(root.find('utt').find('terms').find('rdf:RDF', NS))
 
-for key in lf.keys():
-    print (lf[key], '\n')   
+#for key in lf.keys():
+#    print (lf[key], '\n')   
 
-print (get_formal_query(lf))
-#print ("Running Blender...")
-#call(["blender", "test.blend", "--background", "--python", "main.py"])
-#print (result)
+#print (get_formal_query(lf))
+print ("Running Blender...")
+call(["blender", "block_world.blend", "--background", "--python", "main.py"])

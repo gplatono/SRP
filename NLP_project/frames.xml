@@ -1,0 +1,32 @@
+<frames>
+	<frame name="ABOVE">
+		<field action="GET_FIGURE" name="FIGURE" pattern="ONT::COLOR-VAL CUBE | ONT::COLOR-VAL ONE" weight="1"/>
+		<field action="GET_GROUND" name="GROUND" pattern="ONT::COLOR-VAL CUBE | ONT::COLOR-VAL ONE" weight="1"/>
+		<field action="obligatory" name="ABOVE" pattern="ABOVE" weight="3"/>
+	</frame>
+	<frame name="BF">
+		<field action="optional" name="Airline" pattern="ONT::AIRLINE" weight="1"/>
+		<field action="obligatory" name="Event" pattern="ONT::RESERVE" weight="3"/>
+		<field action="where from?" name="DepartCity" pattern="W::FROM ONT::CITY" weight="1"/>
+		<field action="where to?" name="DestCity" pattern="ONT::CITY" weight="1"/>
+		<field action="optional" name="Ticket" pattern="W::TICKET" weight="2"/>		
+		<field action="optional" name="HowMuch" pattern="W::HOW W::MUCH" weight="2"/>
+		<field action="optional" name="Cost" pattern="ONT::COST-RELATION | ONT::COST-VAL | ONT::COSTS" weight="3"/>
+		<field action="when?" name="Time Range" pattern="ONT::TIME-OBJECT" weight="1"/>
+	</frame>
+	<frame name="CF">
+		<field action="what flight?" name="Flight" pattern="ONT::AIRLINE * ONT::NUMBER" weight="1"/>
+		<field action="optional" name="CancelChange" pattern="ONT::CANCEL | ONT::CHANGE | POSTPONE | DELAY | DEFER" weight="3"/>
+		<field action="optional" name="DestCity" pattern="ONT::CITY" weight="1"/>
+		<field action="what day?" name="Airline" pattern="ONT::TIME-OBJECT" weight="1"/>
+		<field action="optional" name="Reservation" pattern="W::RESERVATION" weight="3"/>
+	</frame>
+	<frame name="CR">
+		<field action="optional" name="Flight" pattern="ONT::AIRLINE * ONT::NUMBER" weight="1"/>
+		<field action="optional" name="DestCity" pattern="ONT::CITY" weight="1"/>
+		<field action="optional" name="Time Range" pattern="ONT::TIME-OBJECT" weight="1"/>
+		<field action="obligatory" name="Pronoun" pattern="W::MY ONT::FLIGHT | W::I W::FLY" weight="2"/>
+		<field action="optional" name="Reservation" pattern="W::RESERVATION" weight="3"/>
+		<field action="optional" name="ShowMeWhatYouGot!!!" pattern="W::SHOW | W::LOOK | W::CHECK" weight="3"/>
+	</frame>
+</frames>

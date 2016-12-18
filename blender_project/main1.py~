@@ -4,9 +4,9 @@ import numpy
 import math
 from math import e, pi
 import itertools
+#import geometry_utils
 
 filepath = "/u/gplatono/BlenderProjects/SRP/objects/"
-#import geometry_utils
 link = False
 scene = bpy.context.scene
 
@@ -295,7 +295,7 @@ def gen_data(func_name):
     pos = 100.0
     neg = 100.0
     data = open(func_name + ".train", "w")
-    for pair in itertools.permutations(entities, r = 2):
+    for pair in itertools.combinations(entities, r = 2):
         a, b = pair
         if a.name != 'plane' and b.name != 'plane':
             a_bbox_str = " ".join([" ".join([str(x) for x in y]) for y in a.get_bbox()])
@@ -317,11 +317,10 @@ entities = []
 for obj in scene.objects:
     if obj.get('main') is not None:
         entities.append(Entity(obj))
-if len(entities) != 0 :
-    avg_dist = 0
-    for pair in itertools.combinations(entities, r = 2):
-        avg_dist += dist_obj(pair[0], pair[1])
-    avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
+avg_dist = 0
+for pair in itertools.combinations(entities, r = 2):
+    avg_dist += dist_obj(pair[0], pair[1])
+avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
 #scene.objects.link(bpy.data.objects.new('Observer', None))
 #scene.objects['Observer'].location = (0, -20, 5)
 #scene.update()
@@ -329,23 +328,10 @@ if len(entities) != 0 :
 #observer.set_frontal((0, 0, 0) - (0, -20, 5))
 #observer.set_longitudinal((0, 1, 4))        
 
-#gen_data("above")
-#gen_data("near")
-#gen_data("on")
-#cam = bpy.data.cameras.new("Camera")
-#cam_ob = bpy.data.objects.new("Camera", cam)
-#cam_ob.location = (0, 0, 0)
-#print (cam_ob.rotation_euler)
-#bpy.context.scene.objects.link(cam_ob)
-#bpy.context.scene.objects.active = bpy.context.scene.objects["Camera"]
-#scene.update()
-
-#bpy.context.scene.camera = scene.objects["Camera"]
-
-#scene.render.filepath = 'image.jpg'
-#bpy.ops.render.render( write_still=True )
-
-
+gen_data("above")
+gen_data("near")
+gen_data("on")
+        
 '''        
 print ('init...')
 print ('')
