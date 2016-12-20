@@ -15,6 +15,8 @@ filepath = os.path.dirname(os.path.abspath(__file__)) + "/"
 
 scene = bpy.context.scene
 
+COLORS = ['BLACK', 'GRAY', 'GREEN', 'RED', 'PINK', 'BROWN', 'YELLOW', 'ORANGE', 'BLUE', 'SKYBLUE', 'PURPLE', 'CYAN']
+
 class Entity:
     def __init__(self, main):
         self.constituents = [main]
@@ -88,15 +90,14 @@ class Entity:
     def get_closest_face_distance(point):
         return min([get_distance_from_plane(point, face[0], face[1], face[2]) for face in self.faces])
 
-#    def get_closest_distance(point):
-        
-
     def get_faces(self):
         if(hasattr(self, 'faces') and self.faces is not None):
             return self.faces
         else:
             faces = []
             for ob in self.constituents:
+                if ob.data is None:
+                    continue
                 for face in ob.data.polygons:
                     faces.append([ob.matrix_world * ob.data.vertices[i].co for i in face.vertices])
             return faces
@@ -112,6 +113,18 @@ class Entity:
         bbox = self.get_bbox()
         mesh.from_pydata(bbox, [], [(0, 1, 3, 2), (0, 1, 5, 4), (2, 3, 7, 6), (0, 2, 6, 4), (1, 3, 7, 5), (4, 5, 7, 6)])
         mesh.update()
+
+class Relation:
+    def __init__(self):
+        self.rel_type = None
+        self.figure = None
+        self.ground = None
+        
+    def printinfo(self):
+        print ('TYPE: ' + str(self.rel_type))
+        print ('FIGURE: ' + str([fig.name for fig in self.figure if fig is not None]))
+        print ('GROUND: ' + str([gr.name for gr in self.ground if gr is not None]))
+        
 
 def cross_product(a, b):
     return (a[1] * b[2] - a[2] * b[1], b[0] * a[2] - b[2] * a[0], a[0] * b[1] - a[1] * b[0])
@@ -186,20 +199,22 @@ def ABOVE(a, b):
     center_b = b.get_bbox_centroid()
     return 0.33333 * (max(int(bbox_a[0][2] > bbox_b[7][2]), e ** (- math.fabs(bbox_a[0][2] - bbox_b[7][2]))) + sigmoid(5 * (center_a[2] - center_b[2]) / (0.01 + bbox_a[7][2] - bbox_a[0][2] + bbox_b[7][2] - bbox_b[0][2]), 1, 1, 1) + get_proj_intersection(a, b))
     
-def below(a, b):
-    return above(b, a)
+def BELOW(a, b):
+    return ABOVE(b, a)
 
-def near(a, b):
+def NEAR(a, b):
     bbox_a = a.get_bbox()
     bbox_b = b.get_bbox()
     dist = dist_obj(a, b)
+    if dist <= 0:
+        return 0
     max_dim_a = max(bbox_a[7][0] - bbox_a[0][0],
                     bbox_a[7][1] - bbox_a[0][1],
                     bbox_a[7][2] - bbox_a[0][2])
     max_dim_b = max(bbox_b[7][0] - bbox_b[0][0],
                     bbox_b[7][1] - bbox_b[0][1],
                     bbox_b[7][2] - bbox_b[0][2])   
-    return 0.5 * (1 - min(1, dist / avg_dist) + e ** (- (0.005 * math.log(dist) / (max_dim_a + max_dim_b))))
+    return 0.5 * (1 - min(1, dist / avg_dist) + e ** (- (0.005 * math.log(dist) / (0.001 + max_dim_a + max_dim_b))))
     
 def v_align(a, b):
     dim_a = a.get_dimensions()
@@ -222,20 +237,9 @@ def larger_than(a, b):
     bbox_b = b.get_bbox()
     return 1 / (1 + e ** (bbox_b[7][0] - bbox_b[0][0] + bbox_b[7][1] - bbox_b[0][1] + bbox_b[7][2] - bbox_b[0][2] - (bbox_a[7][0] - bbox_a[0][0] + bbox_a[7][1] - bbox_a[0][1] + bbox_a[7][2] - bbox_a[0][2])))
 
-def on(a, b):
+def ON(a, b):
     ret_val = 0.5 * (v_offset(a, b) + get_proj_intersection(a, b))
-    #for ob in b:
-    #    if ob.get('working_surface') is not None or ob.get('planar') is not None:
-    #        ret_val = max(ret_val, 0.5 * (v_offset(a, ob) + get_proj_intersection(a, ob)))
-    #        ret_val = max(ret_val, 0.5 * (int(near(a, ob) > 0.99) + larger_than(ob, a)))         
-    if ret_val >= 0.6:
-        return 0.5 * (ret_val + larger_than(b, a))
     return ret_val
-
-def over(a, b):
-    bbox_a = a.get_bbox()
-    bbox_b = b.get_bbox()
-    return 0.5 * above(a, b) + 0.2 * get_proj_intersection(a, b) + 0.3 * near(a, b)
 
 def closer_than(a, b, pivot):
     return 1 if point_distance(a.get_bbox(), pivot.get_bbox()) < point_distance(b.get_bbox(), pivot.get_bbox()) else 0
@@ -248,34 +252,6 @@ def in_front_of_extr(a, b, observer):
     dist = get_distance_from_line(observer.get_bbox_centroid(), b.get_bbox_centroid(), a.get_bbox_centroid())
     return 0.5 * (closer_than(a, b, observer) + e ** (-dist / max_dim_a))
     
-entities = []
-for obj in scene.objects:
-    if obj.get('main') is not None:
-        entities.append(Entity(obj))
-avg_dist = 0
-for pair in itertools.combinations(entities, r = 2):
-    avg_dist += dist_obj(pair[0], pair[1])
-avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
-#scene.objects.link(bpy.data.objects.new('Observer', None))
-#scene.objects['Observer'].location = (0, -20, 5)
-#scene.update()
-#observer = Entity(scene.objects['Observer'])
-#observer.set_frontal((0, 0, 0) - (0, -20, 5))
-#observer.set_longitudinal((0, 1, 4))        
-
-parse_tree = []
-NS = {'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-      'role': 'http://www.cs.rochester.edu/research/trips/role#',
-      'LF': 'http://www.cs.rochester.edu/research/trips/LF#'}
-
-#stores the ontology entries in the format ontology[concept] = [concept, [parents], [related concepts (W:: stuff)]]
-#note that ontology contains both concepts and words (ONT::'s and W::'s), for words the '[related concepts]'-list is empty
-ontology = {}
-
-#for each entry in ontology (all ONT::'s and W::'s) stores the list of all ancestors
-#for words it is concepts to which they are related and their ancestors
-supertypes = {}
-
 #recursively obtains the list of ancestors of the given ontology entry and assigns it to supertypes[entry]
 def add_supertypes(concept, ontology, supertypes):
         #get all parents
@@ -367,108 +343,131 @@ def get_arg_form(lf, rdf_id):
 def resolve_reference(rdf_id):
         return rdf_id
 
+def get_relation(key):
+    for frame in frames:
+        for field in frame[1:]:
+            for pattern in field[2]:
+                if lf[key]['type'] == pattern[0]:
+                    relation = Relation()
+                    relation.rel_type = field[1]
+                    for role in lf[key]['roles']:
+                        if role[0] == 'FIGURE':
+                            relation.figure = [get_entity([lf[token]['word'] for token in get_arg_form(lf, role[1]) if 'word' in lf[token].keys()])]
+                        elif role[0] == 'GROUND':
+                            relation.ground = [get_entity([lf[token]['word'] for token in get_arg_form(lf, role[1]) if 'word' in lf[token].keys()])]
+                    #relation.printinfo()
+                    return relation
+
 def get_formal_query(lf):
         query = []
         relations = []
         global frames        
-        isYN = False
+        isYN = True
         for key in lf.keys():
-                if lf[key]['indicator'] == 'SPEECHACT' and ('PUNCTYPE', 'YNQ') in lf[key]['roles']:
-                        isYN = True
+                if lf[key]['type'] == 'SA_WH-QUESTION':
+                    isYN = False
+                elif lf[key]['type'] == 'SA_YN-QUESTION':
+                    isYN = True
+        query = [isYN]
         for key in lf.keys():
-                for frame in frames:
-                        if lf[key]['type'] == frame[0]:
-                                relations.append([frame[0]])                                
-                                for role in lf[key]['roles']:
-                                        if role[0] == 'FIGURE' or role[0] == 'GROUND':
-                                                relations[-1].append([role[0]] + get_arg_form(lf, role[1]))
-        query = []
-        for relation in relations:
-                query.append([relation[0]])
-                for arg in relation[1:]:
-                        new_arg = [arg[0]]
-                        for token in arg[1:]:
-                                new_arg.append(lf[token]['word'])
-                        query[-1].append(new_arg)
+            relation = get_relation(key)
+            if relation is not None:
+                query.append(relation)
         return query
 
-def get_arg_entity(arg):
-    results = []
+def get_entity(textual_description):
     for entity in entities:
-        if len(arg) >= 3 and entity.get("TYPE") == arg[1] and entity.get("COLOR") == arg[2]:
-            results.append(entity)
-    return results
+        if entity.get("COLOR") in textual_description:
+            return entity
 
-def figure_list(relation, grounds):
+def figure_list(relation):
     figures = []
-    for ground in grounds:
+    for ground in relation.ground:
         for entity in entities:
-            if globals()[relation](entity, ground) > 0.7:
+            if globals()[relation.rel_type](entity, ground) > 0.7:
                 figures.append(entity)
     return figures
 
-def ground_list(relation, figures):
+def ground_list(relation):
     grounds = []
-    for figure in figures:
+    for figure in relation.figure:
         for entity in entities:
-            if globals()[relation](figure, entity) > 0.7:
+            if globals()[relation.rel_type](figure, entity) > 0.7:
                 grounds.append(entity)
     return grounds
 
-def get_relation_arguments(relation):
-    rel_type = relation[0]
-    figures = []
-    grounds = []
-    for arg in relation[1:]:
-        if arg[0] == 'FIGURE':
-            figures = get_arg_entity(arg)
-        elif arg[0] == 'GROUND':
-            grounds = get_arg_entity(arg)
-    if figures == []:
-        figures = figure_list(rel_type, grounds)
-    elif grounds == []:
-        grounds = ground_list(rel_type, figures)
-    return (figures, grounds)
-
-def generate_response(relations):
-    print (relations)
-    response = relations[0][0][0].get("COLOR") + " " + relations[0][0][0].get("TYPE")
-    for entity in relations[0][0][1:]:
-        response = response + ", " +  entity.get("COLOR") + " " + entity.get("TYPE")
-    if len(relations[0][0]) == 1:
-        response = response + " is "
-    else:
-        response = response + " are "
-    response = response + relations[0][1][0]    
-    response = response + relations[0][1][1].get("COLOR") + " " + relations[0][1][1].get("TYPE")
-    for entity in relations[0][1][2:]:
-        response = response + ", " +  entity.get("COLOR") + " " + entity.get("TYPE")
-    return response
-    
 def process_query(query):
-    infix_relations = []
-    figures = []
-    grounds = []
-    for relation in query:
-        figures, grounds = get_relation_arguments(relation)
-        print (figures[0].name, grounds[0].name)
-    infix_relations.append(figures)
-    infix_relations.append(query[0][0])
-    infix_relations.append(grounds)   
-   # return generate_response(infix_relations)
-    
+    result = []
+    if(query[0] == True):
+        result = True
+        for relation in query[1:]:
+            if globals()[relation.rel_type](relation.figure[0], relation.ground[0]) < 0.7:
+                result = False
+                break
+        print ('RESULT:')
+        if result == True:
+            print ("YES")
+        else:
+            print ("NO")
+    else:
+        result = [ent for ent in entities if ent.name != 'plane']
+        for relation in query[1:]:
+            #relation.printinfo()
+            if len(relation.figure) == 0 or relation.figure[0] is None:
+                #print (figure_list(relation))
+                result = [entity for entity in figure_list(relation) if entity in result]
+            elif len(relation.ground) == 0 or relation.ground[0] is None:
+                result = [entity for entity in ground_list(relation) if entity in result]
+        #print ([res.name for res in result])
+        print ('RESULT:')
+        if len(result) == 0:
+            print ('NO OBJECT SATISFIES GIVES CONSTRAINTS')
+        else:
+            for x in result:
+                print ('THE' + " " + x.get('COLOR') + " " + x.get('TYPE'))
+
+
+entities = []
+for obj in scene.objects:
+    if obj.get('main') is not None:
+        entities.append(Entity(obj))
+avg_dist = 0
+for pair in itertools.combinations(entities, r = 2):
+    avg_dist += dist_obj(pair[0], pair[1])
+avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
+scene.objects.link(bpy.data.objects.new('Observer', None))
+scene.objects['Observer'].location = (0, -20, 5)
+scene.update()
+observer = Entity(scene.objects['Observer'])
+observer.set_frontal((0, 20, -5))
+observer.set_longitudinal((0, 1, 4))
+
+parse_tree = []
+NS = {'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+      'role': 'http://www.cs.rochester.edu/research/trips/role#',
+      'LF': 'http://www.cs.rochester.edu/research/trips/LF#'}
+
+#stores the ontology entries in the format ontology[concept] = [concept, [parents], [related concepts (W:: stuff)]]
+#note that ontology contains both concepts and words (ONT::'s and W::'s), for words the '[related concepts]'-list is empty
+ontology = {}
+
+#for each entry in ontology (all ONT::'s and W::'s) stores the list of all ancestors
+#for words it is concepts to which they are related and their ancestors
+supertypes = {}
+
 ontology, supertypes = build_ontology(filepath + "trips-ont-lex.xml")
 frames = build_frames(filepath + "frames.xml")
 tests = [line for line in open(filepath + "tests", "r").readlines()]
-result = requests.get("http://trips.ihmc.us/parser/cgi/parse?input=" + tests[1])
-root = ET.fromstring(result.text)
-lf = get_lf(root.find('utt').find('terms').find('rdf:RDF', NS))
-
-for key in lf.keys():
-    print (lf[key], '\n')   
-
-query = get_formal_query(lf)
-
-print (query)
-
-print (process_query(query))
+for test in tests:
+    print ('=======================================================================\n')    
+    print (test)
+    print ("PROCESSING...")
+    query_parse = requests.get("http://trips.ihmc.us/parser/cgi/parse?input=" + tests[2])
+    root = ET.fromstring(query_parse.text)
+    lf = get_lf(root.find('utt').find('terms').find('rdf:RDF', NS))
+    
+    #for key in lf.keys():
+    #    print (lf[key], '\n')
+    query = get_formal_query(lf)
+    print (query[1].printinfo())
+    process_query(query)
