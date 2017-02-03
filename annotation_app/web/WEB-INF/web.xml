@@ -12,6 +12,10 @@
         <servlet-name>LoginManager</servlet-name>
         <servlet-class>controllers.LoginManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>JDBCTest</servlet-name>
+        <servlet-class>controllers.JDBCTest</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SubmissionHandler</servlet-name>
         <url-pattern>/SubmissionHandler</url-pattern>
@@ -24,6 +28,10 @@
         <servlet-name>LoginManager</servlet-name>
         <url-pattern>/LoginManager</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>JDBCTest</servlet-name>
+        <url-pattern>/JDBC</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -31,7 +39,8 @@
     </session-config>
     <welcome-file-list>
         <welcome-file>
-            jsp/login.jsp
+            <!--JDBC-->
+            jsp/index_1.jsp
         </welcome-file>
     </welcome-file-list>
 </web-app>

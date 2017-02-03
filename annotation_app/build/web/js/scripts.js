@@ -16,7 +16,7 @@ var lasturl="";	//here we store the current URL hash
 
 function checkURL(hash)
 {
-    	if(!hash) hash='#description';  //if no parameter is provided, use the hash value from the current address
+    	//if(!hash) hash='#description';  //if no parameter is provided, use the hash value from the current address
         if(hash != lasturl)	// if the hash value has changed
 	{
             lasturl=hash;	//update the current hash

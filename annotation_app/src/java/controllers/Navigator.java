@@ -32,8 +32,8 @@ public class Navigator extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            /* out.println("<!DOCTYPE html>");
-            out.println("<html>");
+            //out.println(request.getParameter("page"));
+            /*out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet Navigator</title>");            
             out.println("</head>");
@@ -41,16 +41,18 @@ public class Navigator extends HttpServlet {
             out.println("<h1>Servlet Navigator at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");*/
-            if(request.getParameter("login_val") != null)
-                if(request.getParameter("login_val") != null && request.getParameter("login_val").equals("admin") &&
-                    request.getParameter("pass_val") != null && request.getParameter("pass_val").equals("admin"))
-                    request.getRequestDispatcher("jsp/index.jsp").forward(request, response);            
+            //return;
+        }
+        //if(request.getParameter("login_val") != null)
+        //if(request.getParameter("login_val") != null && request.getParameter("login_val").equals("admin") &&
+            //request.getParameter("pass_val") != null && request.getParameter("pass_val").equals("admin"))
+            //request.getRequestDispatcher("jsp/index.jsp").forward(request, response);            
             String address = request.getParameter("page");
             if (address == null)
                 address = "index";
                 //out.println("jsp/" + request.getParameter("page").substring(1) + ".jsp");
-            request.getRequestDispatcher("jsp/" + request.getParameter("page") + ".jsp").forward(request, response);            
-        }
+            request.getRequestDispatcher("jsp/" + address + ".jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

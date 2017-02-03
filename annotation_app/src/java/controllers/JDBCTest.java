@@ -7,11 +7,16 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,18 +36,52 @@ public class JDBCTest extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        final String JDBC_DRIVER = "org.postgresql.Driver";  
+        final String DB_URL = "jdbc:postgresql://localhost:5432/srp";
+        final String USER = "gplatono";
+        final String PASS = "";
+        Connection conn = null;
+        Statement st = null;
+        String resp = "";
+        try {
+            resp += "Registering class";
+            Class.forName(JDBC_DRIVER);
+            resp += "<br>Generating connection";
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            resp += "<br>Creating statement";
+            st = conn.createStatement();
+            String query = "SELECT * FROM USERS";
+            resp += "<br>Executing query";
+            ResultSet res = st.executeQuery(query);
+            resp += "<br>Adding data";
+            while(res.next()) {
+                int id = res.getInt("ID");
+                String username = res.getString("username");
+                String password = res.getString("password");
+                resp += "<br>" + id + " " + username + " " + password;
+            }
+            res.close();
+        }
+        catch(Exception ex) {
+            resp += "<br>FAIL... " + ex.getMessage();
+        }
+        finally {
+            try {
+            if(st != null)
+                st.close();
+            if(conn != null)
+                conn.close();
+            }
+            catch(Exception ex) {
+                
+            }
+            resp += "<br>END...";
+        }
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet JDBCTest</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet JDBCTest at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            out.print(resp);
         }
     }
 

@@ -343,27 +343,38 @@ def add_props():
     lamp.energy = 30
     cam = bpy.data.cameras.new("Camera")
 
-    lamp_obj = bpy.data.objects.new("Lamp", lamp)
-    cam_ob = bpy.data.objects.new("Camera", cam)
+    if bpy.data.objects.get("Lamp") is not None:
+        lamp_obj = bpy.data.objects["Lamp"]
+    else:
+        lamp_obj = bpy.data.objects.new("Lamp", lamp)
+        scene.objects.link(lamp_obj)
+    if bpy.data.objects.get("Camera") is not None:
+        cam_ob = bpy.data.objects["Camera"]
+    else:
+        cam_ob = bpy.data.objects.new("Camera", cam)
+        scene.objects.link(cam_ob)    
 
     lamp_obj.location = (-20, 0, 10)
     cam_ob.location = (-20, 0, 10)
     cam_ob.rotation_mode = 'XYZ'
     cam_ob.rotation_euler = (1.1, 0, -1.57)
     bpy.data.cameras['Camera'].lens = 20
-    
-    scene.objects.link(lamp_obj)
-    scene.objects.link(cam_ob)    
 
     bpy.context.scene.camera = scene.objects["Camera"]
-    scene.update()
+    scene.update
+    
+def randomize_positions(entities, min_x, max_x, min_y, max_y, min_z, max_z):
+    for entity in entities:
+        new_loc = (random.uniform(min_x, max_x), random.uniform(min_y, max_y), random.uniform(min_z, max_z))
+        diff = new_loc - tuple(entity.get_bbox_centroid())
+    
 
 add_props()
 scene.render.filepath = filepath + 'image.jpg'
 bpy.ops.render.render( write_still=True )
 
-print ('')
-print (compute_above(entities))
+#print ('')
+#print (compute_above(entities))
 '''
 print ('init...')
 print ('')
