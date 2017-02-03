@@ -4,8 +4,13 @@ import numpy
 import math
 from math import e, pi
 import itertools
+import os
 
-filepath = "/u/gplatono/BlenderProjects/SRP/objects/"
+filepath = os.path.dirname(os.path.abspath(__file__))
+filepath = filepath[0:filepath.rfind("/") + 1]
+
+
+#filepath = "/u/gplatono/BlenderProjects/SRP/objects/"
 #import geometry_utils
 link = False
 scene = bpy.context.scene
@@ -80,11 +85,8 @@ class Entity:
     def get(self, property):
         return self.constituents[0].get(property)
 
-    def get_closest_face_distance(point):
+    def get_closest_face_distance(self, point):
         return min([get_distance_from_plane(point, face[0], face[1], face[2]) for face in self.faces])
-
-#    def get_closest_distance(point):
-        
 
     def get_faces(self):
         if(hasattr(self, 'faces') and self.faces is not None):
@@ -151,8 +153,8 @@ def dist_obj(a, b):
 def gaussian(x, mu, sigma):
     return e ** (- 0.5 * ((float(x) - mu) / sigma) ** 2) / (math.fabs(sigma) * math.sqrt(2.0 * pi))
 
-def sigmoid(x, a, b, c):
-    return a / (1 + b * e ** (- c * x))
+def sigmoid(x, a, b):
+    return a / (1 + e ** (- b * x)) if b * x > -100 else 0
 
 def get_proj_intersection(a, b):
     bbox_a = a.get_bbox()
@@ -186,7 +188,7 @@ def above(a, b):
     bbox_b = b.get_bbox()
     center_a = a.get_bbox_centroid()
     center_b = b.get_bbox_centroid()
-    return 0.33333 * (max(int(bbox_a[0][2] > bbox_b[7][2]), e ** (- math.fabs(bbox_a[0][2] - bbox_b[7][2]))) + sigmoid(5 * (center_a[2] - center_b[2]) / (0.01 + bbox_a[7][2] - bbox_a[0][2] + bbox_b[7][2] - bbox_b[0][2]), 1, 1, 1) + get_proj_intersection(a, b))
+    return 0.33333 * (max(int(bbox_a[0][2] > bbox_b[7][2]), e ** (- math.fabs(bbox_a[0][2] - bbox_b[7][2]))) + sigmoid(5 * (center_a[2] - center_b[2]) / (0.01 + bbox_a[7][2] - bbox_a[0][2] + bbox_b[7][2] - bbox_b[0][2]), 1, 1) + get_proj_intersection(a, b))
     
 def below(a, b):
     return above(b, a)
@@ -295,22 +297,25 @@ def gen_data(func_name):
     pos = 100.0
     neg = 100.0
     data = open(func_name + ".train", "w")
+    index = 0
     for pair in itertools.permutations(entities, r = 2):
-        a, b = pair
-        if a.name != 'plane' and b.name != 'plane':
-            a_bbox_str = " ".join([" ".join([str(x) for x in y]) for y in a.get_bbox()])
-            b_bbox_str = " ".join([" ".join([str(x) for x in y]) for y in b.get_bbox()])
-            a_cen = a.get_bbox_centroid()
-            b_cen = b.get_bbox_centroid()
-            outstr = a_bbox_str + " " + b_bbox_str #" ".join([str(x) for x in a_cen]) + " " + " ".join([str(x) for x in b_cen])            
-            if globals()[func_name](a, b) > 0.7 and float(pos) / (pos + neg) <= 0.6:
-                outstr = outstr + " 1\n"
-                pos = pos + 1
-                data.write(outstr)
-            elif neg / (pos + neg) <= 0.6:
-                outstr = outstr + " -1\n"
-                neg = neg + 1
-                data.write(outstr)            
+        if index < 1000:
+            a, b = pair
+            if a.name != 'plane' and b.name != 'plane':
+                a_bbox_str = " ".join([" ".join([str(x) for x in y]) for y in a.get_bbox()])
+                b_bbox_str = " ".join([" ".join([str(x) for x in y]) for y in b.get_bbox()])
+                a_cen = a.get_bbox_centroid()
+                b_cen = b.get_bbox_centroid()
+                outstr = a_bbox_str + " " + b_bbox_str #" ".join([str(x) for x in a_cen]) + " " + " ".join([str(x) for x in b_cen])            
+                if globals()[func_name](a, b) > 0.7: # and float(pos) / (pos + neg) <= 0.6:
+                    outstr = outstr + " 1\n"
+                    #pos = pos + 1
+                    data.write(outstr)
+                else: #if neg / (pos + neg) <= 0.6:
+                    outstr = outstr + " -1\n"
+                    #neg = neg + 1
+                    data.write(outstr)
+                index = index + 1
     data.close()
     
 entities = []
@@ -332,21 +337,34 @@ if len(entities) != 0 :
 #gen_data("above")
 #gen_data("near")
 #gen_data("on")
-#cam = bpy.data.cameras.new("Camera")
-#cam_ob = bpy.data.objects.new("Camera", cam)
-#cam_ob.location = (0, 0, 0)
-#print (cam_ob.rotation_euler)
-#bpy.context.scene.objects.link(cam_ob)
-#bpy.context.scene.objects.active = bpy.context.scene.objects["Camera"]
-#scene.update()
 
-#bpy.context.scene.camera = scene.objects["Camera"]
+def add_props():
+    lamp = bpy.data.lamps.new("Lamp", type = 'POINT')
+    lamp.energy = 30
+    cam = bpy.data.cameras.new("Camera")
 
-#scene.render.filepath = 'image.jpg'
-#bpy.ops.render.render( write_still=True )
+    lamp_obj = bpy.data.objects.new("Lamp", lamp)
+    cam_ob = bpy.data.objects.new("Camera", cam)
 
+    lamp_obj.location = (-20, 0, 10)
+    cam_ob.location = (-20, 0, 10)
+    cam_ob.rotation_mode = 'XYZ'
+    cam_ob.rotation_euler = (1.1, 0, -1.57)
+    bpy.data.cameras['Camera'].lens = 20
+    
+    scene.objects.link(lamp_obj)
+    scene.objects.link(cam_ob)    
 
-'''        
+    bpy.context.scene.camera = scene.objects["Camera"]
+    scene.update()
+
+add_props()
+scene.render.filepath = filepath + 'image.jpg'
+bpy.ops.render.render( write_still=True )
+
+print ('')
+print (compute_above(entities))
+'''
 print ('init...')
 print ('')
 print (compute_at(entities))

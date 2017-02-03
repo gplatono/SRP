@@ -1,8 +1,9 @@
 <frames>
 	<frame name="RELATIONS">
 		<field action="NEAR" name="NEAR" pattern="NEAR | NEAR-RELN" weight="1"/>
-		<field action="ABOVE" name="ABOVE" pattern="ABOVE | OVER | HIGHER" weight="1"/>
+		<field action="ABOVE" name="ABOVE" pattern="ABOVE | OVER | HIGHER | MORE-VAL" weight="1"/>
 		<field action="ON" name="ON" pattern="ON" weight="1"/>
+		<field action="BELOW" name="BELOW" pattern="BELOW | UNDER | LOWER | LESS-VAL" weight="1"/>
 	</frame>
 	<frame name="ABOVE">
 		<field action="GET_FIGURE" name="FIGURE" pattern="ONT::COLOR-VAL CUBE | ONT::COLOR-VAL ONE" weight="1"/>

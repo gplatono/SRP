@@ -115,10 +115,10 @@ class Entity:
         mesh.update()
 
 class Relation:
-    def __init__(self):
-        self.rel_type = None
-        self.figure = None
-        self.ground = None
+    def __init__(self, rel_type, figure, ground):
+        self.rel_type = rel_type
+        self.figure = figure
+        self.ground = ground
         
     def printinfo(self):
         print ('TYPE: ' + str(self.rel_type))
@@ -213,8 +213,8 @@ def NEAR(a, b):
                     bbox_a[7][2] - bbox_a[0][2])
     max_dim_b = max(bbox_b[7][0] - bbox_b[0][0],
                     bbox_b[7][1] - bbox_b[0][1],
-                    bbox_b[7][2] - bbox_b[0][2])   
-    return 0.5 * (1 - min(1, dist / avg_dist) + e ** (- (0.005 * math.log(dist) / (0.001 + max_dim_a + max_dim_b))))
+                    bbox_b[7][2] - bbox_b[0][2])
+    return 0.5 * (1 - min(1, 0.5 * dist / avg_dist) + e ** (- (0.005 * math.log(dist) / (0.001 + max_dim_a + max_dim_b))))
     
 def v_align(a, b):
     dim_a = a.get_dimensions()
@@ -252,53 +252,7 @@ def in_front_of_extr(a, b, observer):
     dist = get_distance_from_line(observer.get_bbox_centroid(), b.get_bbox_centroid(), a.get_bbox_centroid())
     return 0.5 * (closer_than(a, b, observer) + e ** (-dist / max_dim_a))
     
-#recursively obtains the list of ancestors of the given ontology entry and assigns it to supertypes[entry]
-def add_supertypes(concept, ontology, supertypes):
-        #get all parents
-        ancestors = ontology[concept][1]
-
-        #get parents of parents and so on, recursively
-        for parent in ontology[concept][1]:
-                if(parent not in supertypes.keys()):
-                        supertypes = add_supertypes(parent, ontology, supertypes)
-                ancestors = ancestors + supertypes[parent]
-
-        #remove duplicates and assign the ontology entry
-        supertypes[concept] = list(set(ancestors))
-        
-        return supertypes
-
-#parses the TRIPS ontology file and builds custom ontology and supertypes dictionaries
-def build_ontology(filename):
-        onto_concepts = {}
-        onto_words = {}
-        onto_all = {}
-        supertypes = {}
-
-        #get the entries for 'ONT::' nodes and fill in the concept ontology
-        for concept in ET.parse(filename).getroot().findall('concept'):
-                onto_concepts[concept.get('name').strip().upper()] = [concept.get('name').strip().upper(),
-                                             [parent.text.strip().upper() for parent in concept.findall("relation[@label='inherit']")],
-                                             [word.text.strip().upper() for word in concept.findall("relation[@label='word']")]]
-                
-        #for each 'ONT::' concept, extract all related words ('W::') and fill in the ontology for words
-        for concept in onto_concepts.keys():
-                for related in onto_concepts[concept][2]:
-                        if(related not in onto_words.keys()):
-                                onto_words[related] = [related, [concept], []]
-                        else: onto_words[related][1].append(concept)
-                        
-        #merge them together to get a unified ontology
-        onto_all = {**onto_concepts, **onto_words}
-
-        #form the supertype ontology
-        for concept in onto_all.keys():
-                if concept not in supertypes.keys():
-                        supertypes = add_supertypes(concept, onto_all, supertypes)
-                        
-        return (onto_all, supertypes)
-
-#parses the frames.xml and builds the list of frames representations
+#Parses the frames.xml and builds the list of frames representations
 def build_frames(filename):
         frame_trees = ET.parse(filename).getroot().findall('frame')
         frames = []
@@ -311,6 +265,7 @@ def build_frames(filename):
                                            int(field.get('weight'))])
         return frames
 
+#Extract the logical form from the output of the TRIPS parser
 def get_lf(rdf):
     lf = {}
     for node in rdf.findall('rdf:Description', NS):
@@ -331,55 +286,79 @@ def get_lf(rdf):
         lf[dict['id']] = dict
     return lf
 
+#For a figure or ground of the relation, get the textual description, such as adjectives, etc.
 def get_arg_form(lf, rdf_id):
         arg = [rdf_id]
         for key in lf.keys():
                 if lf[key]['id'] == rdf_id:
                         for role in lf[key]['roles']:
-                                if role[0] == 'MOD':
+                                if role[0] == 'MOD' or role[0] == 'ASSOC-WITH' or role[0] == 'FIGURE':
                                         arg.append(resolve_reference(role[1]))
         return arg
 
+#DUMMY: resolve reference tokens (such as pronouns, "one", etc.)
 def resolve_reference(rdf_id):
         return rdf_id
 
+#Generate the relation object with figure and ground from logical form
 def get_relation(key):
     for frame in frames:
         for field in frame[1:]:
             for pattern in field[2]:
                 if lf[key]['type'] == pattern[0]:
-                    relation = Relation()
+                    relation = Relation(None, None, None)
                     relation.rel_type = field[1]
                     for role in lf[key]['roles']:
                         if role[0] == 'FIGURE':
-                            relation.figure = [get_entity([lf[token]['word'] for token in get_arg_form(lf, role[1]) if 'word' in lf[token].keys()])]
+                            relation.figure = [get_entity([lf[token]['word'] for token in get_arg_form(lf, role[1]) if 'word' in lf[token].keys()])]                           
                         elif role[0] == 'GROUND':
                             relation.ground = [get_entity([lf[token]['word'] for token in get_arg_form(lf, role[1]) if 'word' in lf[token].keys()])]
-                    #relation.printinfo()
                     return relation
 
+#Generate a structured format of the given query
 def get_formal_query(lf):
         query = []
-        relations = []
-        global frames        
-        isYN = True
+        query_type = 'ID'
         for key in lf.keys():
                 if lf[key]['type'] == 'SA_WH-QUESTION':
-                    isYN = False
+                    query_type = 'ID'
                 elif lf[key]['type'] == 'SA_YN-QUESTION':
-                    isYN = True
-        query = [isYN]
+                    query_type = 'CONFIRM'
+        query = [query_type]
         for key in lf.keys():
             relation = get_relation(key)
             if relation is not None:
                 query.append(relation)
+                '''if relation.figure[0] is None:
+                    relation.figure = []
+                    for entity in entities:
+                        relation.figure.append(entity)
+                if relation.ground[0] is None:
+                    relation.ground = []
+                    for entity in entities:
+                        relation.ground.append(entity)
+                for figure in relation.figure:
+                    for ground in relation.ground:
+                        query.append(Relation(relation[0], [figure], [ground])'''
+
+        #ret_query = query[0]
+        #for relation in query[1:]:
+            #if relation.figure[0] == None:
+            #    for 
+            #    relation.figure[0] = 'X'
+            #elif relation.ground[0] == None:
+            #    relation.ground[0] = 'X'
+            #else:
+            #    ret_query.append(relation)
         return query
 
+#Determine the entity by its textual description
 def get_entity(textual_description):
     for entity in entities:
         if entity.get("COLOR") in textual_description:
             return entity
 
+#Get the list of entities acceptable as the figure argument for the given relation
 def figure_list(relation):
     figures = []
     for ground in relation.ground:
@@ -388,6 +367,7 @@ def figure_list(relation):
                 figures.append(entity)
     return figures
 
+#Get the list of entities acceptable as the ground argument for the given relation
 def ground_list(relation):
     grounds = []
     for figure in relation.figure:
@@ -396,11 +376,15 @@ def ground_list(relation):
                 grounds.append(entity)
     return grounds
 
+#Given a formal query, evaluate it and generate the system response
 def process_query(query):
     result = []
-    if(query[0] == True):
+    if(query[0] == 'CONFIRM'):
         result = True
         for relation in query[1:]:
+            if relation.figure[0] is None or relation.ground[0] is None:
+                print ('ERROR: Figure or ground is not fully specified or has not been parsed properly.')
+                return
             if globals()[relation.rel_type](relation.figure[0], relation.ground[0]) < 0.7:
                 result = False
                 break
@@ -412,62 +396,46 @@ def process_query(query):
     else:
         result = [ent for ent in entities if ent.name != 'plane']
         for relation in query[1:]:
-            #relation.printinfo()
             if len(relation.figure) == 0 or relation.figure[0] is None:
-                #print (figure_list(relation))
                 result = [entity for entity in figure_list(relation) if entity in result]
             elif len(relation.ground) == 0 or relation.ground[0] is None:
                 result = [entity for entity in ground_list(relation) if entity in result]
-        #print ([res.name for res in result])
         print ('RESULT:')
         if len(result) == 0:
-            print ('NO OBJECT SATISFIES GIVES CONSTRAINTS')
+            print ('ERROR: No object satisfies given constraints.')
         else:
             for x in result:
                 print ('THE' + " " + x.get('COLOR') + " " + x.get('TYPE'))
 
-
+#List of objects in the scene
 entities = []
-for obj in scene.objects:
-    if obj.get('main') is not None:
-        entities.append(Entity(obj))
-avg_dist = 0
-for pair in itertools.combinations(entities, r = 2):
-    avg_dist += dist_obj(pair[0], pair[1])
-avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
-scene.objects.link(bpy.data.objects.new('Observer', None))
-scene.objects['Observer'].location = (0, -20, 5)
-scene.update()
-observer = Entity(scene.objects['Observer'])
-observer.set_frontal((0, 20, -5))
-observer.set_longitudinal((0, 1, 4))
 
 parse_tree = []
 NS = {'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
       'role': 'http://www.cs.rochester.edu/research/trips/role#',
       'LF': 'http://www.cs.rochester.edu/research/trips/LF#'}
 
-#stores the ontology entries in the format ontology[concept] = [concept, [parents], [related concepts (W:: stuff)]]
-#note that ontology contains both concepts and words (ONT::'s and W::'s), for words the '[related concepts]'-list is empty
-ontology = {}
+for obj in scene.objects:
+    if obj.get('main') is not None:
+        entities.append(Entity(obj))
+avg_dist = 0
+for pair in itertools.combinations(entities, r = 2):
+    avg_dist += dist_obj(pair[0], pair[1])
+avg_dist = avg_dist * 2 / ((len(entities)-1) * (len(entities) - 2))
 
-#for each entry in ontology (all ONT::'s and W::'s) stores the list of all ancestors
-#for words it is concepts to which they are related and their ancestors
-supertypes = {}
-
-ontology, supertypes = build_ontology(filepath + "trips-ont-lex.xml")
 frames = build_frames(filepath + "frames.xml")
 tests = [line for line in open(filepath + "tests", "r").readlines()]
+
 for test in tests:
     print ('=======================================================================\n')    
-    print (test)
+    print ('QUERY: ' + test)
     print ("PROCESSING...")
-    query_parse = requests.get("http://trips.ihmc.us/parser/cgi/parse?input=" + tests[2])
+    query_parse = requests.get("http://trips.ihmc.us/parser/cgi/parse?input=" + test)
     root = ET.fromstring(query_parse.text)
     lf = get_lf(root.find('utt').find('terms').find('rdf:RDF', NS))
     
     #for key in lf.keys():
     #    print (lf[key], '\n')
     query = get_formal_query(lf)
-    print (query[1].printinfo())
+    #print (query[1].printinfo())
     process_query(query)
