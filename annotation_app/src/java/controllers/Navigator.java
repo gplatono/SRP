@@ -30,7 +30,7 @@ public class Navigator extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        //try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             //out.println(request.getParameter("page"));
             /*out.println("<html>");
@@ -42,7 +42,7 @@ public class Navigator extends HttpServlet {
             out.println("</body>");
             out.println("</html>");*/
             //return;
-        }
+        //}
         //if(request.getParameter("login_val") != null)
         //if(request.getParameter("login_val") != null && request.getParameter("login_val").equals("admin") &&
             //request.getParameter("pass_val") != null && request.getParameter("pass_val").equals("admin"))
@@ -50,9 +50,9 @@ public class Navigator extends HttpServlet {
             String address = request.getParameter("page");
             if (address == null)
                 address = "index";
-                //out.println("jsp/" + request.getParameter("page").substring(1) + ".jsp");
-            request.getRequestDispatcher("jsp/" + address + ".jsp").forward(request, response);
-
+            if(address == "evaluation")
+            //out.println("jsp/" + request.getParameter("page").substring(1) + ".jsp");
+            request.getRequestDispatcher("/jsp/" + address + ".jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -93,5 +93,4 @@ public class Navigator extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

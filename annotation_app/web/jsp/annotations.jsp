@@ -14,7 +14,7 @@
     </head>
     <body class="body">    
                 <br>
-                <img class="scene" src="scenes/scene_gl.png" />
+                <img class="scene" src="scenes/1.png" />
                 <br>
                 <form action="SubmissionHandler">
                     <!--Enter the referent object name: <br>

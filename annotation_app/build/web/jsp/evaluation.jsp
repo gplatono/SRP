@@ -14,7 +14,7 @@
     </head>
     <body class="body">
         <br>
-        <img class="scene" src="scenes/screen.jpg" />
+        <img class="scene" src=<%(String)request.getAttribute("imgsrc");%> />
         <br>
         On the given picture, is the <b>red cube on top of the purple cube</b>?
         <br>

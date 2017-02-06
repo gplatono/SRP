@@ -14,7 +14,7 @@
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script>
             $(document).ready(function(){	//executed after the page has loaded
-                checkURL();	//check if the URL has a reference to a page and load it
+                checkURL();                     //check if the URL has a reference to a page and load it
                 $('ul li a').click(function (e){	//traverse through all our navigation links..
                     checkURL(this.hash);	//.. and assign them a new onclick event, using their own hash as a parameter (#page1 for example)
                 });
@@ -35,12 +35,6 @@
                     <li><a href="#evaluation">Evaluations</a></li>
                     <li><a href="#examples">Examples</a></li>                    
                 </ul>
-                <!--<ul class="menu">
-                    <li><a href="#description">Home</a></li>
-                    <li><a href="#annotations">Annotations</a></li>
-                    <li><a href="#evaluation">Evaluations</a></li>
-                    <li><a href="#examples">Examples</a></li>                    
-                </ul>-->
             </nav>
             <section id="Content" class="content" style="vertical-align: middle;">
                

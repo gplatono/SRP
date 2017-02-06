@@ -36,6 +36,7 @@ function loadPage(url)	//the function that loads pages via AJAX
 		success: function(msg){
 			if(parseInt(msg)!=0)	//if no errors
 			{
+                                //alert(msg);
 				$('#Content').html(msg);	//load the returned html into pageContet
 				//$('#loading').css('visibility','hidden');	//and hide the rotating gif
 			}
