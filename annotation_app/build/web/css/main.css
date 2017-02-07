@@ -25,14 +25,15 @@ and open the template in the editor.
 }
 
 .container {
-    width: 60%;
+    width: 80%;
     position: absolute;
     //height: 1000px;
     padding: 0;    
     margin: 0;
     top: 0;
-    left: 20%;
+    left: 10%;
     border: 0px;
+    font: Arial, Helvetica, sans-serif;
 }
 
 header {
@@ -73,23 +74,16 @@ nav {
 }
 
 .content {
+    display: flex;
+    flex-direction: column;
+    min-height: 400vh;
     clear: both;
-    //float: left;
     width: 100%;    
     min-height: 400px;
     margin: auto 0;
     background-color: white;
     text-align: justify;
-    //padding: 0;
     padding: 5px;
-    //position: absolute;
-    //left: 200px;
-    //margin: auto;
-    //position: absolute;
-    //left: 10%;
-    //top: 330px;
-    //right: 0;
-    //bottom: 0;
     border: 0px;
     //overflow: scroll;
 }
@@ -98,12 +92,12 @@ footer {
     width: 100%;
     margin: auto 0;
     padding: 5px;
-    background-color: #404040;
+    background-color: #000000;//#404040;
     height: 200px;
     text-align: right;
     vertical-align: middle;
     color: white;
-    font-size: 10px;
+    font-size: 12px;
     //outline: 1px solid #eee;
     //display: table-cell; 
     //height: 200px; 

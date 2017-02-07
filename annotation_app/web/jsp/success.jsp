@@ -28,6 +28,9 @@
 
             <section class="content">
                 Your response was successfully saved.
+                <form action="Navigator">
+                    <input type="submit" name="continue" value="true" />
+                </form>
             </section>        
             <footer>
                 <div class="outer">

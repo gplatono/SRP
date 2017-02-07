@@ -5,12 +5,15 @@
  */
 package controllers;
 
+import beans.Testcase;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import system.TestGenerator;
 
 /**
  *
@@ -50,8 +53,15 @@ public class Navigator extends HttpServlet {
             String address = request.getParameter("page");
             if (address == null)
                 address = "index";
-            if(address == "evaluation")
-            //out.println("jsp/" + request.getParameter("page").substring(1) + ".jsp");
+            if(request.getParameter("submit_response") != null) {
+                request.setAttribute("result", "Your response has been saved...");
+            }
+            if(address.equals("evaluation")) { 
+                String datasetPath = System.getProperty("user.home") + File.separator + "scenes";
+                Testcase testcase = TestGenerator.generate(datasetPath);
+                request.setAttribute("testcase", testcase);
+                request.setAttribute("imagePath", request.getContextPath() + testcase.getImagePath());//"scenes/" + (testcase.getSceneID() + 1) + "/" + "scene.png");                
+            }
             request.getRequestDispatcher("/jsp/" + address + ".jsp").forward(request, response);
     }
 

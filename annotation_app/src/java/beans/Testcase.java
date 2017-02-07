@@ -14,11 +14,29 @@ public class Testcase {
         
     }
     
+    private int queryType;
+    private int sceneID;
     private String scenePath;
     private String imagePath;
     private String testQuery;
-    private String[] sceneObjects;
+    private String[] sceneObjects;    
 
+    public int getQueryType() {
+        return queryType;
+    }
+
+    public void setQueryType(int queryType) {
+        this.queryType = queryType;
+    }
+    
+    public int getSceneID() {
+        return sceneID;
+    }
+
+    public void setSceneID(int sceneID) {
+        this.sceneID = sceneID;
+    }
+    
     public String getScenePath() {
         return scenePath;
     }

@@ -31,12 +31,12 @@
             <nav>
                 <ul class="menu">
                     <li><a href="#description">Home</a></li>
-                    <li><a href="#annotations">Annotations</a></li>
+                    <!--<li><a href="#annotations">Annotations</a></li>-->
                     <li><a href="#evaluation">Evaluations</a></li>
                     <li><a href="#examples">Examples</a></li>                    
                 </ul>
             </nav>
-            <section id="Content" class="content" style="vertical-align: middle;">
+            <section class="content">
                
             </section>        
             <footer>
@@ -44,7 +44,7 @@
                 Georgiy Platonov
                 <br> <a href="mailto:gplatono@cs.rochester.edu">gplatono@cs.rochester.edu</a>
                 <br> University of Rochester
-                <br> 2016
+                <br> 2016-2017
                 </div>
             </footer>        
         </div>
