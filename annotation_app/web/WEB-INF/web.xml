@@ -40,7 +40,7 @@
     <welcome-file-list>
         <welcome-file>
             <!--JDBC-->
-            jsp/index.jsp
+            jsp/index_1.jsp
         </welcome-file>
     </welcome-file-list>
 </web-app>

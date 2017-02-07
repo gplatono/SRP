@@ -19,7 +19,7 @@
                     checkURL(this.hash);	//.. and assign them a new onclick event, using their own hash as a parameter (#page1 for example)
                 });
                 setInterval("checkURL()",250);	//check for a change in the URL every 250 ms to detect if the history buttons have been used
-            });            
+            });           
         </script>
         <title>SRP Annotator tool</title>
     </head>

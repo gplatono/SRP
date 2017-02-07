@@ -54,9 +54,13 @@ public class Navigator extends HttpServlet {
             if (address == null)
                 address = "index";
             if(request.getParameter("submit_response") != null) {
+                //PrintWriter out = response.getWriter();
+                //out.println("ok");
                 request.setAttribute("result", "Your response has been saved...");
+                address = "eval";
+                //return;
             }
-            if(address.equals("evaluation")) { 
+            if(address.equals("eval")) { 
                 String datasetPath = System.getProperty("user.home") + File.separator + "scenes";
                 Testcase testcase = TestGenerator.generate(datasetPath);
                 request.setAttribute("testcase", testcase);
