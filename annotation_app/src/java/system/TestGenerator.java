@@ -94,7 +94,7 @@ public class TestGenerator {
         }
         else {
             int relatumIndex = rand.nextInt(objectNames.size());
-            testQuery = "Describe the location of the " + objectNames.get(relatumIndex) + ":";
+            testQuery = "Describe the location of the " + objectNames.get(relatumIndex) + " relative to other objects, present in the scene. Use the following relations: Above, Below, Behind, In Front Of, To The Left, To The Right, On, At, Near, Over. Comparatives and superlatives are allowed.";
         }        
         
         testcase.setSceneObjects(objectNames.toArray(new String[objectNames.size()]));        

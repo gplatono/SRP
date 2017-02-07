@@ -32,7 +32,7 @@
                 <ul class="menu">
                      <li><a href="Navigator?page=index_1">Home</a></li>
                     <!--<li><a href="#annotations">Annotations</a></li>-->
-                    <li><a href="Navigator?page=eval">Evaluations</a></li>
+                    <li><a href="Navigator?page=eval">Evaluation</a></li>
                     <li><a href="Navigator?page=exam_1">Examples</a></li>                   
                 </ul>
             </nav>
@@ -67,7 +67,7 @@
                             <div style="width: 100%; border: 2px; padding: 5px; margin: 0 auto;">
                                 <textarea name="description" style="resize: none; width: 95%;" rows="20"></textarea>
                                 <br>                        
-                                <input type="submit" name="submit_response" value="Submit Description" />
+                                <input style="width: 97%;" type="submit" name="submit_response" value="Submit Description" />
                                 <br><br>
                                 Objects present in the scene:
                                 <br><br>
