@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package system;
+package application;
 
 import beans.Testcase;
 import java.io.BufferedReader;
