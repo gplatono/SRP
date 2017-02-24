@@ -21,10 +21,50 @@ public class Testcase {
     private String relatum;
     private String referent1;
     private String referent2;
-    private String scenePath;
-    private String imagePath;
-    private String testQuery;
-    private String[] sceneObjects;    
+    //private String scenePath;
+    //private String imagePath;
+    //private String testQuery;
+    //private String[] sceneObjects;    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+
+    public String getRelatum() {
+        return relatum;
+    }
+
+    public void setRelatum(String relatum) {
+        this.relatum = relatum;
+    }
+
+    public String getReferent1() {
+        return referent1;
+    }
+
+    public void setReferent1(String referent1) {
+        this.referent1 = referent1;
+    }
+
+    public String getReferent2() {
+        return referent2;
+    }
+
+    public void setReferent2(String referent2) {
+        this.referent2 = referent2;
+    }
 
     public int getQueryType() {
         return queryType;
@@ -40,39 +80,5 @@ public class Testcase {
 
     public void setSceneID(int sceneID) {
         this.sceneID = sceneID;
-    }
-    
-    public String getScenePath() {
-        return scenePath;
-    }
-
-    public void setScenePath(String scenePath) {
-        this.scenePath = scenePath;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getTestQuery() {
-        return testQuery;
-    }
-
-    public void setTestQuery(String testQuery) {
-        this.testQuery = testQuery;
-    }
-
-    public String[] getSceneObjects() {
-        return sceneObjects;
-    }
-
-    public void setSceneObjects(String[] sceneObjects) {
-        this.sceneObjects = sceneObjects;
-    }
-    
-    
+    }    
 }

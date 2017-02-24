@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import application.JDBCHelper;
 import beans.Testcase;
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import application.TestGenerator;
+import beans.TestInstance;
 import java.net.URL;
 
 /**
@@ -58,6 +60,18 @@ public class Navigator extends HttpServlet {
                 //PrintWriter out = response.getWriter();
                 //out.println("ok");
                 request.setAttribute("result", "Your response has been saved...");
+                TestInstance testInstance = (TestInstance)request.getSession().getAttribute("testInstance");
+                if(request.getParameter("description") != null)
+                    testInstance.setResponse(request.getParameter("description"));
+                else
+                    testInstance.setResponse(request.getParameter("submit_response"));                
+                try {
+                JDBCHelper.saveResponse(testInstance);
+                }
+                catch (Exception ex) {
+                   int i = 0; 
+                }
+                
                 address = "eval";
                 //return;
             }
@@ -65,8 +79,9 @@ public class Navigator extends HttpServlet {
                 URL classpath = Navigator.class.getClassLoader().getResource("controllers/Navigator.class");
                 String appPath = classpath.getPath().split("WEB-INF")[0];                
                 //String datasetPath = System.getProperty("user.home") + File.separator + "scenes";
-                Testcase testcase = TestGenerator.generate(appPath);
-                request.setAttribute("testcase", testcase);
+                TestInstance testInstance = TestGenerator.generate(appPath);
+                testInstance.setUserID(1);
+                request.getSession().setAttribute("testInstance", testInstance);
                 //request.setAttribute("imagePath", request.getContextPath() + testcase.getImagePath());//"scenes/" + (testcase.getSceneID() + 1) + "/" + "scene.png");                
                 //return;
             }

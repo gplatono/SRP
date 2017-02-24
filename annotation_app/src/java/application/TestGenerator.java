@@ -5,6 +5,7 @@
  */
 package application;
 
+import beans.TestInstance;
 import beans.Testcase;
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,8 +39,9 @@ public class TestGenerator {
         
     }
     
-    public static Testcase generate(String appPath) {
+    public static TestInstance generate(String appPath) {
         Testcase testcase = new Testcase();
+        TestInstance testInstance = new TestInstance();
         PrintWriter writer = null;
         String datasetPath = appPath + "scenes/";        
         
@@ -51,23 +53,30 @@ public class TestGenerator {
         
         try {   
             JDBCHelper helper = new JDBCHelper();
-        ArrayList<String> paths = JDBCHelper.getScenes();
+        ArrayList<String> scenePaths = JDBCHelper.getScenes();
+        ArrayList<Testcase> testcases = JDBCHelper.getTestcases();
         
-        ArrayList<File> subdirs = new ArrayList<File>();
+        
+        
+        /*ArrayList<File> subdirs = new ArrayList<File>();
         for (File file : (new File(datasetPath)).listFiles()) {
             if(file.isDirectory()) {
                 subdirs.add(file);
             }
-        }
+        }*/
         
         Random rand = new Random();
-        int index = rand.nextInt(subdirs.size());
-        String scenePath = subdirs.get(index).getPath();
+        testcase = testcases.get(rand.nextInt(testcases.size()));
+        testInstance.setTestcase(testcase);
+        testInstance.setScenePath("scenes" + File.separator + scenePaths.get(testInstance.getTestcase().getSceneID() - 1));
+        testInstance.setImagePath(testInstance.getScenePath() + "scene.jpg");
+        //int index = rand.nextInt(subdirs.size());
+        //String scenePath = subdirs.get(index).getPath();
         
-        testcase.setScenePath(subdirs.get(index).getPath());
-        testcase.setImagePath("scenes" + scenePath.split("scenes")[1] + File.separator + "scene.jpg");
+        //testcase.setScenePath(subdirs.get(index).getPath());
+        //testcase.setImagePath("scenes" + scenePath.split("scenes")[1] + File.separator + "scene.jpg");
         
-        int queryType = rand.nextInt(2);
+        /*int queryType = rand.nextInt(2);
         testcase.setQueryType(queryType);        
         
         ArrayList<String> objectNames = new ArrayList<String>();
@@ -85,29 +94,33 @@ public class TestGenerator {
         catch (IOException ex) {
             writer.println(ex.getMessage());
         }
-        
+        */
         String testQuery = null;
-        if(queryType == 0) { 
-            int relatumIndex = rand.nextInt(objectNames.size());
-            int referentIndex = rand.nextInt(objectNames.size());
-            int relationIndex = rand.nextInt(relations.length);        
-            while (relatumIndex == referentIndex) {
-                referentIndex = rand.nextInt(objectNames.size());
-            }
-            testQuery = "Is the " + objectNames.get(relatumIndex) + " " + relations[relationIndex] + " the " + objectNames.get(referentIndex) + "?";
+        if(testInstance.getTestcase().getQueryType() == 1) { 
+            //int relatumIndex = rand.nextInt(objectNames.size());
+            //int referentIndex = rand.nextInt(objectNames.size());
+            //int relationIndex = rand.nextInt(relations.length);        
+            //while (relatumIndex == referentIndex) {
+             //   referentIndex = rand.nextInt(objectNames.size());
+            //}
+            //testQuery = "Is the " + objectNames.get(relatumIndex) + " " + relations[relationIndex] + " the " + objectNames.get(referentIndex) + "?";
+            testQuery = "Is the " + testInstance.getTestcase().getRelatum() + " " + 
+                    testInstance.getTestcase().getRelation() + " the " + testInstance.getTestcase().getReferent1()+ "?";
         }
         else {
-            int relatumIndex = rand.nextInt(objectNames.size());
-            testQuery = "Describe the location of the " + objectNames.get(relatumIndex) + " relative to other objects, present in the scene. Use the following relations: Above, Below, Behind, In Front Of, To The Left, To The Right, On, At, Near, Over. Comparatives and superlatives are allowed.";
+            //int relatumIndex = rand.nextInt(objectNames.size());
+            //testQuery = "Describe the location of the " + objectNames.get(relatumIndex) + " relative to other objects, present in the scene. Use the following relations: Above, Below, Behind, In Front Of, To The Left, To The Right, On, At, Near, Over. Comparatives and superlatives are allowed.";
+            testQuery = "Describe the location of the " + testInstance.getTestcase().getRelatum() + " relative to other objects, present in the scene. Use the following relations: Above, Below, Behind, In Front Of, To The Left, To The Right, On, At, Near, Over.";
         }        
         
-        testcase.setSceneObjects(objectNames.toArray(new String[objectNames.size()]));        
-        testcase.setTestQuery(testQuery);
+        //testcase.setSceneObjects(objectNames.toArray(new String[objectNames.size()]));        
+        //testcase.setTestQuery(testQuery);
+        testInstance.setQuery(testQuery);
         }
         catch(Exception ex) {     
             writer.println(ex.getMessage());
         }
-        return testcase;
+        return testInstance;
     }
     
     private void sceneSelector() {

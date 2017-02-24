@@ -45,12 +45,12 @@
                
             <div style='background-color: #FFFFFF;'>
             <div style="width: 80%; float: left; overflow: hidden;">
-                <img class="scene" src="${testcase.imagePath}"/>
+                <img class="scene" src="${testInstance.imagePath}"/>
             </div>            
             <div style="overflow: hidden; padding: 10px; font-size: 15px;">                
-                <c:out value="${testcase.testQuery}" escapeXml="False"/>
+                <c:out value="${testInstance.query}" escapeXml="False"/>
                     <c:choose>
-                        <c:when test="${testcase.queryType == 0}">                            
+                        <c:when test="${testInstance.testcase.queryType == 1}">                            
                             <form action="Navigator?page=eval">
                             <div style="height: 50px; width: 100%;">
                                 <div style="overflow: hidden; float: left; width: 50%; border: 2px; padding: 5px;">    
@@ -72,10 +72,10 @@
                                 Objects present in the scene:
                                 <br><br>
                                 <b>
-                                <c:forEach var="objectName" items="${testcase.sceneObjects}">                                    
+                                <%--<c:forEach var="objectName" items="${testcase.sceneObjects}">                                    
                                     <c:out value="${objectName}"/>
                                     <br>
-                                </c:forEach>
+                                </c:forEach>--%>
                                 </b>
                             </div>
                             </form>
