@@ -7,6 +7,7 @@ package application;
 
 import beans.Testcase;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,7 +19,7 @@ public class JDBCHelper {
     private final String DB_URL = "jdbc:postgresql://localhost:5432/srp";
     private final String USER = "gplatono";
     private final String PASS = "";
-    private Connection dbConnection = null;
+    private static Connection dbConnection = null;
     public JDBCHelper() {
         try {
             Class.forName(JDBC_DRIVER);
@@ -29,8 +30,19 @@ public class JDBCHelper {
         }                
     }
     
-    public static void saveResponse(Testcase testcase) {
+    public static ArrayList<String> getScenes() throws SQLException {        
+        ArrayList<String> paths = new ArrayList<String>();
         Statement statement = dbConnection.createStatement();
-        String query = "INSERT INTO "
+        String query = "SELECT * FROM SCENES";
+        ResultSet result = statement.executeQuery(query);        
+        while(result.next()) {
+            paths.add(result.getString("path"));
+        }
+        return paths;
+    }
+    
+    public static void saveResponse(Testcase testcase) {
+        //Statement statement = dbConnection.createStatement();
+        //String query = "INSERT INTO "
     }
 }

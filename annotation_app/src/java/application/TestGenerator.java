@@ -38,17 +38,21 @@ public class TestGenerator {
         
     }
     
-    public static Testcase generate(String datasetPath) {
+    public static Testcase generate(String appPath) {
         Testcase testcase = new Testcase();
         PrintWriter writer = null;
+        String datasetPath = appPath + "scenes/";        
         
         try{
-        writer = new PrintWriter(datasetPath + "/Log", "UTF-8");
+        writer = new PrintWriter(appPath + "Log", "UTF-8");
         }
         catch(Exception ex) {
         }
         
-        try {                       
+        try {   
+            JDBCHelper helper = new JDBCHelper();
+        ArrayList<String> paths = JDBCHelper.getScenes();
+        
         ArrayList<File> subdirs = new ArrayList<File>();
         for (File file : (new File(datasetPath)).listFiles()) {
             if(file.isDirectory()) {
@@ -61,7 +65,7 @@ public class TestGenerator {
         String scenePath = subdirs.get(index).getPath();
         
         testcase.setScenePath(subdirs.get(index).getPath());
-        testcase.setImagePath("scenes" + scenePath.split("scenes")[1] +File.separator + "scene.png");
+        testcase.setImagePath("scenes" + scenePath.split("scenes")[1] + File.separator + "scene.jpg");
         
         int queryType = rand.nextInt(2);
         testcase.setQueryType(queryType);        

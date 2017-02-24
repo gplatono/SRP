@@ -45,7 +45,7 @@
                
             <div style='background-color: #FFFFFF;'>
             <div style="width: 80%; float: left; overflow: hidden;">
-                <img class="scene" src="<%=request.getAttribute("imagePath")%>"/>
+                <img class="scene" src="${testcase.imagePath}"/>
             </div>            
             <div style="overflow: hidden; padding: 10px; font-size: 15px;">                
                 <c:out value="${testcase.testQuery}" escapeXml="False"/>

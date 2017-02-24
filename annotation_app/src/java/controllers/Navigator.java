@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import application.TestGenerator;
+import java.net.URL;
 
 /**
  *
@@ -60,11 +61,14 @@ public class Navigator extends HttpServlet {
                 address = "eval";
                 //return;
             }
-            if(address.equals("eval")) { 
-                String datasetPath = System.getProperty("user.home") + File.separator + "scenes";
-                Testcase testcase = TestGenerator.generate(datasetPath);
+            if(address.equals("eval")) {
+                URL classpath = Navigator.class.getClassLoader().getResource("controllers/Navigator.class");
+                String appPath = classpath.getPath().split("WEB-INF")[0];                
+                //String datasetPath = System.getProperty("user.home") + File.separator + "scenes";
+                Testcase testcase = TestGenerator.generate(appPath);
                 request.setAttribute("testcase", testcase);
-                request.setAttribute("imagePath", request.getContextPath() + testcase.getImagePath());//"scenes/" + (testcase.getSceneID() + 1) + "/" + "scene.png");                
+                //request.setAttribute("imagePath", request.getContextPath() + testcase.getImagePath());//"scenes/" + (testcase.getSceneID() + 1) + "/" + "scene.png");                
+                //return;
             }
             request.getRequestDispatcher("/jsp/" + address + ".jsp").forward(request, response);
     }
