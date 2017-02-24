@@ -2,12 +2,11 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10devel
--- Dumped by pg_dump version 10devel
+-- Dumped from database version 9.5.5
+-- Dumped by pg_dump version 9.5.5
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -48,6 +47,23 @@ CREATE TABLE scenes (
 ALTER TABLE scenes OWNER TO gplatono;
 
 --
+-- Name: testcases; Type: TABLE; Schema: public; Owner: gplatono
+--
+
+CREATE TABLE testcases (
+    id integer NOT NULL,
+    type integer NOT NULL,
+    scene_id integer NOT NULL,
+    relation character varying(20),
+    relatum character varying(20) NOT NULL,
+    referent1 character varying(20),
+    referent2 character varying(20)
+);
+
+
+ALTER TABLE testcases OWNER TO gplatono;
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: gplatono
 --
 
@@ -73,6 +89,36 @@ COPY scenes (id, name, path) FROM stdin;
 
 
 --
+-- Data for Name: testcases; Type: TABLE DATA; Schema: public; Owner: gplatono
+--
+
+COPY testcases (id, type, scene_id, relation, relatum, referent1, referent2) FROM stdin;
+1	1	1	on	Cube 4	Cube 2	\N
+2	1	1	on	Cube 4	Cube 9	\N
+3	1	1	on	Cube 4	Cube 7	\N
+4	1	1	on	Cube 1	Cube 5	\N
+5	1	1	on	Cube 1	Cube 2	\N
+6	1	1	near	Cube 1	Cube 2	\N
+7	1	1	near	Cube 1	Cube 5	\N
+8	1	1	near	Cube 1	Cube 7	\N
+9	1	1	near	Cube 7	Cube 9	\N
+10	1	1	near	Cube 7	Cube 1	\N
+11	1	1	above	Cube 1	Cube 7	\N
+12	1	1	above	Cube 1	Cube 5	\N
+13	1	1	above	Cube 4	Cube 9	\N
+14	1	1	above	Cube 9	Cube 4	\N
+15	1	1	above	Cube 9	Cube 7	\N
+16	2	1	\N	Cube 9	\N	\N
+17	2	1	\N	Cube 7	\N	\N
+18	2	1	\N	Cube 4	\N	\N
+19	2	1	\N	Cube 1	\N	\N
+20	2	1	\N	Cube 2	\N	\N
+21	2	1	\N	Cube 5	\N	\N
+22	2	1	\N	Cube 8	\N	\N
+\.
+
+
+--
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: gplatono
 --
 
@@ -82,7 +128,7 @@ COPY users (id, username, password) FROM stdin;
 
 
 --
--- Name: scenes scenes_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono
+-- Name: scenes_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono
 --
 
 ALTER TABLE ONLY scenes
@@ -90,11 +136,37 @@ ALTER TABLE ONLY scenes
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono
+-- Name: testcases_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono
+--
+
+ALTER TABLE ONLY testcases
+    ADD CONSTRAINT testcases_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono
 --
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: testcases_scene_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gplatono
+--
+
+ALTER TABLE ONLY testcases
+    ADD CONSTRAINT testcases_scene_id_fkey FOREIGN KEY (scene_id) REFERENCES scenes(id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --

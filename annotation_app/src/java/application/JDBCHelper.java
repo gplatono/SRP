@@ -20,13 +20,18 @@ public class JDBCHelper {
     private final String USER = "gplatono";
     private final String PASS = "";
     private static Connection dbConnection = null;
+    private static int testSize;
+    
     public JDBCHelper() {
         try {
             Class.forName(JDBC_DRIVER);
             dbConnection = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = dbConnection.createStatement();
+            
         }
         catch(Exception ex) {
-            
+            String str = ex.getMessage();
+            int i = 0;
         }                
     }
     
@@ -38,8 +43,12 @@ public class JDBCHelper {
         while(result.next()) {
             paths.add(result.getString("path"));
         }
+        result.close();
+        statement.close();
         return paths;
     }
+    
+    static get
     
     public static void saveResponse(Testcase testcase) {
         //Statement statement = dbConnection.createStatement();

@@ -14,8 +14,13 @@ public class Testcase {
         
     }
     
+    private int id;
     private int queryType;
     private int sceneID;
+    private String relation;
+    private String relatum;
+    private String referent1;
+    private String referent2;
     private String scenePath;
     private String imagePath;
     private String testQuery;
