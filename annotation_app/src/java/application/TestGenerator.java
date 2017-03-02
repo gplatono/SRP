@@ -104,13 +104,13 @@ public class TestGenerator {
              //   referentIndex = rand.nextInt(objectNames.size());
             //}
             //testQuery = "Is the " + objectNames.get(relatumIndex) + " " + relations[relationIndex] + " the " + objectNames.get(referentIndex) + "?";
-            testQuery = "Is the " + testInstance.getTestcase().getRelatum() + " " + 
-                    testInstance.getTestcase().getRelation() + " the " + testInstance.getTestcase().getReferent1()+ "?";
+            testQuery = "Is " + testInstance.getTestcase().getRelatum() + " " + 
+                    testInstance.getTestcase().getRelation() + " " + testInstance.getTestcase().getReferent1()+ "?";
         }
         else {
             //int relatumIndex = rand.nextInt(objectNames.size());
             //testQuery = "Describe the location of the " + objectNames.get(relatumIndex) + " relative to other objects, present in the scene. Use the following relations: Above, Below, Behind, In Front Of, To The Left, To The Right, On, At, Near, Over. Comparatives and superlatives are allowed.";
-            testQuery = "Describe the location of the " + testInstance.getTestcase().getRelatum() + " relative to other objects, present in the scene. Use the following relations: Above, Below, Behind, In Front Of, To The Left, To The Right, On, At, Near, Over.";
+            testQuery = "Describe the location of " + testInstance.getTestcase().getRelatum() + " relative to other objects, present in the scene. Use the following relations: Above, Below, Behind, In Front Of, To The Left, To The Right, On, At, Near, Over.";
         }        
         
         //testcase.setSceneObjects(objectNames.toArray(new String[objectNames.size()]));        

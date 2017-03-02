@@ -53,11 +53,11 @@
                         <c:when test="${testInstance.testcase.queryType == 1}">                            
                             <form action="Navigator?page=eval">
                             <div style="height: 50px; width: 100%;">
-                                <div style="overflow: hidden; float: left; width: 50%; border: 2px; padding: 5px;">    
-                                    <input type="submit" style="width: 110px; height: 30px;" name="submit_response" value="Yes"/>
+                                <div style="overflow: hidden; float: left; width: 40%; border: 2px; padding: 5px;">    
+                                    <input type="submit" style="width: 100%; height: 30px;" name="submit_response" value="Yes"/>
                                 </div>
-                                <div style="overflow: hidden; border: 2px; padding: 5px;">    
-                                    <input type="submit" style="width: 110px; height: 30px;" name="submit_response" value="No"/>  
+                                <div style="overflow: hidden; width: 40%; border: 2px; padding: 5px;">    
+                                    <input type="submit" style="width: 100%; height: 30px;" name="submit_response" value="No"/>  
                                 </div>
                             </div>
                             </form>
