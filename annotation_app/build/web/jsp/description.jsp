@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body class="body">
-         ...Description goes here...
+        
     </body>
 </html>

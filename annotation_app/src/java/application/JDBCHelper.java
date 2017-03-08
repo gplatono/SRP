@@ -50,7 +50,11 @@ public class JDBCHelper {
             testcase.setRelatum(results.getString("RELATUM"));
             testcase.setReferent1(results.getString("REFERENT1"));
             testcase.setReferent2(results.getString("REFERENT2"));
+            
+            //REMOVE THE CONDITION LATER
+            if(testcase.getQueryType() == 2) {
             testcases.add(testcase);
+            }
         }
         results.close();
         statement.close();

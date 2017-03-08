@@ -37,7 +37,13 @@
                 </ul>
             </nav>
             <section class="content">
-               
+                <div style="width: 80%;height: auto;margin: 0 auto;padding: 10px;position: relative;">
+                <p>Welcome to the homepage of the Scene Annotation Project.</p>
+                
+                <p>Visit the 'Examples' page to see the guidelines and some demo annotations. 
+                    When you become familiar with them, feel free to go to the 'Evaluation' page to
+                    practice annotationing the real scenes.</p>
+                </div>
             </section>        
             <footer>
                 <div class="outer">

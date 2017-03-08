@@ -58,13 +58,13 @@ public class Navigator extends HttpServlet {
                 address = "index";
             if(request.getParameter("submit_response") != null) {
                 //PrintWriter out = response.getWriter();
-                //out.println("ok");
-                request.setAttribute("result", "Your response has been saved...");
+                //out.println("ok");                
                 TestInstance testInstance = (TestInstance)request.getSession().getAttribute("testInstance");
                 if(request.getParameter("description") != null)
                     testInstance.setResponse(request.getParameter("description"));
                 else
-                    testInstance.setResponse(request.getParameter("submit_response"));                
+                    testInstance.setResponse(request.getParameter("submit_response"));
+                request.setAttribute("result", "Thank you. Your last response - \'" + testInstance.getResponse() + "\' - has been saved...");
                 try {
                 JDBCHelper.saveResponse(testInstance);
                 }
@@ -74,6 +74,9 @@ public class Navigator extends HttpServlet {
                 
                 address = "eval";
                 //return;
+            }
+            else {
+                request.setAttribute("result", null);
             }
             if(address.equals("eval")) {
                 URL classpath = Navigator.class.getClassLoader().getResource("controllers/Navigator.class");

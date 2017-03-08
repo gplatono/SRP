@@ -34,7 +34,8 @@ public class TestGenerator {
         "near",
         "at",
         "over",
-        "on"};
+        "on",
+        "touching"};
     public TestGenerator(String sceneDirectory) {
         
     }
@@ -56,65 +57,24 @@ public class TestGenerator {
         ArrayList<String> scenePaths = JDBCHelper.getScenes();
         ArrayList<Testcase> testcases = JDBCHelper.getTestcases();
         
-        
-        
-        /*ArrayList<File> subdirs = new ArrayList<File>();
-        for (File file : (new File(datasetPath)).listFiles()) {
-            if(file.isDirectory()) {
-                subdirs.add(file);
-            }
-        }*/
-        
         Random rand = new Random();
         testcase = testcases.get(rand.nextInt(testcases.size()));
         testInstance.setTestcase(testcase);
         testInstance.setScenePath("scenes" + File.separator + scenePaths.get(testInstance.getTestcase().getSceneID() - 1));
         testInstance.setImagePath(testInstance.getScenePath() + "scene.jpg");
-        //int index = rand.nextInt(subdirs.size());
-        //String scenePath = subdirs.get(index).getPath();
         
-        //testcase.setScenePath(subdirs.get(index).getPath());
-        //testcase.setImagePath("scenes" + scenePath.split("scenes")[1] + File.separator + "scene.jpg");
-        
-        /*int queryType = rand.nextInt(2);
-        testcase.setQueryType(queryType);        
-        
-        ArrayList<String> objectNames = new ArrayList<String>();
-        try {
-            FileInputStream in = new FileInputStream(new File(scenePath + File.separator + "data"));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-            String objectName = reader.readLine();
-            while (objectName != null) {
-                    objectNames.add(objectName);
-                    objectName = reader.readLine();
-            }
-            reader.close();
-        }
-        catch (IOException ex) {
-            writer.println(ex.getMessage());
-        }
-        */
         String testQuery = null;
         if(testInstance.getTestcase().getQueryType() == 1) { 
-            //int relatumIndex = rand.nextInt(objectNames.size());
-            //int referentIndex = rand.nextInt(objectNames.size());
-            //int relationIndex = rand.nextInt(relations.length);        
-            //while (relatumIndex == referentIndex) {
-             //   referentIndex = rand.nextInt(objectNames.size());
-            //}
-            //testQuery = "Is the " + objectNames.get(relatumIndex) + " " + relations[relationIndex] + " the " + objectNames.get(referentIndex) + "?";
             testQuery = "Is " + testInstance.getTestcase().getRelatum() + " " + 
                     testInstance.getTestcase().getRelation() + " " + testInstance.getTestcase().getReferent1()+ "?";
         }
         else {
-            //int relatumIndex = rand.nextInt(objectNames.size());
-            //testQuery = "Describe the location of the " + objectNames.get(relatumIndex) + " relative to other objects, present in the scene. Use the following relations: Above, Below, Behind, In Front Of, To The Left, To The Right, On, At, Near, Over. Comparatives and superlatives are allowed.";
-            testQuery = "Describe the location of " + testInstance.getTestcase().getRelatum() + " relative to other objects, present in the scene. Use the following relations: Above, Below, Behind, In Front Of, To The Left, To The Right, On, At, Near, Over.";
+            testQuery = "Where is " + testInstance.getTestcase().getRelatum() + " in the presented scene? Please describe its location relative to other objects. Use the following relations only:<br> ";
+            for (String rel : relations) {
+                testQuery += "<b>" + rel + "</b><br>";
+            }
         }        
         
-        //testcase.setSceneObjects(objectNames.toArray(new String[objectNames.size()]));        
-        //testcase.setTestQuery(testQuery);
         testInstance.setQuery(testQuery);
         }
         catch(Exception ex) {     

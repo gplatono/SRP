@@ -65,11 +65,11 @@
                         <c:otherwise>                            
                             <form action="Navigator?page=eval">
                             <div style="width: 100%; border: 2px; padding: 5px; margin: 0 auto;">
-                                <textarea name="description" style="resize: none; width: 95%;" rows="20"></textarea>
-                                <br>                        
-                                <input style="width: 97%;" type="submit" name="submit_response" value="Submit Description" />
+                                <textarea name="description" style="resize: none; width: 98%;" rows="20"></textarea>
+                                <br>   
+                                <input style="float: right; width: 50%;" type="submit" name="submit_response" value="Submit"/>
                                 <br><br>
-                                Objects present in the scene:
+                                <!--Objects present in the scene:-->
                                 <br><br>
                                 <b>
                                 <%--<c:forEach var="objectName" items="${testcase.sceneObjects}">                                    

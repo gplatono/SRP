@@ -122,6 +122,12 @@ img.scene {
     height: auto;
 }
 
+img.center {
+    //width: 90%;
+    //margin: 0 auto;
+    //display: block;
+}
+
 .menu li {
     float: left;
     list-style: none;
