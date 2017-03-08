@@ -76,8 +76,8 @@ public class JDBCHelper {
     
     public static void saveResponse(TestInstance testInstance) throws SQLException {
         Statement statement = dbConnection.createStatement();
-        String query = "INSERT INTO responses VALUES (";
-        query += (new Random().nextInt(1000000)) + ","; 
+        String query = "INSERT INTO responses(testcase, user_id, response) VALUES (";
+        //query += (new Random().nextInt(1000000)) + ","; 
         query += testInstance.getTestcase().getId() + ",";
         query += testInstance.getUserID() + ",";
         query += "'" + testInstance.getResponse() + "'" + ");";
