@@ -34,6 +34,7 @@ public class TestGenerator {
         "near",
         "at",
         "over",
+        "between",
         "on",
         "touching"};
     public TestGenerator(String sceneDirectory) {
@@ -83,7 +84,4 @@ public class TestGenerator {
         return testInstance;
     }
     
-    private void sceneSelector() {
-        
-    }
 }

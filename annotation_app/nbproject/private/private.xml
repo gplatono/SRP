@@ -5,6 +5,7 @@
         <group>
             <file>file:/home/georgiy/SRP/annotation_app/src/java/beans/TestInstance.java</file>
             <file>file:/home/georgiy/SRP/annotation_app/web/jsp/evaluation.jsp</file>
+            <file>file:/home/georgiy/SRP/annotation_app/web/jsp/description.jsp</file>
             <file>file:/home/georgiy/SRP/annotation_app/web/jsp/index_1.jsp</file>
             <file>file:/home/georgiy/SRP/annotation_app/src/java/beans/Testcase.java</file>
             <file>file:/home/georgiy/SRP/annotation_app/src/java/controllers/Navigator.java</file>

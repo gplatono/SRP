@@ -59,6 +59,7 @@
                     "near",
                     "at",
                     "over",
+                    "between"
                     "on", and
                     "touching".
                     Try to provide a description that will uniquely identify the given object (so that no other object satisfies the same description), while keeping your answer simple and natural.
