@@ -7,6 +7,10 @@ package application;
 
 import beans.TestInstance;
 import beans.Testcase;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -32,7 +36,6 @@ public class JDBCHelper {
         }
         catch(Exception ex) {
             String str = ex.getMessage();
-            int i = 0;
         }                
     }
     
@@ -83,5 +86,27 @@ public class JDBCHelper {
         query += "'" + testInstance.getResponse() + "'" + ");";
         statement.executeUpdate(query);
         statement.close();        
+    }
+    
+    public static void dump_responses(String filename) throws SQLException, FileNotFoundException {
+                
+        Statement statement = dbConnection.createStatement();
+        String query = "SELECT * FROM responses;";
+        ResultSet results = null;
+        PrintWriter writer = new PrintWriter(filename);
+        results = statement.executeQuery(query);
+            while(results.next()) {
+                ResultSet testcase_db = dbConnection.createStatement().executeQuery("SELECT * FROM testcases WHERE id = " + results.getInt("testcase") + ";");
+                if(testcase_db.next()) {
+                        writer.print(testcase_db.getInt("type") + ":");
+                        writer.print(testcase_db.getString("relatum") + ":");
+                        writer.print(testcase_db.getInt("type") + ":");
+                        String str = results.getString("response");
+                        writer.println(results.getString("response") + "###");
+                }
+                testcase_db.close();            
+            }
+        results.close();
+        statement.close();
     }
 }

@@ -33,7 +33,9 @@ public class TestGenerator {
         "behind",
         "near",
         "at",
+        "in",
         "over",
+        "under",
         "between",
         "on",
         "touching"};

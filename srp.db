@@ -2,17 +2,12 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10devel
--- Dumped by pg_dump version 10devel
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
@@ -30,26 +25,54 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 SET search_path = public, pg_catalog;
 
+--
+-- Name: resp_id; Type: SEQUENCE; Schema: public; Owner: gplatono
+--
+
+CREATE SEQUENCE resp_id
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.resp_id OWNER TO gplatono;
+
+--
+-- Name: resp_id_seq; Type: SEQUENCE; Schema: public; Owner: gplatono
+--
+
+CREATE SEQUENCE resp_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.resp_id_seq OWNER TO gplatono;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: responses; Type: TABLE; Schema: public; Owner: gplatono
+-- Name: responses; Type: TABLE; Schema: public; Owner: gplatono; Tablespace: 
 --
 
 CREATE TABLE responses (
-    id integer NOT NULL,
+    id integer DEFAULT nextval('resp_id_seq'::regclass) NOT NULL,
     testcase integer NOT NULL,
     user_id integer NOT NULL,
     response character varying(500)
 );
 
 
-ALTER TABLE responses OWNER TO gplatono;
+ALTER TABLE public.responses OWNER TO gplatono;
 
 --
--- Name: scenes; Type: TABLE; Schema: public; Owner: gplatono
+-- Name: scenes; Type: TABLE; Schema: public; Owner: gplatono; Tablespace: 
 --
 
 CREATE TABLE scenes (
@@ -59,10 +82,10 @@ CREATE TABLE scenes (
 );
 
 
-ALTER TABLE scenes OWNER TO gplatono;
+ALTER TABLE public.scenes OWNER TO gplatono;
 
 --
--- Name: testcases; Type: TABLE; Schema: public; Owner: gplatono
+-- Name: testcases; Type: TABLE; Schema: public; Owner: gplatono; Tablespace: 
 --
 
 CREATE TABLE testcases (
@@ -76,10 +99,10 @@ CREATE TABLE testcases (
 );
 
 
-ALTER TABLE testcases OWNER TO gplatono;
+ALTER TABLE public.testcases OWNER TO gplatono;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: gplatono
+-- Name: users; Type: TABLE; Schema: public; Owner: gplatono; Tablespace: 
 --
 
 CREATE TABLE users (
@@ -89,20 +112,334 @@ CREATE TABLE users (
 );
 
 
-ALTER TABLE users OWNER TO gplatono;
+ALTER TABLE public.users OWNER TO gplatono;
+
+--
+-- Name: resp_id; Type: SEQUENCE SET; Schema: public; Owner: gplatono
+--
+
+SELECT pg_catalog.setval('resp_id', 1, false);
+
+
+--
+-- Name: resp_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gplatono
+--
+
+SELECT pg_catalog.setval('resp_id_seq', 1000221, true);
+
 
 --
 -- Data for Name: responses; Type: TABLE DATA; Schema: public; Owner: gplatono
 --
 
 COPY responses (id, testcase, user_id, response) FROM stdin;
-605418	1	1	Yes
-426023	41	1	Yes
-954644	22	1	tset
-850522	32	1	qweer
-271350	45	1	att
-191436	47	1	rrr
-235349	13	1	Yes
+309428	23	1	It is a green block to the right of another green block and to the left of a red block
+791797	43	1	It is near the bowl
+534647	41	1	Apple 1 is touching the bowl
+82971	30	1	It is a red block on a back block
+239568	45	1	Banana 2 is the banana located near north wall and east wall
+346384	18	1	It is the blue block on back block
+313580	23	1	It is the green block to the right of another green block
+866797	44	1	near the laptop
+958747	24	1	red block on black block
+205056	23	1	green block to the right of another green block
+352934	22	1	red block on a black block
+961426	24	1	on a black cube
+901499	22	1	on a black cube
+544988	30	1	on a black cube
+893699	45	1	behind another banana;\r\nto the right of the vase
+189647	40	1	on a red book
+657621	46	1	in front of another banana
+573082	29	1	between a green cube and another red cube;\r\nto the right of a green cube;\r\nto the left of another red cube
+721957	16	1	below a black cube;\r\nbelow a blue cube
+627954	46	1	in front of another banana
+303472	41	1	in the bowl;\r\n[Did you forget to allow "in"?]\r\nnear a red book
+344882	42	1	near a blue book;\r\non the table
+344312	30	1	on a black cube\r\nin front of a blue cube [sort of!]
+503615	31	1	under a black cube;\r\nto the right of another red cube
+648244	45	1	behind another banana
+300824	26	1	on a green cube;\r\nbehind a red cube [sort of!]
+13697	21	1	on the table;\r\nunder a black cube;\r\nbelow a red cube
+667425	23	1	between another green cube and a red cube;\r\nto the right of another green cube;\r\nto the left of a red cube
+967412	20	1	on a red cube;\r\nunder a blue cube
+557508	25	1	under a blue cube;\r\non a red cube
+938414	19	1	under a red cube;\r\non a blue cube
+251806	47	1	near a banana;\r\non the table
+376611	45	1	[answered twice already]
+972530	27	1	under a red cube;\r\non the table;\r\nin front of a green cube [sort of!]
+616837	28	1	on a black cube;\r\nabove a red cube;
+548852	40	1	on a red book
+321264	28	1	{[nswered before]
+870321	28	1	[answered before]
+563511	22	1	on a black cube
+661834	21	1	on the table;\r\nunder a black cube
+731073	32	1	under a blue cube;\r\nto the left of another green cube;\r\nbehind a black cube [sort of]
+100867	42	1	on the table;\r\nnear the blue book
+20462	32	1	[already done]
+411394	43	1	near the bowl;\r\nto the left of the bowl;\r\non the table
+926556	19	1	on a blue cube;\r\nunder a red cube;\r\ntouching a red cube
+429194	30	1	on a black cube;\r\nin front of a blue cube [sort of]
+657691	21	1	on the table;\r\nunder a black cube;\r\nbelow a red cube
+441657	41	1	[already done]
+166671	41	1	[already done]
+56027	22	1	on a black cube;\r\nabove a blue cube;
+951333	28	1	[already done]
+748223	45	1	[already done]
+856161	16	1	below a black cube;\r\n[I wanted to say "under"]\r\nbelow a blue cube
+180178	43	1	[done already]
+404035	40	1	[done already]
+31440	40	1	[done already]
+524551	24	1	[done already]
+757073	30	1	The red block that is on a black block
+863001	27	1	below the red block
+606156	17	1	to the left of a red block
+258736	43	1	to the left of the bowl
+963037	25	1	on a red block
+354032	21	1	the blue block below a black block
+651651	45	1	behind a banana
+840341	22	1	the red block on the black block
+295173	20	1	on a red block
+375276	18	1	the blue block on a black block
+377344	44	1	near the laptop
+249884	42	1	to the right of the bowl
+299083	30	1	the red block on a black block
+745886	19	1	below a red block
+819304	32	1	the green block that is below a blue block
+286411	42	1	to the right of the bowl
+599309	40	1	on a red book
+769678	27	1	below a red block
+783554	40	1	on a red book
+612650	26	1	on a green block
+938749	26	1	on a green block
+460621	29	1	the red block that is to the right of a green block
+305244	40	1	on a red book
+216658	31	1	below a black block
+365586	45	1	behind a banana
+414901	40	1	on a red book
+416202	47	1	near the west wall
+806142	42	1	in front of the blue book
+717764	23	1	the green block that is to the right of a green block
+1000001	22	1	test
+1000002	45	1	test
+1000003	58	1	on a green block
+1000004	63	1	on a green block;\r\nto the right of a black block;\r\ntouching a green block
+1000005	60	1	to the left of a black block;\r\nin front of a black block
+1000006	83	1	touching the red block;\r\nto the right of the red block;\r\nunder a black block
+1000007	53	1	on a blue block;\r\nover another black block;\r\ntouching a blue block
+1000008	32	1	under a blue cube;\r\nto the left of another green cube;\r\ntouching a blue cube
+1000009	30	1	on a black cube;\r\nin front of a blue cube [sort of]
+1000010	52	1	between a green block and a red block;\r\nto the right of a green block;\r\n
+1000011	60	1	to the left of a black block;\r\nin front of a black block;
+1000012	52	1	to the left of a black block;\r\nin front of a black block;
+1000013	81	1	to the left of a black block;\r\nin front of a black block;
+1000014	54	1	below a blue block;\r\nbelow another black block;\r\nbehind a green block
+1000015	22	1	on a black cube;\r\nabove a blue cube
+1000016	57	1	below a blue block;\r\non the table;\r\nto the left of a green block
+1000017	77	1	on a green block;\r\nnear the red block
+1000018	28	1	on a green block;\r\nnear the red block
+1000019	61	1	below another black block;\r\non the table
+1000020	44	1	below another black block;\r\non the table
+1000021	62	1	below another black block;\r\non the table
+1000022	70	1	on the table;\r\nbelow a blue block
+1000023	40	1	on the table;\r\nbelow a blue block
+1000024	76	1	on the table;\r\nbelow a blue block
+1000025	70	1	on the table;\r\nbelow a blue block
+1000026	57	1	on the table;\r\nbelow a blue block;\r\nbetween a black block and a green block;\r\nto the left of a green block
+1000027	21	1	on the table;\r\nbelow a black cube;\r\nbelow a red cube
+1000028	65	1	on the table;\r\nbelow a green block;\r\nto the left of a blue block;\r\nto the left of another red block
+1000029	32	1	below a blue block;\r\nto the left of another green block
+1000030	26	1	on a green block;\r\ntouching a green block;
+1000031	32	1	on a green block;\r\ntouching a green block;
+1000032	63	1	on a green block;\r\nbehind another blue block [sort of]
+1000033	68	1	on a green block;\r\nbehind another blue block [sort of]
+1000034	67	1	on a red block;\r\ntouching a red block
+1000035	25	1	on a red block;\r\nbelow a blue block
+1000036	83	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000037	43	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000038	17	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000039	61	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000040	44	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000041	16	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000042	40	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000043	67	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000044	27	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000045	16	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000046	64	1	to the right of the red block;\r\ntouching the red block;\r\nbelow a black block
+1000047	73	1	near the red block;\r\nto the right of another blue block
+1000048	71	1	on a black block;\r\nbehind a red block [sort of]
+1000049	55	1	on a black block;\r\nbelow a black block;\r\nbetween a black block and another black block
+1000050	20	1	on a red block;\r\nbelow a blue block
+1000051	78	1	to the right of a green block;\r\nto the left of a blue block;\r\nbelow a blue block;\r\non the table;\r\nbetween a green block and a blue block;\r\nbehind the red block;\r\ntouching a blue block
+1000052	29	1	to the right of a green block;\r\nto the left of a blue block;\r\nbelow a blue block;\r\non the table;\r\nbetween a green block and a blue block;\r\nbehind the red block;\r\ntouching a blue block
+1000053	64	1	on the table;\r\nbelow a red block;\r\nin front of another blue block [sort of]
+1000054	61	1	on the table;\r\nbelow another black block
+1000055	23	1	on the table;\r\nbelow another black block
+1000056	71	1	on the table;\r\nbelow another black block
+1000057	26	1	on a green block;\r\ntouching a green block
+1000058	25	1	on a green block;\r\ntouching a green block
+1000059	70	1	on the table;\r\nbelow a blue block
+1000060	52	1	on the table;\r\nbelow a blue block
+1000061	62	1	on another black block
+1000062	64	1	on the table;\r\nbelow a red block;\r\nin front of another blue block [sort of]
+1000063	76	1	below a black block;\r\nbehind another green block [sort of]
+1000064	73	1	below a black block;\r\nbehind another green block [sort of]
+1000065	67	1	on a red block;\r\nin front of a black block [sort of]
+1000066	66	1	on a blue block;\r\ntouching a blue block;\r\nto the right of another red block [sort of]
+1000067	18	1	on a black block;\r\nabove a red block
+1000068	65	1	on the table;\r\nbelow a green block;\r\nto the left of another red block [sort of]
+1000069	55	1	on the table;\r\nbelow a green block;\r\nto the left of another red block [sort of]
+1000070	54	1	below a blue block;\r\nbelow another black block
+1000071	57	1	on the table;\r\nbelow a blue block;\r\nto the left of a green block
+1000072	55	1	on the table;\r\nbelow a blue block;\r\nto the left of a green block
+1000073	57	1	on the table;\r\nbelow a blue block;\r\nto the left of a green block
+1000074	55	1	on the table;\r\nbelow a blue block;\r\nto the left of a green block
+1000075	29	1	on the table;\r\nbelow a blue block;\r\nto the left of a green block
+1000076	56	1	on a red block;\r\ntouching a red block;\r\nabove a red block
+1000077	28	1	on a red block;\r\ntouching a red block;\r\nabove a red block
+1000078	72	1	touching a green block;\r\nnear a green block
+1000079	20	1	touching a green block;\r\nnear a green block
+1000080	74	1	touching a green block;\r\nnear a green block
+1000081	65	1	touching a green block;\r\nnear a green block
+1000082	29	1	touching a green block;\r\nnear a green block
+1000083	80	1	to the right of a black block;\r\non the table
+1000084	72	1	to the right of a black block;\r\non the table
+1000085	16	1	to the right of a black block;\r\non the table
+1000086	66	1	to the right of a black block;\r\non the table
+1000087	75	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000088	25	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000089	46	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000090	52	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000091	54	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000092	72	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000164	70	1	on the floor;\r\nunder another box
+1000093	21	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000094	71	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000095	32	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000096	29	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000097	32	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000098	21	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000099	73	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000100	67	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000101	76	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000102	55	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000103	16	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000104	23	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000105	54	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000106	68	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000107	78	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000108	67	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000109	75	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000110	67	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000111	69	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000112	63	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000113	26	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000114	29	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000115	47	1	touching a blue block;\r\nto the left of a blue block;\r\nin front of another green block [sort of]
+1000116	100	1	at the east wall;\r\nin front of the bookshelf [sort of]
+1000117	103	1	on another box;\r\nabove another box
+1000118	20	1	on another box;\r\nabove another box
+1000119	69	1	on another box;\r\nabove another box
+1000120	58	1	on another box;\r\nabove another box
+1000121	60	1	on another box;\r\nabove another box
+1000122	21	1	on another box;\r\nabove another box
+1000123	76	1	on another box;\r\nabove another box
+1000124	78	1	on another box;\r\nabove another box
+1000125	20	1	on another box;\r\nabove another box
+1000126	86	1	on the bookshelf;\r\ntouching a red book;\r\n[not sure if green book 1 is touching red book 1];\r\nto the left of a red book
+1000127	16	1	on the bookshelf;\r\ntouching a red book;\r\n[not sure if green book 1 is touching red book 1];\r\nto the left of a red book
+1000128	30	1	on the bookshelf;\r\ntouching a red book;\r\n[not sure if green book 1 is touching red book 1];\r\nto the left of a red book
+1000129	87	1	in front of a red book;\r\non the table;\r\nto the right of the laptop
+1000130	82	1	in front of a red book;\r\non the table;\r\nto the right of the laptop
+1000131	95	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000132	86	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000133	73	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000134	63	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000135	17	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000136	42	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000137	44	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000138	24	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000139	41	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000140	73	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000141	46	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000142	87	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000143	17	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000144	90	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000145	58	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000146	30	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000147	72	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000148	46	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000149	58	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000150	71	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000151	60	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000152	42	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000153	58	1	near the east wall;\r\nto the right of the ceiling fan;\r\nabove a blue chair
+1000154	94	1	above the bed;\r\nto the left of the ceiling fan
+1000155	102	1	on the floor;\r\nunder another box
+1000156	82	1	on the floor;\r\nunder another box
+1000157	59	1	on the floor;\r\nunder another box
+1000158	78	1	on the floor;\r\nunder another box
+1000159	24	1	on the floor;\r\nunder another box
+1000160	94	1	on the floor;\r\nunder another box
+1000161	17	1	on the floor;\r\nunder another box
+1000162	87	1	on the floor;\r\nunder another box
+1000163	26	1	on the floor;\r\nunder another box
+1000165	102	1	on the floor;\r\nunder another box
+1000166	85	1	on the floor;\r\nunder another box
+1000167	70	1	on the floor;\r\nunder another box
+1000168	92	1	on the floor;\r\nunder another box
+1000169	86	1	on the floor;\r\nunder another box
+1000170	97	1	on a blue chair;\r\nnear the bed
+1000171	30	1	on a blue chair;\r\nnear the bed
+1000172	95	1	on a blue chair;\r\nnear the bed
+1000173	68	1	on a blue chair;\r\nnear the bed
+1000174	16	1	on a blue chair;\r\nnear the bed
+1000175	81	1	on a blue chair;\r\nnear the bed
+1000176	16	1	on a blue chair;\r\nnear the bed
+1000177	22	1	on a blue chair;\r\nnear the bed
+1000178	29	1	on a blue chair;\r\nnear the bed
+1000179	52	1	on a blue chair;\r\nnear the bed
+1000180	53	1	on a blue chair;\r\nnear the bed
+1000181	19	1	on a blue chair;\r\nnear the bed
+1000182	87	1	on a blue chair;\r\nnear the bed
+1000183	29	1	on a blue chair;\r\nnear the bed
+1000184	66	1	on a blue chair;\r\nnear the bed
+1000185	45	1	on a blue chair;\r\nnear the bed
+1000186	93	1	on a blue chair;\r\nnear the bed
+1000187	100	1	on a blue chair;\r\nnear the bed
+1000188	89	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000189	61	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000190	31	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000191	69	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000192	62	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000193	84	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000194	87	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000195	52	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000196	96	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000197	80	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000198	71	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000199	77	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000200	85	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000201	67	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000202	17	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000203	54	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000204	28	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000205	42	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000206	31	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000207	81	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000208	61	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000209	73	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000210	21	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000211	79	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000212	52	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000213	57	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000214	64	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000215	65	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000216	63	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000217	27	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000218	77	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000219	74	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000220	70	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
+1000221	56	1	on the west wall;\r\nnear the table;\r\nnear the laptop;\r\nnear ceiling light 1;
 \.
 
 
@@ -115,6 +452,12 @@ COPY scenes (id, name, path) FROM stdin;
 2	2	2/
 3	3	3/
 4	4	4/
+5	5	5/
+6	6	6/
+7	7	7/
+8	8	8/
+9	9	9/
+10	10	10/
 \.
 
 
@@ -174,6 +517,58 @@ COPY testcases (id, type, scene_id, relation, relatum, referent1, referent2) FRO
 49	1	4	above	Rose	Banana 2	\N
 50	1	4	above	Banana 2	Banana 3	\N
 51	1	4	on	Banana 2	Banana 3	\N
+52	2	5	\N	Block 1	\N	\N
+53	2	5	\N	Block 2	\N	\N
+54	2	5	\N	Block 3	\N	\N
+55	2	5	\N	Block 4	\N	\N
+56	2	5	\N	Block 6	\N	\N
+57	2	5	\N	Block 8	\N	\N
+58	2	5	\N	Block 9	\N	\N
+59	2	5	\N	Block 10	\N	\N
+60	2	5	\N	Block 12	\N	\N
+61	2	6	\N	Block 1	\N	\N
+62	2	6	\N	Block 3	\N	\N
+63	2	6	\N	Block 4	\N	\N
+64	2	6	\N	Block 6	\N	\N
+65	2	6	\N	Block 8	\N	\N
+66	2	6	\N	Block 9	\N	\N
+67	2	6	\N	Block 10	\N	\N
+68	2	6	\N	Block 12	\N	\N
+69	2	7	\N	Block 1	\N	\N
+70	2	7	\N	Block 3	\N	\N
+71	2	7	\N	Block 4	\N	\N
+72	2	7	\N	Block 5	\N	\N
+73	2	7	\N	Block 6	\N	\N
+74	2	7	\N	Block 9	\N	\N
+75	2	7	\N	Block 10	\N	\N
+76	2	7	\N	Block 12	\N	\N
+77	2	8	\N	Block 1	\N	\N
+78	2	8	\N	Block 3	\N	\N
+79	2	8	\N	Block 4	\N	\N
+80	2	8	\N	Block 6	\N	\N
+81	2	8	\N	Block 9	\N	\N
+82	2	8	\N	Block 10	\N	\N
+83	2	8	\N	Block 12	\N	\N
+84	2	9	\N	Red Book 1	\N	\N
+85	2	9	\N	Red Book 2	\N	\N
+86	2	9	\N	Green Book 2	\N	\N
+87	2	9	\N	Green Book 1	\N	\N
+88	2	9	\N	Picture 1	\N	\N
+89	2	9	\N	Picture 2	\N	\N
+90	2	9	\N	Red Chair 2	\N	\N
+91	2	9	\N	Red Chair 1	\N	\N
+92	2	9	\N	Ceiling Light 1	\N	\N
+93	2	9	\N	Ceiling Light 2	\N	\N
+94	2	10	\N	Ceiling Light 1	\N	\N
+95	2	10	\N	Ceiling Light 2	\N	\N
+96	2	10	\N	Green Book 2	\N	\N
+97	2	10	\N	Green Book 1	\N	\N
+98	2	10	\N	Red Book 1	\N	\N
+99	2	10	\N	Red Book 2	\N	\N
+100	2	10	\N	Blue Chair 2	\N	\N
+101	2	10	\N	Blue Chair 1	\N	\N
+102	2	10	\N	Cardbox 1	\N	\N
+103	2	10	\N	Cardbox 2	\N	\N
 \.
 
 
@@ -187,7 +582,7 @@ COPY users (id, username, password) FROM stdin;
 
 
 --
--- Name: responses responses_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono
+-- Name: responses_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono; Tablespace: 
 --
 
 ALTER TABLE ONLY responses
@@ -195,7 +590,7 @@ ALTER TABLE ONLY responses
 
 
 --
--- Name: scenes scenes_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono
+-- Name: scenes_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono; Tablespace: 
 --
 
 ALTER TABLE ONLY scenes
@@ -203,7 +598,7 @@ ALTER TABLE ONLY scenes
 
 
 --
--- Name: testcases testcases_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono
+-- Name: testcases_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono; Tablespace: 
 --
 
 ALTER TABLE ONLY testcases
@@ -211,7 +606,7 @@ ALTER TABLE ONLY testcases
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: gplatono; Tablespace: 
 --
 
 ALTER TABLE ONLY users
@@ -219,7 +614,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: responses responses_testcase_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gplatono
+-- Name: responses_testcase_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gplatono
 --
 
 ALTER TABLE ONLY responses
@@ -227,7 +622,7 @@ ALTER TABLE ONLY responses
 
 
 --
--- Name: responses responses_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gplatono
+-- Name: responses_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gplatono
 --
 
 ALTER TABLE ONLY responses
@@ -235,11 +630,21 @@ ALTER TABLE ONLY responses
 
 
 --
--- Name: testcases testcases_scene_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gplatono
+-- Name: testcases_scene_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gplatono
 --
 
 ALTER TABLE ONLY testcases
     ADD CONSTRAINT testcases_scene_id_fkey FOREIGN KEY (scene_id) REFERENCES scenes(id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --

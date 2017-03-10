@@ -58,7 +58,9 @@
                     "behind",
                     "near",
                     "at",
+                    "in",
                     "over",
+                    "under"
                     "between"
                     "on", and
                     "touching".
@@ -144,6 +146,11 @@
                         being "to the right of laptop", 
                         which might come to mind first, 
                         since all the bananas in the scene satisfy that description.
+                        
+                        <br>
+                        
+                        Also, you are allowed to refer to the parts of the "environment" of the scene:
+                        the plane, in the case of blocks world and the walls, floor and ceiling in the room world.
                     </b>
                 </p>
                 </div>

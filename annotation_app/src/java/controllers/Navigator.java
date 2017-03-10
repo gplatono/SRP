@@ -54,6 +54,15 @@ public class Navigator extends HttpServlet {
             //request.getParameter("pass_val") != null && request.getParameter("pass_val").equals("admin"))
             //request.getRequestDispatcher("jsp/index.jsp").forward(request, response);            
             String address = request.getParameter("page");
+            if(address.equals("DUMP")) {
+                try {
+                new JDBCHelper().dump_responses("~/SRP/dump");
+                }
+                catch(Exception ex) {
+                    response.getWriter().println(ex.getMessage());
+                }
+                return;
+            }
             if (address == null)
                 address = "index";
             if(request.getParameter("submit_response") != null) {
