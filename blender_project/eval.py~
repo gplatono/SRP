@@ -1,0 +1,4 @@
+input = ""
+for line in open("dump", "r").lines:
+    inpuit = input + line
+print (input)

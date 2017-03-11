@@ -1,0 +1,733 @@
+2:Cube 11:2:It is a green block to the right of another green block and to the left of a red block###
+3:Red Book 1:2:It is near the bowl###
+3:Apple 1:2:Apple 1 is touching the bowl###
+2:Cube 8:2:It is a red block on a back block###
+4:Banana 2:2:Banana 2 is the banana located near north wall and east wall###
+1:Cube 4:2:It is the blue block on back block###
+2:Cube 11:2:It is the green block to the right of another green block###
+4:Banana 1:2:near the laptop###
+2:Cube 8:2:red block on black block###
+2:Cube 11:2:green block to the right of another green block###
+1:Cube 8:2:red block on a black block###
+2:Cube 8:2:on a black cube###
+1:Cube 8:2:on a black cube###
+2:Cube 8:2:on a black cube###
+4:Banana 2:2:behind another banana;
+to the right of the vase###
+3:Yellow Book:2:on a red book###
+4:Banana 3:2:in front of another banana###
+2:Cube 7:2:between a green cube and another red cube;
+to the right of a green cube;
+to the left of another red cube###
+1:Cube 9:2:below a black cube;
+below a blue cube###
+4:Banana 3:2:in front of another banana###
+3:Apple 1:2:in the bowl;
+[Did you forget to allow "in"?]
+near a red book###
+3:Apple 2:2:near a blue book;
+on the table###
+2:Cube 8:2:on a black cube
+in front of a blue cube [sort of!]###
+2:Cube 9:2:under a black cube;
+to the right of another red cube###
+4:Banana 2:2:behind another banana###
+2:Cube 4:2:on a green cube;
+behind a red cube [sort of!]###
+1:Cube 5:2:on the table;
+under a black cube;
+below a red cube###
+2:Cube 11:2:between another green cube and a red cube;
+to the right of another green cube;
+to the left of a red cube###
+1:Cube 2:2:on a red cube;
+under a blue cube###
+2:Cube 2:2:under a blue cube;
+on a red cube###
+1:Cube 1:2:under a red cube;
+on a blue cube###
+4:Laptop:2:near a banana;
+on the table###
+4:Banana 2:2:[answered twice already]###
+2:Cube 1:2:under a red cube;
+on the table;
+in front of a green cube [sort of!]###
+2:Cube 5:2:on a black cube;
+above a red cube;###
+3:Yellow Book:2:on a red book###
+2:Cube 5:2:{[nswered before]###
+2:Cube 5:2:[answered before]###
+1:Cube 8:2:on a black cube###
+1:Cube 5:2:on the table;
+under a black cube###
+2:Cube 10:2:under a blue cube;
+to the left of another green cube;
+behind a black cube [sort of]###
+3:Apple 2:2:on the table;
+near the blue book###
+2:Cube 10:2:[already done]###
+3:Red Book 1:2:near the bowl;
+to the left of the bowl;
+on the table###
+1:Cube 1:2:on a blue cube;
+under a red cube;
+touching a red cube###
+2:Cube 8:2:on a black cube;
+in front of a blue cube [sort of]###
+1:Cube 5:2:on the table;
+under a black cube;
+below a red cube###
+3:Apple 1:2:[already done]###
+3:Apple 1:2:[already done]###
+1:Cube 8:2:on a black cube;
+above a blue cube;###
+2:Cube 5:2:[already done]###
+4:Banana 2:2:[already done]###
+1:Cube 9:2:below a black cube;
+[I wanted to say "under"]
+below a blue cube###
+3:Red Book 1:2:[done already]###
+3:Yellow Book:2:[done already]###
+3:Yellow Book:2:[done already]###
+2:Cube 8:2:[done already]###
+2:Cube 8:2:The red block that is on a black block###
+2:Cube 1:2:below the red block###
+1:Cube 7:2:to the left of a red block###
+3:Red Book 1:2:to the left of the bowl###
+2:Cube 2:2:on a red block###
+1:Cube 5:2:the blue block below a black block###
+4:Banana 2:2:behind a banana###
+1:Cube 8:2:the red block on the black block###
+1:Cube 2:2:on a red block###
+1:Cube 4:2:the blue block on a black block###
+4:Banana 1:2:near the laptop###
+3:Apple 2:2:to the right of the bowl###
+2:Cube 8:2:the red block on a black block###
+1:Cube 1:2:below a red block###
+2:Cube 10:2:the green block that is below a blue block###
+3:Apple 2:2:to the right of the bowl###
+3:Yellow Book:2:on a red book###
+2:Cube 1:2:below a red block###
+3:Yellow Book:2:on a red book###
+2:Cube 4:2:on a green block###
+2:Cube 4:2:on a green block###
+2:Cube 7:2:the red block that is to the right of a green block###
+3:Yellow Book:2:on a red book###
+2:Cube 9:2:below a black block###
+4:Banana 2:2:behind a banana###
+3:Yellow Book:2:on a red book###
+4:Laptop:2:near the west wall###
+3:Apple 2:2:in front of the blue book###
+2:Cube 11:2:the green block that is to the right of a green block###
+1:Cube 8:2:test###
+4:Banana 2:2:test###
+5:Block 9:2:on a green block###
+6:Block 4:2:on a green block;
+to the right of a black block;
+touching a green block###
+5:Block 12:2:to the left of a black block;
+in front of a black block###
+8:Block 12:2:touching the red block;
+to the right of the red block;
+under a black block###
+5:Block 2:2:on a blue block;
+over another black block;
+touching a blue block###
+2:Cube 10:2:under a blue cube;
+to the left of another green cube;
+touching a blue cube###
+2:Cube 8:2:on a black cube;
+in front of a blue cube [sort of]###
+5:Block 1:2:between a green block and a red block;
+to the right of a green block;
+###
+5:Block 12:2:to the left of a black block;
+in front of a black block;###
+5:Block 1:2:to the left of a black block;
+in front of a black block;###
+8:Block 9:2:to the left of a black block;
+in front of a black block;###
+5:Block 3:2:below a blue block;
+below another black block;
+behind a green block###
+1:Cube 8:2:on a black cube;
+above a blue cube###
+5:Block 8:2:below a blue block;
+on the table;
+to the left of a green block###
+8:Block 1:2:on a green block;
+near the red block###
+2:Cube 5:2:on a green block;
+near the red block###
+6:Block 1:2:below another black block;
+on the table###
+4:Banana 1:2:below another black block;
+on the table###
+6:Block 3:2:below another black block;
+on the table###
+7:Block 3:2:on the table;
+below a blue block###
+3:Yellow Book:2:on the table;
+below a blue block###
+7:Block 12:2:on the table;
+below a blue block###
+7:Block 3:2:on the table;
+below a blue block###
+5:Block 8:2:on the table;
+below a blue block;
+between a black block and a green block;
+to the left of a green block###
+1:Cube 5:2:on the table;
+below a black cube;
+below a red cube###
+6:Block 8:2:on the table;
+below a green block;
+to the left of a blue block;
+to the left of another red block###
+2:Cube 10:2:below a blue block;
+to the left of another green block###
+2:Cube 4:2:on a green block;
+touching a green block;###
+2:Cube 10:2:on a green block;
+touching a green block;###
+6:Block 4:2:on a green block;
+behind another blue block [sort of]###
+6:Block 12:2:on a green block;
+behind another blue block [sort of]###
+6:Block 10:2:on a red block;
+touching a red block###
+2:Cube 2:2:on a red block;
+below a blue block###
+8:Block 12:2:to the right of the red block;
+touching the red block;
+below a black block###
+3:Red Book 1:2:to the right of the red block;
+touching the red block;
+below a black block###
+1:Cube 7:2:to the right of the red block;
+touching the red block;
+below a black block###
+6:Block 1:2:to the right of the red block;
+touching the red block;
+below a black block###
+4:Banana 1:2:to the right of the red block;
+touching the red block;
+below a black block###
+1:Cube 9:2:to the right of the red block;
+touching the red block;
+below a black block###
+3:Yellow Book:2:to the right of the red block;
+touching the red block;
+below a black block###
+6:Block 10:2:to the right of the red block;
+touching the red block;
+below a black block###
+2:Cube 1:2:to the right of the red block;
+touching the red block;
+below a black block###
+1:Cube 9:2:to the right of the red block;
+touching the red block;
+below a black block###
+6:Block 6:2:to the right of the red block;
+touching the red block;
+below a black block###
+7:Block 6:2:near the red block;
+to the right of another blue block###
+7:Block 4:2:on a black block;
+behind a red block [sort of]###
+5:Block 4:2:on a black block;
+below a black block;
+between a black block and another black block###
+1:Cube 2:2:on a red block;
+below a blue block###
+8:Block 3:2:to the right of a green block;
+to the left of a blue block;
+below a blue block;
+on the table;
+between a green block and a blue block;
+behind the red block;
+touching a blue block###
+2:Cube 7:2:to the right of a green block;
+to the left of a blue block;
+below a blue block;
+on the table;
+between a green block and a blue block;
+behind the red block;
+touching a blue block###
+6:Block 6:2:on the table;
+below a red block;
+in front of another blue block [sort of]###
+6:Block 1:2:on the table;
+below another black block###
+2:Cube 11:2:on the table;
+below another black block###
+7:Block 4:2:on the table;
+below another black block###
+2:Cube 4:2:on a green block;
+touching a green block###
+2:Cube 2:2:on a green block;
+touching a green block###
+7:Block 3:2:on the table;
+below a blue block###
+5:Block 1:2:on the table;
+below a blue block###
+6:Block 3:2:on another black block###
+6:Block 6:2:on the table;
+below a red block;
+in front of another blue block [sort of]###
+7:Block 12:2:below a black block;
+behind another green block [sort of]###
+7:Block 6:2:below a black block;
+behind another green block [sort of]###
+6:Block 10:2:on a red block;
+in front of a black block [sort of]###
+6:Block 9:2:on a blue block;
+touching a blue block;
+to the right of another red block [sort of]###
+1:Cube 4:2:on a black block;
+above a red block###
+6:Block 8:2:on the table;
+below a green block;
+to the left of another red block [sort of]###
+5:Block 4:2:on the table;
+below a green block;
+to the left of another red block [sort of]###
+5:Block 3:2:below a blue block;
+below another black block###
+5:Block 8:2:on the table;
+below a blue block;
+to the left of a green block###
+5:Block 4:2:on the table;
+below a blue block;
+to the left of a green block###
+5:Block 8:2:on the table;
+below a blue block;
+to the left of a green block###
+5:Block 4:2:on the table;
+below a blue block;
+to the left of a green block###
+2:Cube 7:2:on the table;
+below a blue block;
+to the left of a green block###
+5:Block 6:2:on a red block;
+touching a red block;
+above a red block###
+2:Cube 5:2:on a red block;
+touching a red block;
+above a red block###
+7:Block 5:2:touching a green block;
+near a green block###
+1:Cube 2:2:touching a green block;
+near a green block###
+7:Block 9:2:touching a green block;
+near a green block###
+6:Block 8:2:touching a green block;
+near a green block###
+2:Cube 7:2:touching a green block;
+near a green block###
+8:Block 6:2:to the right of a black block;
+on the table###
+7:Block 5:2:to the right of a black block;
+on the table###
+1:Cube 9:2:to the right of a black block;
+on the table###
+6:Block 9:2:to the right of a black block;
+on the table###
+7:Block 10:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+2:Cube 2:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+4:Banana 3:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+5:Block 1:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+5:Block 3:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+7:Block 5:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+7:Block 3:2:on the floor;
+under another box###
+1:Cube 5:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+7:Block 4:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+2:Cube 10:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+2:Cube 7:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+2:Cube 10:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+1:Cube 5:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+7:Block 6:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+6:Block 10:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+7:Block 12:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+5:Block 4:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+1:Cube 9:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+2:Cube 11:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+5:Block 3:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+6:Block 12:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+8:Block 3:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+6:Block 10:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+7:Block 10:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+6:Block 10:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+7:Block 1:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+6:Block 4:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+2:Cube 4:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+2:Cube 7:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+4:Laptop:2:touching a blue block;
+to the left of a blue block;
+in front of another green block [sort of]###
+10:Blue Chair 2:2:at the east wall;
+in front of the bookshelf [sort of]###
+10:Cardbox 2:2:on another box;
+above another box###
+1:Cube 2:2:on another box;
+above another box###
+7:Block 1:2:on another box;
+above another box###
+5:Block 9:2:on another box;
+above another box###
+5:Block 12:2:on another box;
+above another box###
+1:Cube 5:2:on another box;
+above another box###
+7:Block 12:2:on another box;
+above another box###
+8:Block 3:2:on another box;
+above another box###
+1:Cube 2:2:on another box;
+above another box###
+9:Green Book 2:2:on the bookshelf;
+touching a red book;
+[not sure if green book 1 is touching red book 1];
+to the left of a red book###
+1:Cube 9:2:on the bookshelf;
+touching a red book;
+[not sure if green book 1 is touching red book 1];
+to the left of a red book###
+2:Cube 8:2:on the bookshelf;
+touching a red book;
+[not sure if green book 1 is touching red book 1];
+to the left of a red book###
+9:Green Book 1:2:in front of a red book;
+on the table;
+to the right of the laptop###
+8:Block 10:2:in front of a red book;
+on the table;
+to the right of the laptop###
+10:Ceiling Light 2:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+9:Green Book 2:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+7:Block 6:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+6:Block 4:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+1:Cube 7:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+3:Apple 2:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+4:Banana 1:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+2:Cube 8:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+3:Apple 1:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+7:Block 6:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+4:Banana 3:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+9:Green Book 1:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+1:Cube 7:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+9:Red Chair 2:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+5:Block 9:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+2:Cube 8:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+7:Block 5:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+4:Banana 3:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+5:Block 9:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+7:Block 4:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+5:Block 12:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+3:Apple 2:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+5:Block 9:2:near the east wall;
+to the right of the ceiling fan;
+above a blue chair###
+10:Ceiling Light 1:2:above the bed;
+to the left of the ceiling fan###
+10:Cardbox 1:2:on the floor;
+under another box###
+8:Block 10:2:on the floor;
+under another box###
+5:Block 10:2:on the floor;
+under another box###
+8:Block 3:2:on the floor;
+under another box###
+2:Cube 8:2:on the floor;
+under another box###
+10:Ceiling Light 1:2:on the floor;
+under another box###
+1:Cube 7:2:on the floor;
+under another box###
+9:Green Book 1:2:on the floor;
+under another box###
+2:Cube 4:2:on the floor;
+under another box###
+10:Cardbox 1:2:on the floor;
+under another box###
+9:Red Book 2:2:on the floor;
+under another box###
+7:Block 3:2:on the floor;
+under another box###
+9:Ceiling Light 1:2:on the floor;
+under another box###
+9:Green Book 2:2:on the floor;
+under another box###
+10:Green Book 1:2:on a blue chair;
+near the bed###
+2:Cube 8:2:on a blue chair;
+near the bed###
+10:Ceiling Light 2:2:on a blue chair;
+near the bed###
+6:Block 12:2:on a blue chair;
+near the bed###
+1:Cube 9:2:on a blue chair;
+near the bed###
+8:Block 9:2:on a blue chair;
+near the bed###
+1:Cube 9:2:on a blue chair;
+near the bed###
+1:Cube 8:2:on a blue chair;
+near the bed###
+2:Cube 7:2:on a blue chair;
+near the bed###
+5:Block 1:2:on a blue chair;
+near the bed###
+5:Block 2:2:on a blue chair;
+near the bed###
+1:Cube 1:2:on a blue chair;
+near the bed###
+9:Green Book 1:2:on a blue chair;
+near the bed###
+2:Cube 7:2:on a blue chair;
+near the bed###
+6:Block 9:2:on a blue chair;
+near the bed###
+4:Banana 2:2:on a blue chair;
+near the bed###
+9:Ceiling Light 2:2:on a blue chair;
+near the bed###
+10:Blue Chair 2:2:on a blue chair;
+near the bed###
+9:Picture 2:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+6:Block 1:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+2:Cube 9:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+7:Block 1:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+6:Block 3:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+9:Red Book 1:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+9:Green Book 1:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+5:Block 1:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+10:Green Book 2:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+8:Block 6:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+7:Block 4:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+8:Block 1:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+9:Red Book 2:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+6:Block 10:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+1:Cube 7:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+5:Block 3:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+2:Cube 5:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+3:Apple 2:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+2:Cube 9:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+8:Block 9:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+6:Block 1:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+7:Block 6:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+1:Cube 5:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+8:Block 4:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+5:Block 1:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+5:Block 8:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+6:Block 6:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+6:Block 8:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+6:Block 4:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+2:Cube 1:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+8:Block 1:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+7:Block 9:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+7:Block 3:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###
+5:Block 6:2:on the west wall;
+near the table;
+near the laptop;
+near ceiling light 1;###

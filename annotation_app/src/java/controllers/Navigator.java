@@ -56,7 +56,7 @@ public class Navigator extends HttpServlet {
             String address = request.getParameter("page");
             if(address.equals("DUMP")) {
                 try {
-                new JDBCHelper().dump_responses("~/SRP/dump");
+                new JDBCHelper().dump_responses("dump");
                 }
                 catch(Exception ex) {
                     response.getWriter().println(ex.getMessage());

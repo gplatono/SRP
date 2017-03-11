@@ -98,7 +98,7 @@ public class JDBCHelper {
             while(results.next()) {
                 ResultSet testcase_db = dbConnection.createStatement().executeQuery("SELECT * FROM testcases WHERE id = " + results.getInt("testcase") + ";");
                 if(testcase_db.next()) {
-                        writer.print(testcase_db.getInt("type") + ":");
+                        writer.print(testcase_db.getInt("scene_id") + ":");
                         writer.print(testcase_db.getString("relatum") + ":");
                         writer.print(testcase_db.getInt("type") + ":");
                         String str = results.getString("response");
@@ -106,6 +106,8 @@ public class JDBCHelper {
                 }
                 testcase_db.close();            
             }
+            
+        writer.close();
         results.close();
         statement.close();
     }
