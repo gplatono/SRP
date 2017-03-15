@@ -20,33 +20,41 @@ relation_list = ['near', 'in', 'on' , 'touching', 'front', 'behind', 'right', 'l
 color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow']
 
 
-rf_mapping = {'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside'}
+rf_mapping = {'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside', 'touching': 'touching', 'right': 'to_the_right_of_extr'}
 
 def match_pattern(pattern, input_list):
 	#print (pattern, input_list)
-	for i in range(len(pattern)):
-		if (pattern[i] != input_list[i]):
-			return False
-	return True
+    for i in range(len(pattern)):
+        if (pattern[i] != input_list[i]):
+            return False
+    return True
 	
 def parse_response(response):
-	ret_val = {'relation': None, 'relatum_mod': None, 'relatum_type': None, 'referents': [], 'color_mod': []}
+	ret_val = []
+	relation = {'relation': None, 'relatum_mod': None, 'relatum_type': None, 'referents': [], 'color_mod': []}
 	response = response.lower()
-	rel_encountered = False
+	rel_count = 0
+	color_count = 0
+	curr_color = None
 	for word in response.split():
-		if word in relation_list and ret_val['relation'] is None:
-			ret_val['relation'] = word
-			rel_encountered = True
+		if word in relation_list:
+			if relation['relation'] is not None:
+				ret_val.append(relation)
+			relation = {'relation': word, 'relatum_mod': None, 'relatum_type': None, 'referents': [], 'color_mod': []}
+			rel_count = rel_count + 1
+			curr_color = None
 		elif word in color_mods:
-			if rel_encountered == True:
+			if rel_count >= 1:
 				ret_val['color_mod'].append(word)
-		else:
+				curr_color = word
+				color_count = color_count + 1
+		elif rel_count >= 1:
 			for entity in entities:
 				name = entity.name.lower().split()
-				#print ("*", word, entity.get_type_structure())
-				if name[0] == word and match_pattern(name, response[response.index(word):]) or word in entity.get_type_structure():
-					if entity.get_color_mod() == None or len(ret_val['color_mod']) != len(ret_val['referents']) + 1 or entity.get_color_mod() == ret_val['color_mod'][-1]:
-						ret_val['referents'].append(entity)
+				print ("*", word, entity.get_type_structure(), curr_color, entity.get_color_mod())
+				if name[0] == word and match_pattern(name, response[response.index(word):]) or word in entity.get_type_structure():			
+					if curr_color == None or curr_color == entity.get_color_mod():
+						ret_val['referents'].append(entity)					
 	return ret_val
 
 class Entity:
@@ -154,8 +162,8 @@ class Entity:
 	
 	def get_color_mod(self):
 		if not hasattr(self, 'color_mod') or self.color_mod is None:
-			if hasattr(self.constituents[0], 'color_mod'):
-				self.color_mod = self.constituents[0]['color_mod']
+			if self.constituents[0].get('color_mod') is not None:
+				self.color_mod = self.constituents[0]['color_mod'].lower()
 			else:
 				 self.color_mod = None
 		return self.color_mod
@@ -317,7 +325,34 @@ def in_front_of_extr(a, b, observer):
                     bbox_a[7][2] - bbox_a[0][2]) + 0.0001
     dist = get_distance_from_line(observer.get_bbox_centroid(), b.get_bbox_centroid(), a.get_bbox_centroid())
     return 0.5 * (closer_than(a, b, observer) + e ** (-dist / max_dim_a))
-    
+
+def touching(a, b):	
+	bbox_a = a.get_bbox()
+	bbox_b = b.get_bbox()
+	center_a = a.get_bbox_centroid()
+	center_b = b.get_bbox_centroid()
+	rad_a = max(bbox_a[7][0] - bbox_a[0][0],
+                    bbox_a[7][1] - bbox_a[0][1],
+                    bbox_a[7][2] - bbox_a[0][2]) / 2
+	rad_b = max(bbox_b[7][0] - bbox_b[0][0],
+                    bbox_b[7][1] - bbox_b[0][1],
+                    bbox_b[7][2] - bbox_b[0][2]) / 2
+	if a.name == "Apple 1" and b.name == "Bowl":
+		print (center_a, center_b)
+	for point in bbox_a:
+		if a.name == "Apple 1" and b.name == "Bowl":
+			print (point_distance(point, center_b))	
+		if point_distance(point, center_b) < rad_b:
+			return True
+	for point in bbox_b:
+		if point_distance(point, center_a) < rad_a:
+			return True
+	return False
+
+def to_the_right_of_extr(a, b):
+	return 1
+
+
 relations = {}
 
 def compute_at(entities):
@@ -419,19 +454,25 @@ def randomize_positions(entities, min_x, max_x, min_y, max_y, min_z, max_z):
         new_loc = (random.uniform(min_x, max_x), random.uniform(min_y, max_y), random.uniform(min_z, max_z))
         diff = new_loc - tuple(entity.get_bbox_centroid())
     
+def get_entity_by_name(name):
+	for entity in entities:
+		if entity.name.lower() == name:
+			return entity
 
 def main():
 	args = sys.argv[sys.argv.index("--") + 1:]
 	if len(args) != 2:
-		result = "###MALFORMED###"		
+		result = "###MALFORMED###"
 	else:
 		relatum = args[0].lower()
+		relatum = get_entity_by_name(relatum)
 		raw_response = args[1].lower()
 		response = parse_response(raw_response)
-		print ("*PARSE = ", raw_response, response)
+		print ("*PARSE = ", raw_response, ": ", relatum, response, [item.name for item in response['referents']])
 		target = None
 		target_value = 0
-		#print (relatum, args[1].lower())
+		target_value = globals()[rf_mapping[response['relation']]](relatum, response['referents'][0])
+		print (target_value)
 		result = "###OK###"
 	print (result)
 
@@ -441,4 +482,3 @@ if __name__ == "__main__":
 #add_props()
 #scene.render.filepath = filepath + 'scene.jpg'
 #bpy.ops.render.render( write_still=True )
-
