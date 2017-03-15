@@ -73,12 +73,12 @@ public class Navigator extends HttpServlet {
                     testInstance.setResponse(request.getParameter("description"));
                 else
                     testInstance.setResponse(request.getParameter("submit_response"));
-                request.setAttribute("result", "Thank you. Your last response - \'" + testInstance.getResponse() + "\' - has been saved...");
+                request.setAttribute("result", "Thank you. Your last response - \'" + testInstance.getResponse() + "\' - has been saved...");                
                 try {
                 JDBCHelper.saveResponse(testInstance);
                 }
                 catch (Exception ex) {
-                   int i = 0; 
+                   
                 }
                 
                 address = "eval";

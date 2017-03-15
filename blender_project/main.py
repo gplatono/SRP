@@ -5,6 +5,7 @@ import math
 from math import e, pi
 import itertools
 import os
+import sys
 
 filepath = os.path.dirname(os.path.abspath(__file__))
 filepath = filepath[0:filepath.rfind("/") + 1]
@@ -15,100 +16,150 @@ filepath = filepath[0:filepath.rfind("/") + 1]
 link = False
 scene = bpy.context.scene
 
+relation_list = ['near', 'in', 'on' , 'touching', 'front', 'behind', 'right', 'left', 'at', 'over', 'under', 'above', 'below', 'between']
+color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow']
+
+
+rf_mapping = {'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside'}
+
+def match_pattern(pattern, input_list):
+	#print (pattern, input_list)
+	for i in range(len(pattern)):
+		if (pattern[i] != input_list[i]):
+			return False
+	return True
+	
+def parse_response(response):
+	ret_val = {'relation': None, 'relatum_mod': None, 'relatum_type': None, 'referents': [], 'color_mod': []}
+	response = response.lower()
+	rel_encountered = False
+	for word in response.split():
+		if word in relation_list and ret_val['relation'] is None:
+			ret_val['relation'] = word
+			rel_encountered = True
+		elif word in color_mods:
+			if rel_encountered == True:
+				ret_val['color_mod'].append(word)
+		else:
+			for entity in entities:
+				name = entity.name.lower().split()
+				#print ("*", word, entity.get_type_structure())
+				if name[0] == word and match_pattern(name, response[response.index(word):]) or word in entity.get_type_structure():
+					if entity.get_color_mod() == None or len(ret_val['color_mod']) != len(ret_val['referents']) + 1 or entity.get_color_mod() == ret_val['color_mod'][-1]:
+						ret_val['referents'].append(entity)
+	return ret_val
+
 class Entity:
-    def __init__(self, main):
-        self.constituents = [main]
-        self.name = main.name
-        self.span = self.get_span()
-        self.bbox = self.get_bbox()
-        self.bbox_centroid = self.get_bbox_centroid()
-        self.dimensions = self.get_dimensions()
-        self.faces = self.get_faces()
-        self.longitudinal = []
-        self.frontal = []
-        queue = [main]
-        while len(queue) != 0:
-            par = queue[0]
-            queue.pop(0)
-            for ob in scene.objects:
-                if ob.parent == par:
-                    self.constituents.append(ob)
-                    queue.append(ob)
+	def __init__(self, main):
+		self.constituents = [main]
+		self.name = main.name
+		self.color_mod = self.get_color_mod()
+		self.type_structure = self.get_type_structure()
+		self.span = self.get_span()
+		self.bbox = self.get_bbox()
+		self.bbox_centroid = self.get_bbox_centroid()
+		self.dimensions = self.get_dimensions()
+		self.faces = self.get_faces()
+		self.longitudinal = []
+		self.frontal = []
+		queue = [main]
+		while len(queue) != 0:
+		    par = queue[0]
+		    queue.pop(0)
+		    for ob in scene.objects:
+		        if ob.parent == par:
+		            self.constituents.append(ob)
+		            queue.append(ob)
+	def set_longitudinal(self, direction):
+		self.longitudinal = direction
 
-    def set_longitudinal(self, direction):
-        self.longitudinal = direction
-
-    def set_frontal(self, direction):
-        self.frontal = direction        
+	def set_frontal(self, direction):
+        	self.frontal = direction        
                     
-    def get_span(self):
-        if(hasattr(self, 'span') and self.span is not None):
-            return self.span
-        else:
-            return [min([obj.location.x - obj.dimensions.x / 2.0 for obj in self.constituents]),
-                    max([obj.location.x + obj.dimensions.x / 2.0 for obj in self.constituents]),
-                    min([obj.location.y - obj.dimensions.y / 2.0 for obj in self.constituents]),
-                    max([obj.location.y + obj.dimensions.y / 2.0 for obj in self.constituents]),
-                    min([obj.location.z - obj.dimensions.z / 2.0 for obj in self.constituents]),
-                    max([obj.location.z + obj.dimensions.z / 2.0 for obj in self.constituents])]
+	def get_span(self):
+		if(hasattr(self, 'span') and self.span is not None):
+		    return self.span
+		else:
+		    return [min([obj.location.x - obj.dimensions.x / 2.0 for obj in self.constituents]),
+		            max([obj.location.x + obj.dimensions.x / 2.0 for obj in self.constituents]),
+		            min([obj.location.y - obj.dimensions.y / 2.0 for obj in self.constituents]),
+		            max([obj.location.y + obj.dimensions.y / 2.0 for obj in self.constituents]),
+		            min([obj.location.z - obj.dimensions.z / 2.0 for obj in self.constituents]),
+		            max([obj.location.z + obj.dimensions.z / 2.0 for obj in self.constituents])]
                     
-    def get_bbox(self):
-        if(hasattr(self, 'bbox') and self.bbox is not None):
-            return self.bbox
-        else:
-            span = self.get_span()
-            return [(span[0], span[2], span[4]),
-                    (span[0], span[2], span[5]),
-		    (span[0], span[3], span[4]),
-		    (span[0], span[3], span[5]),
-		    (span[1], span[2], span[4]),
-		    (span[1], span[2], span[5]),
-		    (span[1], span[3], span[4]),
-		    (span[1], span[3], span[5])]
+	def get_bbox(self):
+		if(hasattr(self, 'bbox') and self.bbox is not None):
+		    return self.bbox
+		else:
+		    span = self.get_span()
+		    return [(span[0], span[2], span[4]),
+		            (span[0], span[2], span[5]),
+			    (span[0], span[3], span[4]),
+			    (span[0], span[3], span[5]),
+			    (span[1], span[2], span[4]),
+			    (span[1], span[2], span[5]),
+			    (span[1], span[3], span[4]),
+			    (span[1], span[3], span[5])]
 
-    def get_bbox_centroid(self):
-        if(hasattr(self, 'bbox_centroid') and self.bbox_centroid is not None):
-            return self.bbox_centroid
-        else:
-            bbox = self.get_bbox()
-            return [bbox[0][0] + (bbox[7][0] - bbox[0][0]) / 2,
-                    bbox[0][1] + (bbox[7][1] - bbox[0][1]) / 2,
-                    bbox[0][2] + (bbox[7][2] - bbox[0][2]) / 2]
+	def get_bbox_centroid(self):
+		if(hasattr(self, 'bbox_centroid') and self.bbox_centroid is not None):
+		    return self.bbox_centroid
+		else:
+		    bbox = self.get_bbox()
+		    return [bbox[0][0] + (bbox[7][0] - bbox[0][0]) / 2,
+		            bbox[0][1] + (bbox[7][1] - bbox[0][1]) / 2,
+		            bbox[0][2] + (bbox[7][2] - bbox[0][2]) / 2]
 
-    def get_dimensions(self):
-        if(hasattr(self, 'dimensions') and self.dimensions is not None):
-            return self.dimensions
-        else:
-            bbox = self.get_bbox()
-            return [bbox[7][0] - bbox[0][0], bbox[7][1] - bbox[0][1], bbox[7][2] - bbox[0][2]]
+	def get_dimensions(self):
+		if(hasattr(self, 'dimensions') and self.dimensions is not None):
+		    return self.dimensions
+		else:
+		    bbox = self.get_bbox()
+		    return [bbox[7][0] - bbox[0][0], bbox[7][1] - bbox[0][1], bbox[7][2] - bbox[0][2]]
 
-    def get(self, property):
-        return self.constituents[0].get(property)
+	def get(self, property):
+	        return self.constituents[0].get(property)
 
-    def get_closest_face_distance(self, point):
-        return min([get_distance_from_plane(point, face[0], face[1], face[2]) for face in self.faces])
+	def get_closest_face_distance(self, point):
+	        return min([get_distance_from_plane(point, face[0], face[1], face[2]) for face in self.faces])
 
-    def get_faces(self):
-        if(hasattr(self, 'faces') and self.faces is not None):
-            return self.faces
-        else:
-            faces = []
-            for ob in self.constituents:
-                for face in ob.data.polygons:
-                    faces.append([ob.matrix_world * ob.data.vertices[i].co for i in face.vertices])
-            return faces
+	def get_faces(self):
+		if(hasattr(self, 'faces') and self.faces is not None):
+		    return self.faces
+		else:
+		    faces = []
+		    for ob in self.constituents:
+		        for face in ob.data.polygons:
+		            faces.append([ob.matrix_world * ob.data.vertices[i].co for i in face.vertices])
+		    return faces
 
-    def print(self):
-        print (self.name)
+	def print(self):
+	        print (self.name)
 
-    def show_bbox():
-        mesh = bpy.data.meshes.new(self.name + '_mesh')
-        obj = bpy.data.objects.new(self.name + '_bbox', mesh)
-        bpy.context.scene.objects.link(obj)
-        bpy.context.scene.objects.active = obj
-        bbox = self.get_bbox()
-        mesh.from_pydata(bbox, [], [(0, 1, 3, 2), (0, 1, 5, 4), (2, 3, 7, 6), (0, 2, 6, 4), (1, 3, 7, 5), (4, 5, 7, 6)])
-        mesh.update()
+	def show_bbox(self):
+		mesh = bpy.data.meshes.new(self.name + '_mesh')
+		obj = bpy.data.objects.new(self.name + '_bbox', mesh)
+		bpy.context.scene.objects.link(obj)
+		bpy.context.scene.objects.active = obj
+		bbox = self.get_bbox()
+		mesh.from_pydata(bbox, [], [(0, 1, 3, 2), (0, 1, 5, 4), (2, 3, 7, 6), (0, 2, 6, 4), (1, 3, 7, 5), (4, 5, 7, 6)])
+		mesh.update()
+
+	def get_type_structure(self):
+		if not hasattr(self, 'type_structure') or self.type_structure is None:
+			#if hasattr(self.constituents[0], 'id'):
+			self.type_structure = self.constituents[0]['id'].split(".")
+			#else: self.type_structure = None
+		return self.type_structure
+	
+	def get_color_mod(self):
+		if not hasattr(self, 'color_mod') or self.color_mod is None:
+			if hasattr(self.constituents[0], 'color_mod'):
+				self.color_mod = self.constituents[0]['color_mod']
+			else:
+				 self.color_mod = None
+		return self.color_mod
+
 
 #with bpy.data.libraries.load(filepath + "001_table.blend", link = link) as (data_from, data_to):
 #    data_to.objects = data_from.objects
@@ -354,10 +405,10 @@ def add_props():
         cam_ob = bpy.data.objects.new("Camera", cam)
         scene.objects.link(cam_ob)    
 
-    lamp_obj.location = (-20, 0, 10)
-    cam_ob.location = (-20, 0, 10)
+    lamp_obj.location = (-30, 0, 10)
+    cam_ob.location = (-14, 0, 6)
     cam_ob.rotation_mode = 'XYZ'
-    cam_ob.rotation_euler = (1.1, 0, -1.57)
+    cam_ob.rotation_euler = (1.4, 0, -1.57)
     bpy.data.cameras['Camera'].lens = 20
 
     bpy.context.scene.camera = scene.objects["Camera"]
@@ -369,24 +420,25 @@ def randomize_positions(entities, min_x, max_x, min_y, max_y, min_z, max_z):
         diff = new_loc - tuple(entity.get_bbox_centroid())
     
 
-add_props()
-scene.render.filepath = filepath + 'image.jpg'
-bpy.ops.render.render( write_still=True )
+def main():
+	args = sys.argv[sys.argv.index("--") + 1:]
+	if len(args) != 2:
+		result = "###MALFORMED###"		
+	else:
+		relatum = args[0].lower()
+		raw_response = args[1].lower()
+		response = parse_response(raw_response)
+		print ("*PARSE = ", raw_response, response)
+		target = None
+		target_value = 0
+		#print (relatum, args[1].lower())
+		result = "###OK###"
+	print (result)
 
-#print ('')
-#print (compute_above(entities))
-'''
-print ('init...')
-print ('')
-print (compute_at(entities))
-print ('')
-print (compute_near(entities))
-print ('')
-print (compute_over(entities))
-#print ('')
-#print (compute_on(entities))
-print ('')
-print (compute_above(entities))
-print ('')
-print (compute_below(entities))
-'''
+if __name__ == "__main__":
+	main()
+
+#add_props()
+#scene.render.filepath = filepath + 'scene.jpg'
+#bpy.ops.render.render( write_still=True )
+
