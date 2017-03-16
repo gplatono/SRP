@@ -18,7 +18,7 @@ scene = bpy.context.scene
 
 relation_list = ['near', 'in', 'on' , 'touching', 'front', 'behind', 'right', 'left', 'at', 'over', 'under', 'above', 'below', 'between']
 color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow']
-
+types = []
 
 rf_mapping = {'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside', 'touching': 'touching', 'right': 'to_the_right_of_extr'}
 
@@ -28,8 +28,57 @@ def match_pattern(pattern, input_list):
         if (pattern[i] != input_list[i]):
             return False
     return True
-	
+
+def get_types():
+	ret_val = []
+	for entity in entities:
+		if entity.get_type_structure() is not None:
+			for elem in entity.get_type_structure():
+				if elem not in ret_val:
+					ret_val.append(elem)
+	return ret_val
+
+class Token:
+	def __init__(self, token):
+		self.token = token
+
+class Argument(Token):
+	def __init__(self, argument, color_mod=None):
+		super().__init__(argument)
+		self.argument = argument
+		self.color_mod = color_mod
+
+class Relation(Token):
+	def __init__(self, relation, relatum=None, referent_list=[]):
+		super().__init__(relation)
+		self.relation = relation
+		self.relatum = relatum
+		self.referent_list = referent_list
+
+class Mod(Token):
+	def __init__(self, mod_type, value):
+		super().__init__(value)
+		self.mod_type = mod_type
+		self.value = value
+
 def parse_response(response):
+	parse_stack = []
+	for word in response.split():
+		if word in relation_list:
+			parse_stack.append(Relation(word))
+		elif word in color_mods:
+			parse_stack.append(Mod('color_mod', word))
+		elif word in types:
+			arg = Argument(word)
+			if len(parse_stack) > 0 and type(parse_stack[-1]) is Mod:
+				arg.color_mod = parse_stack.pop()
+			if len(parse_stack) > 0 and type(parse_stack[-1]) is Relation:
+				parse_stack[-1].referent_list.append(arg)
+			else:
+				parse_stack.append(arg)
+	return parse_stack
+
+'''def parse_response(response):
 	ret_val = []
 	relation = {'relation': None, 'relatum_mod': None, 'relatum_type': None, 'referents': [], 'color_mod': []}
 	response = response.lower()
@@ -55,7 +104,7 @@ def parse_response(response):
 				if name[0] == word and match_pattern(name, response[response.index(word):]) or word in entity.get_type_structure():			
 					if curr_color == None or curr_color == entity.get_color_mod():
 						ret_val['referents'].append(entity)					
-	return ret_val
+	return ret_val'''
 
 class Entity:
 	def __init__(self, main):
@@ -464,11 +513,23 @@ def main():
 	if len(args) != 2:
 		result = "###MALFORMED###"
 	else:
+		global types
+		types = get_types()
 		relatum = args[0].lower()
 		relatum = get_entity_by_name(relatum)
 		raw_response = args[1].lower()
 		response = parse_response(raw_response)
-		print ("*PARSE = ", raw_response, ": ", relatum, response, [item.name for item in response['referents']])
+		for item in response:
+			if type(item) is Relation:
+				ref_list = []
+				for entity in entities:
+					for ref in item.referent_list:
+						if ref.argument in entity.get_type_structure() and (ref.color_mod == None or ref.color_mod == entity.color_mod) and entity not in ref_list:
+							ref_list.append(entity)
+				print (item.referent_list, ref_list)
+						
+		print ("*PARSE = ", raw_response, [r.token for r in response])
+		#print ("*PARSE = ", raw_response, ": ", relatum, response, [item.name for item in response['referents']])
 		target = None
 		target_value = 0
 		target_value = globals()[rf_mapping[response['relation']]](relatum, response['referents'][0])
