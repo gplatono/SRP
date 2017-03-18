@@ -17,10 +17,10 @@ link = False
 scene = bpy.context.scene
 
 relation_list = ['near', 'in', 'on' , 'touching', 'front', 'behind', 'right', 'left', 'at', 'over', 'under', 'above', 'below', 'between']
-color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow']
+color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow', 'north', 'west', 'east']
 types = []
 
-rf_mapping = {'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside', 'touching': 'touching', 'right': 'to_the_right_of_extr'}
+rf_mapping = {'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside', 'touching': 'touching', 'right': 'to_the_right_of_extr', 'left': 'to_the_left_of_extr', 'at': 'at', 'front': 'in_front_of_extr', 'behind': 'behind_extr', 'between': 'between'}
 
 def match_pattern(pattern, input_list):
 	#print (pattern, input_list)
@@ -42,18 +42,29 @@ class Token:
 	def __init__(self, token):
 		self.token = token
 
+	def readable(self):
+		return self.token
+
 class Argument(Token):
 	def __init__(self, argument, color_mod=None):
 		super().__init__(argument)
 		self.argument = argument
 		self.color_mod = color_mod
 
+	def readable(self):
+		return [self.color_mod.readable(), self.token] if self.color_mod is not None else self.token
+
 class Relation(Token):
-	def __init__(self, relation, relatum=None, referent_list=[]):
+	def __init__(self, relation, relatum=None, referent_list=None, entity_list=None):
 		super().__init__(relation)
 		self.relation = relation
 		self.relatum = relatum
-		self.referent_list = referent_list
+		if referent_list is None:
+			self.referent_list = []
+		self.entity_list = entity_list
+
+	def readable(self):
+		return [self.token, self.relatum, [ref.readable() for ref in self.referent_list]]
 
 class Mod(Token):
 	def __init__(self, mod_type, value):
@@ -350,30 +361,38 @@ def larger_than(a, b):
     return 1 / (1 + e ** (bbox_b[7][0] - bbox_b[0][0] + bbox_b[7][1] - bbox_b[0][1] + bbox_b[7][2] - bbox_b[0][2] - (bbox_a[7][0] - bbox_a[0][0] + bbox_a[7][1] - bbox_a[0][1] + bbox_a[7][2] - bbox_a[0][2])))
 
 def on(a, b):
-    ret_val = 0.5 * (v_offset(a, b) + get_proj_intersection(a, b))
+	ret_val = 0.5 * (v_offset(a, b) + get_proj_intersection(a, b))
+	ret_val = max(ret_val, 0.5 * (above(a, b) + touching(a, b)))
     #for ob in b:
     #    if ob.get('working_surface') is not None or ob.get('planar') is not None:
     #        ret_val = max(ret_val, 0.5 * (v_offset(a, ob) + get_proj_intersection(a, ob)))
     #        ret_val = max(ret_val, 0.5 * (int(near(a, ob) > 0.99) + larger_than(ob, a)))         
-    if ret_val >= 0.6:
-        return 0.5 * (ret_val + larger_than(b, a))
-    return ret_val
+    #if ret_val >= 0.6:
+    #    return 0.5 * (ret_val + larger_than(b, a))
+	return ret_val
 
 def over(a, b):
     bbox_a = a.get_bbox()
     bbox_b = b.get_bbox()
     return 0.5 * above(a, b) + 0.2 * get_proj_intersection(a, b) + 0.3 * near(a, b)
 
+def under(a, b):
+	return over(b, a)
+
 def closer_than(a, b, pivot):
     return 1 if point_distance(a.get_bbox(), pivot.get_bbox()) < point_distance(b.get_bbox(), pivot.get_bbox()) else 0
 
-def in_front_of_extr(a, b, observer):
+def in_front_of_extr(a, b):
+#def in_front_of_extr(a, b, observer):
     bbox_a = a.get_bbox()
     max_dim_a = max(bbox_a[7][0] - bbox_a[0][0],
                     bbox_a[7][1] - bbox_a[0][1],
                     bbox_a[7][2] - bbox_a[0][2]) + 0.0001
     dist = get_distance_from_line(observer.get_bbox_centroid(), b.get_bbox_centroid(), a.get_bbox_centroid())
     return 0.5 * (closer_than(a, b, observer) + e ** (-dist / max_dim_a))
+
+def behind_extr(a, b):
+	return in_front_of_extr(b, a)
 
 def touching(a, b):	
 	bbox_a = a.get_bbox()
@@ -386,21 +405,33 @@ def touching(a, b):
 	rad_b = max(bbox_b[7][0] - bbox_b[0][0],
                     bbox_b[7][1] - bbox_b[0][1],
                     bbox_b[7][2] - bbox_b[0][2]) / 2
-	if a.name == "Apple 1" and b.name == "Bowl":
-		print (center_a, center_b)
+	
+	#if a.name == "Apple 1" and b.name == "Bowl":
+	#	print (center_a, center_b)
+
 	for point in bbox_a:
 		if a.name == "Apple 1" and b.name == "Bowl":
 			print (point_distance(point, center_b))	
 		if point_distance(point, center_b) < rad_b:
-			return True
+			return 1
 	for point in bbox_b:
 		if point_distance(point, center_a) < rad_a:
-			return True
-	return False
+			return 1
+	return 0
 
 def to_the_right_of_extr(a, b):
+	center_a = a.get_bbox_centroid()
+	center_b = b.get_bbox_centroid()	
+	return sigmoid(center_b[1] - center_a[1], 1.0, 1.3)
+
+def to_the_left_of_extr(a, b):
+	return to_the_right_of_extr(b, a)
+
+def inside(a, b):
 	return 1
 
+def at(a, b):
+	return 0.8 * near(a, b) + 0.2 * touching(a, b)
 
 relations = {}
 
@@ -463,10 +494,10 @@ if len(entities) != 0 :
         avg_dist += dist_obj(pair[0], pair[1])
     avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
 #scene.objects.link(bpy.data.objects.new('Observer', None))
-#scene.objects['Observer'].location = (0, -20, 5)
+#scene.objects['Observer'].location = (-14, 0, 6)
 #scene.update()
 #observer = Entity(scene.objects['Observer'])
-#observer.set_frontal((0, 0, 0) - (0, -20, 5))
+#observer.set_frontal(-scene.objects['Observer'].location)
 #observer.set_longitudinal((0, 1, 4))        
 
 #gen_data("above")
@@ -511,30 +542,48 @@ def get_entity_by_name(name):
 def main():
 	args = sys.argv[sys.argv.index("--") + 1:]
 	if len(args) != 2:
-		result = "###MALFORMED###"
+		result = "*RESULT: MALFORMED*"
 	else:
 		global types
 		types = get_types()
 		relatum = args[0].lower()
-		relatum = get_entity_by_name(relatum)
 		raw_response = args[1].lower()
+
+		relatum = relatum.replace('cube', 'block')
+		raw_response = raw_response.replace('cube', 'block')
+
+		relatum = get_entity_by_name(relatum)
 		response = parse_response(raw_response)
 		for item in response:
-			if type(item) is Relation:
+			if type(item) is Relation:				
 				ref_list = []
 				for entity in entities:
 					for ref in item.referent_list:
-						if ref.argument in entity.get_type_structure() and (ref.color_mod == None or ref.color_mod == entity.color_mod) and entity not in ref_list:
-							ref_list.append(entity)
-				print (item.referent_list, ref_list)
+						if ref.token in entity.get_type_structure() and (ref.color_mod is None or ref.color_mod.token == entity.color_mod) and entity not in ref_list:
+							ref_list.append(entity)				
+				#print (item.referent_list, ref_list)
+				item.entity_list = ref_list
 						
-		print ("*PARSE = ", raw_response, [r.token for r in response])
-		#print ("*PARSE = ", raw_response, ": ", relatum, response, [item.name for item in response['referents']])
-		target = None
-		target_value = 0
-		target_value = globals()[rf_mapping[response['relation']]](relatum, response['referents'][0])
-		print (target_value)
-		result = "###OK###"
+		print ("*ORIGINAL: ", relatum.name, ", " ,raw_response)
+		print ("*PARSED STRUCTURE: ", [r.readable() for r in response])
+		best_target_value = 0
+		for item in response:
+			if type(item) is Relation:
+				best_candidate = None
+				target_value = 0
+				best_target_value = 0
+				for entity in item.entity_list:
+					if id(relatum) != id(entity):
+						target_value = globals()[rf_mapping[item.token]](relatum, entity)
+					if target_value > best_target_value:
+						best_target_value = target_value
+						best_candidate = entity
+					#print (best_candidate)
+				print ("*FINAL: ", relatum.name, item.token, best_candidate.name, best_target_value)		
+		result = "*RESULT: OK*"
+		for item in response:
+			if type(item) is Relation:
+				print ('*RELATION:', item.token, best_target_value, '*')
 	print (result)
 
 if __name__ == "__main__":
