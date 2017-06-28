@@ -6,6 +6,7 @@ from math import e, pi
 import itertools
 import os
 import sys
+import random
 
 filepath = os.path.dirname(os.path.abspath(__file__))
 filepath = filepath[0:filepath.rfind("/") + 1]
@@ -130,6 +131,7 @@ class Entity:
 		self.faces = self.get_faces()
 		self.longitudinal = []
 		self.frontal = []
+                self.parent_offset = self.get_parent_offset()
 		queue = [main]
 		while len(queue) != 0:
 		    par = queue[0]
@@ -160,6 +162,7 @@ class Entity:
 		    return self.bbox
 		else:
 		    span = self.get_span()
+                    #bpy.context.scene.update()                    
 		    return [(span[0], span[2], span[4]),
 		            (span[0], span[2], span[5]),
 			    (span[0], span[3], span[4]),
@@ -190,6 +193,11 @@ class Entity:
 
 	def get_closest_face_distance(self, point):
 	        return min([get_distance_from_plane(point, face[0], face[1], face[2]) for face in self.faces])
+
+        def get_closest_distance(self, other_entity):
+            this_faces = self.get_faces()
+            other_faces = other_entity.get_faces()
+            
 
 	def get_faces(self):
 		if(hasattr(self, 'faces') and self.faces is not None):
@@ -227,6 +235,13 @@ class Entity:
 			else:
 				 self.color_mod = None
 		return self.color_mod
+
+        def get_parent_offset(self):
+            span = self.get_span()
+            if span is not None:
+                return self.constituents[0].location.x - span[0], self.constituents[0].location.y - span[2], self.constituents[0].location.z - span[4]
+            else:
+                return None            
 
 
 #with bpy.data.libraries.load(filepath + "001_table.blend", link = link) as (data_from, data_to):
@@ -520,24 +535,35 @@ def add_props():
         cam_ob = bpy.data.objects.new("Camera", cam)
         scene.objects.link(cam_ob)    
 
-    lamp_obj.location = (-30, 0, 10)
-    cam_ob.location = (-14, 0, 6)
+    lamp_obj.location = (-20, 0, 10)
+    cam_ob.location = (-15.5, 0, 7)
     cam_ob.rotation_mode = 'XYZ'
-    cam_ob.rotation_euler = (1.4, 0, -1.57)
+    cam_ob.rotation_euler = (1.1, 0, -1.57)
     bpy.data.cameras['Camera'].lens = 20
 
     bpy.context.scene.camera = scene.objects["Camera"]
-    scene.update
-    
-def randomize_positions(entities, min_x, max_x, min_y, max_y, min_z, max_z):
-    for entity in entities:
-        new_loc = (random.uniform(min_x, max_x), random.uniform(min_y, max_y), random.uniform(min_z, max_z))
-        diff = new_loc - tuple(entity.get_bbox_centroid())
+    scene.update()
     
 def get_entity_by_name(name):
 	for entity in entities:
 		if entity.name.lower() == name:
 			return entity
+
+def place_entity(entity, position=(0,0,0), rotation=(0,0,0)):
+    obj = entity.constituents[0]
+    obj.location = position
+    obj.rotation_mode = 'XYZ'
+    obj.rotation_euler = rotation
+    scene.update()
+
+def arrange_entities(reg):
+    for entity in entities:
+        if entity.get('Fixed') is None:
+            if reg[4] == reg[5]:
+                pos = (random.uniform(reg[0], reg[1]), random.uniform(reg[2], reg[3]), entity.get_parent_offset()[2])
+            else:
+                pos = (random.uniform(reg[0], reg[1]), random.uniform(reg[2], reg[3]), random.uniform(reg[4], reg[5]))
+            place_entity(entity, pos, (math.pi,0,0))            
 
 def main():
 	args = sys.argv[sys.argv.index("--") + 1:]

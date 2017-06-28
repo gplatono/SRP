@@ -42,6 +42,7 @@
                 
                 <center>
                 <img src="img/example.jpg" class="center" width="90%">
+                <p>Figure 1.</p>
                 </center>
                 <!--<p>You will be given an object, say "Cube 8" and asked to describe its location in term of its relation to other objects present in the scene.</p>
                 <p>Please follow the following guidelines when writing the description</p>-->
