@@ -4,15 +4,19 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/u/gplatono/SRP/annotation_app/src/java/application/TestGenerator.java</file>
-            <file>file:/u/gplatono/SRP/annotation_app/src/java/controllers/Navigator.java</file>
             <file>file:/u/gplatono/SRP/annotation_app/web/jsp/description.jsp</file>
-            <file>file:/u/gplatono/SRP/annotation_app/web/jsp/evaluation.jsp</file>
-            <file>file:/u/gplatono/SRP/annotation_app/web/jsp/exam_1.jsp</file>
             <file>file:/u/gplatono/SRP/annotation_app/web/jsp/examples.jsp</file>
-            <file>file:/u/gplatono/SRP/annotation_app/web/css/main.css</file>
             <file>file:/u/gplatono/SRP/annotation_app/web/jsp/index_1.jsp</file>
-            <file>file:/u/gplatono/SRP/annotation_app/web/jsp/eval.jsp</file>
             <file>file:/u/gplatono/SRP/annotation_app/src/java/application/JDBCHelper.java</file>
+            <file>file:/u/gplatono/SRP/annotation_app/src/java/controllers/Navigator.java</file>
+            <file>file:/u/gplatono/SRP/annotation_app/web/jsp/evaluation.jsp</file>
+            <file>file:/u/gplatono/SRP/annotation_app/web/jsp/annotations.jsp</file>
+            <file>file:/u/gplatono/SRP/annotation_app/web/jsp/exam_1.jsp</file>
+            <file>file:/u/gplatono/SRP/annotation_app/src/java/resources/shiro.ini</file>
+            <file>file:/u/gplatono/SRP/annotation_app/web/css/main.css</file>
+            <file>file:/u/gplatono/SRP/annotation_app/web/jsp/eval.jsp</file>
+            <file>file:/u/gplatono/SRP/annotation_app/web/WEB-INF/web.xml</file>
+            <file>file:/u/gplatono/SRP/annotation_app/web/WEB-INF/glassfish-web.xml</file>
         </group>
     </open-files>
 </project-private>

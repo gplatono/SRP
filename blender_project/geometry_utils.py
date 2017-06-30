@@ -10,3 +10,13 @@ def get_normal(a, b, c):
 def get_distance_from_plane(point, a, b, c):
     normal = numpy.array(get_normal(a, b, c))
     return math.fabs((numpy.array(point).dot(normal) - numpy.array(a).dot(normal)) / numpy.linalg.norm(normal))
+
+#distance from x3 to the line connecting x1 to x2
+def get_distance_from_line(x1, x2, x3):
+    t = (x3[0] - x1[0]) * (x2[0] - x1[0]) + (x3[1] - x1[1]) * (x2[1] - x1[1]) * (x3[2] - x1[2]) * (x2[2] - x1[2])
+    t = t / (point_distance(x1, x2) ** 2)
+    x0 = (x1[0] + (x2[0] - x1[0]) * t, x1[1] + (x2[1] - x1[1]) * t, x1[2] + (x2[2] - x1[2]) * t)
+    return point_distance(x0, x3)
+
+def point_distance(a, b):
+    return numpy.linalg.norm(numpy.array(a) - numpy.array(b))

@@ -1,4 +1,4 @@
 from subprocess import call
 
 print ("Running Blender...")
-call(["blender", "sandbox.blend", "--background", "--python", "main.py"])
+call(["blender", "blocks_world.blend", "--background", "--python", "main.py"])
