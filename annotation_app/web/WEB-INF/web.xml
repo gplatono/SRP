@@ -12,6 +12,10 @@
         <servlet-name>LoginManager</servlet-name>
         <servlet-class>controllers.LoginManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SceneUpload</servlet-name>
+        <servlet-class>controllers.SceneUpload</servlet-class>
+    </servlet>   
     <servlet-mapping>
         <servlet-name>SubmissionHandler</servlet-name>
         <url-pattern>/SubmissionHandler</url-pattern>
@@ -19,10 +23,14 @@
     <servlet-mapping>
         <servlet-name>Navigator</servlet-name>
         <url-pattern>/Navigator</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>    
     <servlet-mapping>
         <servlet-name>LoginManager</servlet-name>
         <url-pattern>/LoginManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SceneUpload</servlet-name>
+        <url-pattern>/SceneUpload</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -35,7 +43,10 @@
             jsp/index_1.jsp
         </welcome-file>
     </welcome-file-list>
-    <security-constraint>
-        
-    </security-constraint>
+    
+    <context-param> 
+        <description>Scene upload folder</description> 
+        <param-name>scene_upload_folder</param-name> 
+        <param-value>/scenes</param-value> 
+    </context-param>
 </web-app>

@@ -54,6 +54,8 @@ public class Navigator extends HttpServlet {
             //request.getParameter("pass_val") != null && request.getParameter("pass_val").equals("admin"))
             //request.getRequestDispatcher("jsp/index.jsp").forward(request, response);            
             String address = request.getParameter("page");
+            
+            
             if(address.equals("DUMP")) {
                 try {
                 new JDBCHelper().dump_responses("dump");
@@ -96,7 +98,9 @@ public class Navigator extends HttpServlet {
                 request.getSession().setAttribute("testInstance", testInstance);
                 //request.setAttribute("imagePath", request.getContextPath() + testcase.getImagePath());//"scenes/" + (testcase.getSceneID() + 1) + "/" + "scene.png");                
                 //return;
-            }
+            }            
+            if(address.equals("SCNUPLD"))
+                address = "scn_upload";
             request.getRequestDispatcher("/jsp/" + address + ".jsp").forward(request, response);
     }
 
