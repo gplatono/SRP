@@ -6,16 +6,24 @@
 package controllers;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import javax.servlet.jsp.PageContext;
 import org.apache.commons.fileupload.*;
 import org.apache.commons.fileupload.disk.*;
@@ -27,6 +35,7 @@ import org.apache.commons.fileupload.servlet.*;
  * @author gplatono
  */
 @WebServlet(name = "SceneUpload", urlPatterns = {"/SceneUpload"})
+@MultipartConfig
 public class SceneUpload extends HttpServlet {
 
     /**
@@ -40,63 +49,26 @@ public class SceneUpload extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {        
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            
-            File file;            
-            int maxFileSize = 5000 * 1024;
-            int maxMemSize = 5000 * 1024;
-            ServletContext context = request.getServletContext();
-            String filePath = context.getInitParameter("scene_upload_folder");
+        
+        byte[] data;        
+        Collection<Part> parts = request.getParts();
+        
+        try {
+            for (Part part : parts) {
+                String fileName = part.getSubmittedFileName();
+                InputStream in = part.getInputStream();
+                OutputStream out = new FileOutputStream(System.getProperty("user.home") + "/scenes/" + fileName);
+                data = new byte[in.available()];
+                in.read(data);
+                out.write(data);
 
-             String contentType = request.getContentType();
-   
-   if ((contentType.indexOf("multipart/form-data") >= 0)) {
-      DiskFileItemFactory factory = new DiskFileItemFactory();
-      // maximum size that will be stored in memory
-      factory.setSizeThreshold(maxMemSize);
-      
-      // Location to save data that is larger than maxMemSize.
-      factory.setRepository(new File("/temp"));
-
-      // Create a new file upload handler
-      ServletFileUpload upload = new ServletFileUpload(factory);
-      
-      // maximum file size to be uploaded.
-      upload.setSizeMax( maxFileSize );
-      
-      try { 
-         // Parse the request to get file items.
-         List fileItems = upload.parseRequest(request);
-
-         Iterator i = fileItems.iterator();
-         while ( i.hasNext () ) {
-            FileItem fi = (FileItem)i.next();
-            if ( !fi.isFormField () ) {
-               // Get the uploaded file parameters
-               String fieldName = fi.getFieldName();
-               String fileName = fi.getName();
-               boolean isInMemory = fi.isInMemory();
-               long sizeInBytes = fi.getSize();
-            
-               // Write the file
-               if( fileName.lastIndexOf("/") >= 0 ) {
-                  file = new File( filePath + 
-                  fileName.substring( fileName.lastIndexOf("/"))) ;
-               } else {
-                  file = new File( filePath + 
-                  fileName.substring(fileName.lastIndexOf("/")+1)) ;
-               }
-               fi.write( file ) ;               
+                in.close();
+                out.close();
             }
-         }
-      } catch(Exception ex) {
-         System.out.println(ex);
-      }
-   } else {
-
-   }
         }
+        catch(Exception ex) {
+            String msg = ex.getMessage();
+        }        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -13,7 +13,7 @@
     </head>
     <body>
         <form action="SceneUpload" method="POST" enctype="multipart/form-data">
-            <input type = "file" name = "file" size = "50" />            
+            <input type = "file" name = "file" size = "50" multiple="true" />            
             <input type = "submit" value = "Upload" />
         </form>
     </body>
