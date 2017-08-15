@@ -455,16 +455,6 @@ def check_collision(a, b):
 def put_on_top(a, b):
     pass
 
-def save_screenshot():
-    add_props()
-    scene.render.resolution_x = 1920
-    scene.render.resolution_y = 1080
-    scene.render.resolution_percentage = 100
-    scene.render.use_border = False
-    scene.render.image_settings.file_format = 'JPEG'
-    current_scene = bpy.data.filepath.split("/")[-1].split(".")[0]
-    scene.render.filepath = filepath + current_scene + ".jpg"
-    bpy.ops.render.render(write_still=True)
 
 def main():
 	args = sys.argv[sys.argv.index("--") + 1:]
@@ -514,15 +504,22 @@ def main():
 	print (result)
 
 if __name__ == "__main__":
-    '''one = None
+    one = None
     two = None
     for entity in entities:
         if entity.name == 'Block 1':
             one = entity
         elif entity.name == 'Block 2':
             two = entity
-    arrange_entities((-4.5, 4.5, -4.5, 4.5, 0.51, 0.51), entities)'''
-    save_screenshot()
+    arrange_entities((-4.5, 4.5, -4.5, 4.5, 0.51, 0.51), entities)
+    add_props()
+    scene.render.resolution_x = 1920
+    scene.render.resolution_y = 1080
+    scene.render.resolution_percentage = 100
+    scene.render.use_border = False
+    scene.render.image_settings.file_format = 'JPEG'
+    scene.render.filepath = filepath + 'scene.jpg'
+    bpy.ops.render.render(write_still=True)    
     #print (one, two)
     #print ([entity.name for entity in entities])
     #print (check_collision(entities[0], entities[8]))
