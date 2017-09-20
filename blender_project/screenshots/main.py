@@ -399,7 +399,7 @@ def add_props():
     lamp_obj.location = (-20, 0, 10)
     cam_ob.location = (-15.5, 0, 7)
     cam_ob.rotation_mode = 'XYZ'
-    cam_ob.rotation_euler = (1.1, 0, -1.57)
+    cam_ob.rotation_euler = (1.3, 0, -1.57)
     bpy.data.cameras['Camera'].lens = 20
 
     bpy.context.scene.camera = scene.objects["Camera"]
