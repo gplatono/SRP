@@ -1,0 +1,9 @@
+relations = ['on', 'above', 'below', 'left', 'right', 'at', 'touching', 'near', 'in front of', 'behind', 'over', 'under', 'in', 'between']
+
+colors = ['black', 'red' ,'brown', 'green', 'blue', 'yellow']
+
+objects = ['table', 'block', 'book', 'chair', 'bookshelf']
+
+
+for subm in open('dump').readlines():
+    print subm
