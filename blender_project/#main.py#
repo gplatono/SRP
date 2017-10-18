@@ -27,7 +27,7 @@ relation_list = ['near', 'in', 'on' , 'touching', 'front', 'behind', 'right', 'l
 color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow', 'north', 'west', 'east']
 types = []
 
-rf_mapping = {'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside', 'touching': 'touching', 'right': 'to_the_right_of_extr', 'left': 'to_the_left_of_extr', 'at': 'at', 'front': 'in_front_of_extr', 'behind': 'behind_extr', 'between': 'between'}
+rf_mapping = {'near': 'near', 'on': 'on', 'abuove': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside', 'touching': 'touching', 'right': 'to_the_right_of_extr', 'left': 'to_the_left_of_extr', 'at': 'at', 'front': 'in_front_of_extr', 'behind': 'behind_extr', 'between': 'between'}
 
 def match_pattern(pattern, input_list):
 	#print (pattern, input_list)
@@ -399,7 +399,7 @@ def add_props():
     lamp_obj.location = (-20, 0, 10)
     cam_ob.location = (-15.5, 0, 7)
     cam_ob.rotation_mode = 'XYZ'
-    cam_ob.rotation_euler = (1.3, 0, -1.57)
+    cam_ob.rotation_euler = (1.1, 0, -1.57)
     bpy.data.cameras['Camera'].lens = 20
 
     bpy.context.scene.camera = scene.objects["Camera"]
@@ -467,51 +467,49 @@ def save_screenshot():
     bpy.ops.render.render(write_still=True)
 
 def main():
-	args = sys.argv[sys.argv.index("--") + 1:]
-	if len(args) != 2:
-		result = "*RESULT: MALFORMED*"
-	else:
-		global types
-		types = get_types()
-		relatum = args[0].lower()
-		raw_response = args[1].lower()
+    args = sys.argv[sys.argv.index("--") + 1:]
+    if len(args) != 2:
+        result = "*RESULT: MALFORMED*"
+    else:
+        global types
+        types = get_types()
+        relatum = args[0].lower()
+        raw_response = args[1].lower()
+        relatum = relatum.replace('cube', 'block')
+        raw_response = raw_response.replace('cube', 'block')
+        relatum = get_entity_by_name(relatum)
+        response = parse_response(raw_response)
+        for item in response:
+            if type(item) is Relation:
+                ref_list = []
+                for entity in entities:
+                    for ref in item.referent_list:
+                        if ref.token in entity.get_type_structure() and (ref.color_mod is None or ref.color_mod.token == entity.color_mod) and entity not in ref_list:
+                            ref_list.append(entity)
+                            #print (item.referent_list, ref_list)
+                            item.entity_list = ref_list
 
-		relatum = relatum.replace('cube', 'block')
-		raw_response = raw_response.replace('cube', 'block')
-
-		relatum = get_entity_by_name(relatum)
-		response = parse_response(raw_response)
-		for item in response:
-			if type(item) is Relation:				
-				ref_list = []
-				for entity in entities:
-					for ref in item.referent_list:
-						if ref.token in entity.get_type_structure() and (ref.color_mod is None or ref.color_mod.token == entity.color_mod) and entity not in ref_list:
-							ref_list.append(entity)				
-				#print (item.referent_list, ref_list)
-				item.entity_list = ref_list
-						
-		print ("*ORIGINAL: ", relatum.name, ", " ,raw_response)
-		print ("*PARSED STRUCTURE: ", [r.readable() for r in response])
-		best_target_value = 0
-		for item in response:
-			if type(item) is Relation:
-				best_candidate = None
-				target_value = 0
-				best_target_value = 0
-				for entity in item.entity_list:
-					if id(relatum) != id(entity):
-						target_value = globals()[rf_mapping[item.token]](relatum, entity)
-					if target_value > best_target_value:
-						best_target_value = target_value
-						best_candidate = entity
-					#print (best_candidate)
-				print ("*FINAL: ", relatum.name, item.token, best_candidate.name, best_target_value)		
-		result = "*RESULT: OK*"
-		for item in response:
-			if type(item) is Relation:
-				print ('*RELATION:', item.token, best_target_value, '*')
-	print (result)
+        print ("*ORIGINAL: ", relatum.name, ", " ,raw_response)
+        print ("*PARSED STRUCTURE: ", [r.readable() for r in response])
+        best_target_value = 0
+        for item in response:
+            if type(item) is Relation:
+                best_candidate = None
+                target_value = 0
+                best_target_value = 0
+                for entity in item.entity_list:
+                    if id(relatum) != id(entity):
+                        target_value = globals()[rf_mapping[item.token]](relatum, entity)
+                        if target_value > best_target_value:
+                            best_target_value = target_value
+                            best_candidate = entity
+                            #print (best_candidate)
+            print ("*FINAL: ", relatum.name, item.token, best_candidate.name, best_target_value)
+        result = "*RESULT: OK*"
+        for item in response:
+            if type(item) is Relation:
+                print ('*RELATION:', item.token, best_target_value, '*')
+        print (result)
 
 if __name__ == "__main__":
     '''one = None
@@ -522,13 +520,12 @@ if __name__ == "__main__":
         elif entity.name == 'Block 2':
             two = entity
     arrange_entities((-4.5, 4.5, -4.5, 4.5, 0.51, 0.51), entities)'''
-    save_screenshot()
+   # save_screenshot()
     #print (one, two)
     #print ([entity.name for entity in entities])
     #print (check_collision(entities[0], entities[8]))
    # print (entities[0].get_span())
    # print (entities[4].get_span())
-    #print("test")
-    #main()
+    main()
 
 

@@ -40,4 +40,3 @@ for item in relations.keys():
 	if relations[item][0] != 0:
 		relations[item][1] = relations[item][1] / relations[item][0]
 print (relations)
-
