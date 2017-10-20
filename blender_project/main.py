@@ -15,8 +15,7 @@ sys.path.insert(0, filepath)
 
 from entity import Entity
 from geometry_utils import *
-
-
+from parser import *
 
 #filepath = "/u/gplatono/BlenderProjects/SRP/objects/"
 #import geometry_utils
@@ -213,7 +212,6 @@ def between(a, b, c):
                     bbox_a[7][1] - bbox_a[0][1],
                     bbox_a[7][2] - bbox_a[0][2])
     return 1
-    
     
 def v_align(a, b):
     dim_a = a.get_dimensions()
@@ -471,7 +469,8 @@ def main():
     if len(args) != 2:
         result = "*RESULT: MALFORMED*"
     else:
-        global types
+        parse(args[1])
+        '''global types
         types = get_types()
         relatum = args[0].lower()
         raw_response = args[1].lower()
@@ -509,7 +508,7 @@ def main():
         for item in response:
             if type(item) is Relation:
                 print ('*RELATION:', item.token, best_target_value, '*')
-        print (result)
+        print (result)'''
 
 if __name__ == "__main__":
     '''one = None

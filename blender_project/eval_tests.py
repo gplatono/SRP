@@ -24,8 +24,8 @@ for subm in open('dump').read().split('###'):
             count += 1
 
 for test in tests:
-    parse(test[2])
-    #subprocess.call(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2]])
+    #parse(test[2])
+    subprocess.call(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2]])
     #res = subprocess.check_output(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2]])
     #res = res.decode("utf-8").split("\n")
     #print (res)
