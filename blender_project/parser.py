@@ -198,6 +198,10 @@ def parse(response):
             if idx < len(response):
                 current = response[idx]
     print ("STACK: ", parse_stack)
+    for item in parse_stack:
+        if type(item) is Relation:
+            return item
+    return None
     #for item in parse_stack:
     #    if type(item) is Relation and item.token == "between":
     #        print (item.referents)

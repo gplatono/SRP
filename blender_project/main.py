@@ -405,6 +405,7 @@ def add_props():
     
 def get_entity_by_name(name):
 	for entity in entities:
+            
 		if entity.name.lower() == name:
 			return entity
 
@@ -464,12 +465,25 @@ def save_screenshot():
     scene.render.filepath = filepath + current_scene + ".jpg"
     bpy.ops.render.render(write_still=True)
 
+
+def get_argument_entities(rel_constraint):
+    return [get_entity_by_name(ref) for ref in rel_constraint.refs]
+
 def main():
     args = sys.argv[sys.argv.index("--") + 1:]
     if len(args) != 2:
         result = "*RESULT: MALFORMED*"
     else:
-        parse(args[1])
+        rel_constraint = parse(args[1])
+        if rel_constraint is None:
+            return "*RESULT: NO RELATIONS*"
+        refs = [get_entity_by_name(ref) for ref in rel_constraint.referents]
+        print (refs)
+        relation = rel_constraint.token
+        
+
+        
+        
         '''global types
         types = get_types()
         relatum = args[0].lower()
