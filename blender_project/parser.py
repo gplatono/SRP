@@ -6,6 +6,7 @@ determiners = ['a', 'the', 'other', 'another', 'all']
 pronouns = ['it', 'this', 'these', 'those']
 conj = ['and']
 numerals = ['one', 'two', 'three']
+scene_objects = []
 
 class Token:
     def __init__(self, token):
@@ -23,6 +24,7 @@ class Conj(Token):
         self.arg = arg
 
     def conjoin(self, arg):
+        print (self.arg, arg)
         if self.arg is None:
             return Conj(self.token, arg)
         #print ("+++++++++\n+++++++++++\n+++++++++++", [Argument(arg.token, ar) for ar in self.args if type(ar) is Mod] + [arg])
@@ -41,6 +43,17 @@ class Conj(Token):
 
     def __repr__(self):
         return super().__repr__() + " - " + self.arg.__repr__()
+
+class RightConj(Conj):
+    def __init__(self, token, arg=None):
+        self.token = token
+        self.arg = arg
+
+    def conjoin(self, arg):
+        return CompleteConj(self.token, [self.arg, arg])
+
+    def signature(self):
+        return "rconj"
 
 class CompleteConj(Token):
     def __init__(self, token, args):
@@ -136,6 +149,19 @@ def set_objects(scene_objects):
     global arguments
     arguments = scene_objects
 
+
+
+def init_parser(objects):
+    global scene_objects
+    scene_objects = [name.lower() for name in objects]
+
+def replace_args(argument):
+    #if "wall" in argument.token:
+    #    return Argument("world_" + "_".join(argument.token.lower().split()), argument.mod)
+    if (argument.mod.adj + " " + argument.token).lower() in scene_objects:
+        return Argument((argument.mod.adj + " " + argument.token).lower(), argument.mod)
+    return argument
+    
 def tokenize(word):
     if word in relations:
         return Relation(word)
@@ -165,18 +191,20 @@ grammar["rel", "part"] = lambda rel, part: \
                          if len(rel.referents) > 0 else \
                             Relation(rel.token, rel.relatums, [Argument(part.token)])
 grammar["mod", "conj"] = lambda mod, conj: conj.conjoin(mod)
-grammar["conj", "arg"] = lambda conj, arg: conj.conjoin(arg)
+grammar["arg", "conj"] = lambda arg, conj: conj.conjoin(arg)
+grammar["conj", "arg"] = lambda conj, arg: RightConj(conj.token, arg)
 grammar["part", "part"] = lambda part1, part2: Argument(part1.token + " " + part2.token)
 grammar["arg", "part"] = lambda arg, part: Argument(arg.token + " " + part.token, arg.mod)
 grammar["rel", "compconj"] = lambda rel, compconj: Relation(rel.token, rel.relatums, compconj.args)
 grammar["rel", "rel"] = lambda rel1, rel2: rel2
 grammar["mod", "rel"] = lambda mod, rel: rel
+grammar["rel", "rconj"] = lambda rel, rconj: Relation(rel.token, rel.relatums, rconj.conjoin(rel.referents[0]).args)
 
 def parse(response):
     parse_stack = []
     response = response.lower().split()
         
-    print (response)
+    #print (response)
     
     response = [tokenize(item) for item in response if issubclass(type(tokenize(item)), Token)]
     #print (response)
@@ -197,9 +225,14 @@ def parse(response):
             idx += 1
             if idx < len(response):
                 current = response[idx]
-    print ("STACK: ", parse_stack)
+    #print ("STACK: ", parse_stack)
     for item in parse_stack:
         if type(item) is Relation:
+            #print (item)
+            #print (scene_objects)
+            item.relatums = [replace_args(arg) for arg in item.relatums]
+            item.referents = [replace_args(arg) for arg in item.referents]
+            #print (item)
             return item
     return None
     #for item in parse_stack:

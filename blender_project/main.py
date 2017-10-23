@@ -293,12 +293,12 @@ def touching(a, b):
 			return 1
 	return 0
 
-def to_the_right_of_extr(a, b):
+def to_the_right_of_deic(a, b):
 	center_a = a.get_bbox_centroid()
 	center_b = b.get_bbox_centroid()	
 	return sigmoid(center_b[1] - center_a[1], 1.0, 1.3)
 
-def to_the_left_of_extr(a, b):
+def to_the_left_of_deic(a, b):
 	return to_the_right_of_extr(b, a)
 
 def inside(a, b):
@@ -404,10 +404,11 @@ def add_props():
     scene.update()
     
 def get_entity_by_name(name):
-	for entity in entities:
-            
-		if entity.name.lower() == name:
-			return entity
+    for entity in entities:
+        #print(name, entity.name)
+        if entity.name.lower() == name:
+            return entity
+    return None
 
 def place_entity(entity, position=(0,0,0), rotation=(0,0,0)):
     obj = entity.constituents[0]
@@ -466,22 +467,40 @@ def save_screenshot():
     bpy.ops.render.render(write_still=True)
 
 
-def get_argument_entities(rel_constraint):
-    return [get_entity_by_name(ref) for ref in rel_constraint.refs]
+def get_argument_entities(arg):
+    #print ("ARG = ", arg, arg.mod.det, arg.mod.adj)
+    ret_val = [get_entity_by_name(arg.token)]    
+    if ret_val == [None]:
+        ret_val = []
+        if arg.mod != None and arg.mod.det == 'a':
+            #print (entities)
+            for entity in entities:
+                print ("ARG: ", arg.token, entity.name, entity.get_type_structure(), entity.color_mod)
+                if arg.token in entity.type_structure and (arg.mod.adj == "" or arg.mod.adj is None or entity.color_mod == arg.mod.adj):
+                    ret_val += [entity]
+    #print ("RETVAL: ", ret_val) 
+    return ret_val
+                
 
 def main():
     args = sys.argv[sys.argv.index("--") + 1:]
+    init_parser([entity.name for entity in entities])
     if len(args) != 2:
         result = "*RESULT: MALFORMED*"
     else:
+        print (args[1])
         rel_constraint = parse(args[1])
+        print (rel_constraint)
+        #print (rel_constraint)
+        refs = []
         if rel_constraint is None:
             return "*RESULT: NO RELATIONS*"
-        refs = [get_entity_by_name(ref) for ref in rel_constraint.referents]
-        print (refs)
+        for ref in rel_constraint.referents:
+            print (ref.token)
+            refs += get_argument_entities(ref)
+        print ([ref.name for ref in refs])
         relation = rel_constraint.token
         
-
         
         
         '''global types
@@ -525,20 +544,15 @@ def main():
         print (result)'''
 
 if __name__ == "__main__":
-    '''one = None
-    two = None
-    for entity in entities:
-        if entity.name == 'Block 1':
-            one = entity
-        elif entity.name == 'Block 2':
-            two = entity
-    arrange_entities((-4.5, 4.5, -4.5, 4.5, 0.51, 0.51), entities)'''
-   # save_screenshot()
+    # save_screenshot()
     #print (one, two)
     #print ([entity.name for entity in entities])
     #print (check_collision(entities[0], entities[8]))
-   # print (entities[0].get_span())
-   # print (entities[4].get_span())
+    # print (entities[0].get_span())
+    # print (entities[4].get_span())
+    #for entity in entities:
+    #    print ("CONST: ", entity.constituents[0].name)
+    #    print (entity.constituents[0]['id'], entity.get_type_structure())
     main()
 
 

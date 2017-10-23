@@ -116,7 +116,7 @@ class Entity:
 
     def get_type_structure(self):
         if not hasattr(self, 'type_structure') or self.type_structure is None:
-            if hasattr(self.constituents[0], 'id'):
+            if self.constituents[0].get('id') is not None:
                 self.type_structure = self.constituents[0]['id'].split(".")
             else: self.type_structure = None
         return self.type_structure
