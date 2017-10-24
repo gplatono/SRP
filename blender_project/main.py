@@ -1,5 +1,6 @@
 import bpy
 import bpy_types
+import bpy_extras
 import numpy
 import math
 from math import e, pi
@@ -480,7 +481,15 @@ def get_argument_entities(arg):
                     ret_val += [entity]
     #print ("RETVAL: ", ret_val) 
     return ret_val
-                
+
+
+def proj(obj, cam):
+    co_2d = bpy_extras.object_utils.world_to_camera_view(scene, cam, obj.location)
+    print("2D Coords:", co_2d)
+    render_scale = scene.render.resolution_percentage / 100
+    render_size = (int(scene.render.resolution_x * render_scale), int(scene.render.resolution_y * render_scale),)
+    print("Pixel Coords:", (round(co_2d.x * render_size[0]),round(co_2d.y * render_size[1]),))
+    return co_2d
 
 def main():
     args = sys.argv[sys.argv.index("--") + 1:]
@@ -500,6 +509,11 @@ def main():
             refs += get_argument_entities(ref)
         print ([ref.name for ref in refs])
         relation = rel_constraint.token
+        #print (bpy.context.scene.cursor_location)
+        for entity in entities:
+            if entity.name == "Table" and bpy.data.objects.get("Camera") is not None:
+                print (proj(entity.constituents[0], bpy.data.objects["Camera"]))
+        
         
         
         
