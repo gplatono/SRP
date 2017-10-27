@@ -27,7 +27,10 @@ relation_list = ['near', 'in', 'on' , 'touching', 'front', 'behind', 'right', 'l
 color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow', 'north', 'west', 'east']
 types = []
 
-rf_mapping = {'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside', 'touching': 'touching', 'right': 'to_the_right_of_extr', 'left': 'to_the_left_of_extr', 'at': 'at', 'front': 'in_front_of_extr', 'behind': 'behind_extr', 'between': 'between'}
+rf_mapping = {'to the left of': 'to_the_left_of_deic', 'to the right of': 'to_the_right_of_deic', 'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside', 'touching': 'touching', 'right': 'to_the_right_of_deic', 'left': 'to_the_left_of_deic', 'at': 'at', 'front': 'in_front_of_deic', 'behind': 'behind_deic', 'between': 'between'}
+
+entities = []
+avg_dist = 0
 
 def match_pattern(pattern, input_list):
 	#print (pattern, input_list)
@@ -192,13 +195,14 @@ def near(a, b):
     bbox_a = a.get_bbox()
     bbox_b = b.get_bbox()
     dist = dist_obj(a, b)
+    #print(dist)
     max_dim_a = max(bbox_a[7][0] - bbox_a[0][0],
                     bbox_a[7][1] - bbox_a[0][1],
                     bbox_a[7][2] - bbox_a[0][2])
     max_dim_b = max(bbox_b[7][0] - bbox_b[0][0],
                     bbox_b[7][1] - bbox_b[0][1],
                     bbox_b[7][2] - bbox_b[0][2])   
-    return 0.5 * (1 - min(1, dist / avg_dist) + e ** (- (0.005 * math.log(dist) / (max_dim_a + max_dim_b))))
+    return 0.5 * (1 - min(1, dist / avg_dist + 0.01) + e ** (- (0.005 * math.log(dist + 0.01) / (max_dim_a + max_dim_b + 0.01))))
 
 #determines whether a is between b and c
 def between(a, b, c):
@@ -257,7 +261,7 @@ def under(a, b):
 def closer_than(a, b, pivot):
     return 1 if point_distance(a.get_bbox(), pivot.get_bbox()) < point_distance(b.get_bbox(), pivot.get_bbox()) else 0
 
-def in_front_of_extr(a, b):
+def in_front_of_deic(a, b):
 #def in_front_of_extr(a, b, observer):
     bbox_a = a.get_bbox()
     max_dim_a = max(bbox_a[7][0] - bbox_a[0][0],
@@ -266,10 +270,10 @@ def in_front_of_extr(a, b):
     dist = get_distance_from_line(observer.get_bbox_centroid(), b.get_bbox_centroid(), a.get_bbox_centroid())
     return 0.5 * (closer_than(a, b, observer) + e ** (-dist / max_dim_a))
 
-def behind_extr(a, b):
-	return in_front_of_extr(b, a)
+def behind_deic(a, b):
+	return in_front_of_behind(b, a)
 
-def touching(a, b):	
+def touching(a, b):
 	bbox_a = a.get_bbox()
 	bbox_b = b.get_bbox()
 	center_a = a.get_bbox_centroid()
@@ -300,7 +304,7 @@ def to_the_right_of_deic(a, b):
 	return sigmoid(center_b[1] - center_a[1], 1.0, 1.3)
 
 def to_the_left_of_deic(a, b):
-	return to_the_right_of_extr(b, a)
+	return to_the_right_of_deic(b, a)
 
 def inside(a, b):
 	return 1
@@ -359,15 +363,6 @@ def gen_data(func_name):
                 index = index + 1
     data.close()
     
-entities = []
-for obj in scene.objects:
-    if obj.get('main') is not None:
-        entities.append(Entity(obj))
-if len(entities) != 0 :
-    avg_dist = 0
-    for pair in itertools.combinations(entities, r = 2):
-        avg_dist += dist_obj(pair[0], pair[1])
-    avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
 #scene.objects.link(bpy.data.objects.new('Observer', None))
 #scene.objects['Observer'].location = (-14, 0, 6)
 #scene.update()
@@ -400,14 +395,14 @@ def add_props():
     cam_ob.rotation_mode = 'XYZ'
     cam_ob.rotation_euler = (1.1, 0, -1.57)
     bpy.data.cameras['Camera'].lens = 20
-
+    
     bpy.context.scene.camera = scene.objects["Camera"]
     scene.update()
     
 def get_entity_by_name(name):
     for entity in entities:
         #print(name, entity.name)
-        if entity.name.lower() == name:
+        if entity.name.lower() == name.lower():
             return entity
     return None
 
@@ -470,7 +465,7 @@ def save_screenshot():
 
 def get_argument_entities(arg):
     #print ("ARG = ", arg, arg.mod.det, arg.mod.adj)
-    ret_val = [get_entity_by_name(arg.token)]    
+    ret_val = [get_entity_by_name(arg.token)]
     if ret_val == [None]:
         ret_val = []
         if arg.mod != None and arg.mod.det == 'a':
@@ -482,41 +477,90 @@ def get_argument_entities(arg):
     #print ("RETVAL: ", ret_val) 
     return ret_val
 
-
 def proj(obj, cam):
     co_2d = bpy_extras.object_utils.world_to_camera_view(scene, cam, obj.location)
     print("2D Coords:", co_2d)
     render_scale = scene.render.resolution_percentage / 100
     render_size = (int(scene.render.resolution_x * render_scale), int(scene.render.resolution_y * render_scale),)
     print("Pixel Coords:", (round(co_2d.x * render_size[0]),round(co_2d.y * render_size[1]),))
+    #print (type(obj.location))
     return co_2d
 
+def filter(entities, constraints):
+    return entities
+
+def eval_find(relation, rel_constraints, referents):
+    candidates = filter(entities, rel_constraints)
+    scores = []
+    if relation != "between":
+        scores = [(cand, cand.name, [globals()[rf_mapping[relation]](cand, ref) for ref in referents]) for cand in candidates]
+    max_score = 0
+    best_candidate = None
+    for ev in scores:
+        if ev[2][0] > max_score:
+            max_score = ev[2][0]
+            best_candidate = ev[0]
+    return best_candidate
+
+def process_truthjudg(relation, relatum, referent1, referent2, response):
+    print (relation, relatum, referent1, referent2, response)
+    relatum = get_entity_by_name(relatum)
+    referent1 = get_entity_by_name(referent1)
+    referent2 = get_entity_by_name(referent2)
+    print (relatum, referent1, referent2)
+    if relation != "between":
+        return globals()[rf_mapping[relation]](relatum, referent1)
+    else: return globals()[rf_mapping[relation]](relatum, referent1, referent2)
+
+def get_relatum_constraints(relatum, rel_constraints):
+    return [('type', relatum.get_type_structure()[-2])]
+
+def process_descr(relatum, response):
+    rel_constraint = parse(response)
+    relatum = get_entity_by_name(relatum)
+    print (rel_constraint)
+    refs = []
+    if rel_constraint is None:
+        return "*RESULT: NO RELATIONS*"
+    for ref in rel_constraint.referents:
+        print (ref.token)
+    refs += get_argument_entities(ref)
+    print ([ref.name for ref in refs])
+    relation = rel_constraint.token
+    #print (bpy.context.scene.cursor_location)
+    for entity in entities:
+        if entity.name == "Table" and bpy.data.objects.get("Camera") is not None:
+            print (proj(entity.constituents[0], bpy.data.objects["Camera"]))
+    return eval_find(relation, get_relatum_constraints(relatum, rel_constraint), refs)
+
 def main():
+    for obj in scene.objects:
+        if obj.get('main') is not None:
+            entities.append(Entity(obj))
+    global avg_dist
+    if len(entities) != 0:
+        for pair in itertools.combinations(entities, r = 2):
+            avg_dist += dist_obj(pair[0], pair[1])
+        avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
+
     args = sys.argv[sys.argv.index("--") + 1:]
     init_parser([entity.name for entity in entities])
-    if len(args) != 2:
+    if len(args) != 6:
         result = "*RESULT: MALFORMED*"
     else:
-        print (args[1])
-        rel_constraint = parse(args[1])
-        print (rel_constraint)
-        #print (rel_constraint)
-        refs = []
-        if rel_constraint is None:
-            return "*RESULT: NO RELATIONS*"
-        for ref in rel_constraint.referents:
-            print (ref.token)
-            refs += get_argument_entities(ref)
-        print ([ref.name for ref in refs])
-        relation = rel_constraint.token
-        #print (bpy.context.scene.cursor_location)
-        for entity in entities:
-            if entity.name == "Table" and bpy.data.objects.get("Camera") is not None:
-                print (proj(entity.constituents[0], bpy.data.objects["Camera"]))
+        relation = args[0]
+        relatum = args[1]
+        referent1 = args[2]
+        referent2 = args[3]
+        task_type = args[4]
+        response = args[5]
         
-        
-        
-        
+        if task_type == "1":
+            print(process_descr(relatum, response).name)
+        else:
+            print(process_truthjudg(relation, relatum, referent1, referent2, response))
+
+
         '''global types
         types = get_types()
         relatum = args[0].lower()
@@ -559,14 +603,6 @@ def main():
 
 if __name__ == "__main__":
     # save_screenshot()
-    #print (one, two)
-    #print ([entity.name for entity in entities])
-    #print (check_collision(entities[0], entities[8]))
-    # print (entities[0].get_span())
-    # print (entities[4].get_span())
-    #for entity in entities:
-    #    print ("CONST: ", entity.constituents[0].name)
-    #    print (entity.constituents[0]['id'], entity.get_type_structure())
     main()
 
 
