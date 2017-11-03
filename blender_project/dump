@@ -115,9 +115,7 @@ on the bookshelf###
 1000550:555:8:203:112.jpg:-:Black Block 1:-:null:1:on a blue block
 under a red block###
 1000551:551:8:200:110.jpg:-:Black Block 2:-:null:1:above a blue block
-above green block
-
-[REPETITION]###
+above green block###
 1000552:562:8:186:114.jpg:-:Green Block 12:-:null:1:to the left of a black block
 in front of a black block
 in front of a blue block###
@@ -883,7 +881,6 @@ in between a black block and a red block
 1000930:540:11:196:107.jpg:-:Red Block 7:-:null:1:below a green block###
 1000931:567:11:210:115.jpg:-:Blue Block 6:-:null:1:to the left of a green block
 to the right of a red block###
-1000932:556:11:203:112.jpg:-:Red Block 8:-:null:1:skip###
 1000933:575:11:188:200.jpg:-:Apple 1:-:null:1:in a bowl###
 1000934:634:11:217:125.jpg:-:Blue Block 4:-:null:1:on a red block###
 1000935:595:11:206:204.jpg:-:Cardbox 1:-:null:1:on a blue chair###
@@ -925,7 +922,7 @@ to the left of a blue chair###
 to the left of a green block###
 1000961:647:8:222:129.jpg:-:Blue Block 4:-:null:1:to the right of a green block###
 1000962:658:8:211:208.jpg:-:Poster 2:-:null:1:on the West wall
-abive a desk
+above a desk
 near a desk
 above a red book###
 1000963:619:8:221:121.jpg:-:Red Block 9:-:null:1:touching a green block
@@ -969,7 +966,8 @@ touching a blue block###
 1000978:632:8:217:125.jpg:-:Green Block 12:-:null:1:between a red block and a black block
 to the right of a red block###
 1000979:626:8:215:123.jpg:-:Green Block 12:-:null:1:on a red block###
-1000980:617:8:216:120.jpg:-:Blue Block 5:-:null:1:to the left of a green blockbehind a black block###
+1000980:617:8:216:120.jpg:-:Blue Block 5:-:null:1:to the left of a green block
+behind a black block###
 1000981:655:8:212:207.jpg:-:Laptop 2:-:null:1:on the bookshelf
 near the North wall###
 1000982:656:8:212:207.jpg:-:Ceiling Light 2:-:null:1:above the sofa
@@ -2181,7 +2179,8 @@ under a green block
 between a black block and a red block###
 1001894:653:11:212:207.jpg:-:Blue Chair 2:-:null:1:in front of a table
 ###
-1001895:667:11:223:118.jpg:-:Blue Block 4:-:null:1:in front of a green block to the right of a red block###
+1001895:667:11:223:118.jpg:-:Blue Block 4:-:null:1:in front of a green block
+ to the right of a red block###
 1001896:544:11:205:108.jpg:-:Black Block 3:-:null:1:under a blue block
 between a green block and a blue block###
 1001897:554:11:193:111.jpg:-:Blue Block 4:-:null:1:behind a black block near a green block###

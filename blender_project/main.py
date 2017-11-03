@@ -24,7 +24,7 @@ link = False
 scene = bpy.context.scene
 
 relation_list = ['near', 'in', 'on' , 'touching', 'front', 'behind', 'right', 'left', 'at', 'over', 'under', 'above', 'below', 'between']
-color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow', 'north', 'west', 'east']
+color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow']
 types = []
 
 rf_mapping = {'to the left of': 'to_the_left_of_deic', 'to the right of': 'to_the_right_of_deic', 'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside', 'touching': 'touching', 'right': 'to_the_right_of_deic', 'left': 'to_the_left_of_deic', 'at': 'at', 'front': 'in_front_of_deic', 'behind': 'behind_deic', 'between': 'between'}
@@ -400,6 +400,10 @@ def add_props():
     scene.update()
     
 def get_entity_by_name(name):
+    for col in color_mods:
+        if col in name:
+            name = name.replace(col + " ", "")
+            print ("MOD NAME:", name)
     for entity in entities:
         #print(name, entity.name)
         if entity.name.lower() == name.lower():
@@ -487,13 +491,29 @@ def proj(obj, cam):
     return co_2d
 
 def filter(entities, constraints):
-    return entities
+    result = []
+    print ("COLOR_MOD", constraints[1][1])
+    for entity in entities:
+        isPass = True
+        #print ("ENT_COLOR_MOD", entity.color_mod)
+        for cons in constraints:
+            if cons[0] == 'type' and entity.get_type_structure()[-2] != cons[1]:
+                isPass = False
+            elif cons[0] == 'color_mod' and entity.color_mod != cons[1]:
+                isPass = False
+        if isPass:
+            result.append(entity)
+    return result
 
 def eval_find(relation, rel_constraints, referents):
     candidates = filter(entities, rel_constraints)
     scores = []
     if relation != "between":
         scores = [(cand, cand.name, [globals()[rf_mapping[relation]](cand, ref) for ref in referents]) for cand in candidates]
+    else:
+        return None ####FIX THIS LATER!!!
+    for sc in scores:
+        print ("CAND:", sc[1], sc[2])
     max_score = 0
     best_candidate = None
     for ev in scores:
@@ -513,12 +533,16 @@ def process_truthjudg(relation, relatum, referent1, referent2, response):
     else: return globals()[rf_mapping[relation]](relatum, referent1, referent2)
 
 def get_relatum_constraints(relatum, rel_constraints):
-    return [('type', relatum.get_type_structure()[-2])]
+    print ("RELATUM TYPE:", relatum.get_type_structure()[-2])
+    ret_val = [('type', relatum.get_type_structure()[-2]), ('color_mod', relatum.color_mod)]
+    return ret_val
 
 def process_descr(relatum, response):
     rel_constraint = parse(response)
+    print ("RELATUM:", relatum)
     relatum = get_entity_by_name(relatum)
-    print (rel_constraint)
+    print ("RELATUM:", relatum.name)
+    print ("RESPONSE:", response)
     refs = []
     if rel_constraint is None:
         return "*RESULT: NO RELATIONS*"
@@ -527,10 +551,9 @@ def process_descr(relatum, response):
     refs += get_argument_entities(ref)
     print ([ref.name for ref in refs])
     relation = rel_constraint.token
-    #print (bpy.context.scene.cursor_location)
-    for entity in entities:
-        if entity.name == "Table" and bpy.data.objects.get("Camera") is not None:
-            print (proj(entity.constituents[0], bpy.data.objects["Camera"]))
+    #for entity in entities:
+    #    if entity.name == "Table" and bpy.data.objects.get("Camera") is not None:
+    #        print (proj(entity.constituents[0], bpy.data.objects["Camera"]))
     return eval_find(relation, get_relatum_constraints(relatum, rel_constraint), refs)
 
 def main():
@@ -548,17 +571,20 @@ def main():
     if len(args) != 6:
         result = "*RESULT: MALFORMED*"
     else:
-        relation = args[0]
-        relatum = args[1]
-        referent1 = args[2]
-        referent2 = args[3]
-        task_type = args[4]
-        response = args[5]
+        relation = args[0].lower()
+        relatum = args[1].lower()
+        referent1 = args[2].lower()
+        referent2 = args[3].lower()
+        task_type = args[4].lower()
+        response = args[5].lower()
         
         if task_type == "1":
-            print(process_descr(relatum, response).name)
+            best_cand = process_descr(relatum, response)
+            if best_cand != None:
+                print(process_descr(relatum, response).name, "==?", relatum)
+            print("RESULT:", get_entity_by_name(relatum) == best_cand)
         else:
-            print(process_truthjudg(relation, relatum, referent1, referent2, response))
+            print("RESULT:", process_truthjudg(relation, relatum, referent1, referent2, response))
 
 
         '''global types
