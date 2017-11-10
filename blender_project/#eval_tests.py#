@@ -112,7 +112,7 @@ for subm in open('annotations').readlines():
         ur_relations[user][testcase] = resp_code
     else:
         ur_yn[user][testcase] = resp#yn_to_index[resp]
-    tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]
+    tests += [u[scene_path, relation, relatum, referent1, referent2, task_type, resp]]
 
 #Interannotator agreement
 print(ur_yn.keys())

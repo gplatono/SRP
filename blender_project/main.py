@@ -8,6 +8,7 @@ import itertools
 import os
 import sys
 import random
+from functools import reduce
 
 filepath = os.path.dirname(os.path.abspath(__file__)) + "/"
 print (filepath)
@@ -30,6 +31,7 @@ types = []
 rf_mapping = {'to the left of': 'to_the_left_of_deic', 'to the right of': 'to_the_right_of_deic', 'near': 'near', 'on': 'on', 'above': 'above', 'below': 'below', 'over': 'over', 'under': 'under', 'in': 'inside', 'touching': 'touching', 'right': 'to_the_right_of_deic', 'left': 'to_the_left_of_deic', 'at': 'at', 'front': 'in_front_of_deic', 'behind': 'behind_deic', 'between': 'between'}
 
 entities = []
+observer = None
 avg_dist = 0
 
 def match_pattern(pattern, input_list):
@@ -98,42 +100,6 @@ def parse_response(response):
 			else:
 				parse_stack.append(arg)
 	return parse_stack
-
-'''def parse_response(response):
-	ret_val = []
-	relation = {'relation': None, 'relatum_mod': None, 'relatum_type': None, 'referents': [], 'color_mod': []}
-	response = response.lower()
-	rel_count = 0
-	color_count = 0
-	curr_color = None
-	for word in response.split():
-		if word in relation_list:
-			if relation['relation'] is not None:
-				ret_val.append(relation)
-			relation = {'relation': word, 'relatum_mod': None, 'relatum_type': None, 'referents': [], 'color_mod': []}
-			rel_count = rel_count + 1
-			curr_color = None
-		elif word in color_mods:
-			if rel_count >= 1:
-				ret_val['color_mod'].append(word)
-				curr_color = word
-				color_count = color_count + 1
-		elif rel_count >= 1:
-			for entity in entities:
-				name = entity.name.lower().split()
-				print ("*", word, entity.get_type_structure(), curr_color, entity.get_color_mod())
-				if name[0] == word and match_pattern(name, response[response.index(word):]) or word in entity.get_type_structure():			
-					if curr_color == None or curr_color == entity.get_color_mod():
-						ret_val['referents'].append(entity)					
-	return ret_val'''
-
-#with bpy.data.libraries.load(filepath + "001_table.blend", link = link) as (data_from, data_to):
-#    data_to.objects = data_from.objects
-#ob = None
-#for obj in data_to.objects:
-#    scene.objects.link(obj)
-#    if obj.get('main') is not None:
-#        ob = obj
 
 def dist_obj(a, b):
     if type(a) is not Entity or type(b) is not Entity:
@@ -298,10 +264,7 @@ def touching(a, b):
 			return 1
 	return 0
 
-def to_the_right_of_deic(a, b):
-	center_a = a.get_bbox_centroid()
-	center_b = b.get_bbox_centroid()	
-	return sigmoid(center_b[1] - center_a[1], 1.0, 1.3)
+
 
 def to_the_left_of_deic(a, b):
 	return to_the_right_of_deic(b, a)
@@ -363,18 +326,8 @@ def gen_data(func_name):
                 index = index + 1
     data.close()
     
-#scene.objects.link(bpy.data.objects.new('Observer', None))
-#scene.objects['Observer'].location = (-14, 0, 6)
-#scene.update()
-#observer = Entity(scene.objects['Observer'])
-#observer.set_frontal(-scene.objects['Observer'].location)
-#observer.set_longitudinal((0, 1, 4))        
 
-#gen_data("above")
-#gen_data("near")
-#gen_data("on")
-
-def add_props():
+def get_observer():
     lamp = bpy.data.lamps.new("Lamp", type = 'POINT')
     lamp.energy = 30
     cam = bpy.data.cameras.new("Camera")
@@ -396,8 +349,9 @@ def add_props():
     cam_ob.rotation_euler = (1.1, 0, -1.57)
     bpy.data.cameras['Camera'].lens = 20
     
-    bpy.context.scene.camera = scene.objects["Camera"]
+    bpy.context.scene.camera = scene.objects["Camera"]    
     scene.update()
+    return cam_ob
     
 def get_entity_by_name(name):
     for col in color_mods:
@@ -481,14 +435,15 @@ def get_argument_entities(arg):
     #print ("RETVAL: ", ret_val) 
     return ret_val
 
-def proj(obj, cam):
-    co_2d = bpy_extras.object_utils.world_to_camera_view(scene, cam, obj.location)
-    print("2D Coords:", co_2d)
+#Computes the projection of an entity onto the observer's visual plane
+def vp_project(entity, observer):
+    points = reduce((lambda x,y: x + y), [[obj.matrix_world * v.co for v in obj.data.vertices] for obj in entity.constituents if (obj is not None and hasattr(obj.data, 'vertices') and hasattr(obj, 'matrix_world'))])
+    #print (points)
+    co_2d = [bpy_extras.object_utils.world_to_camera_view(scene, observer, point) for point in points]
     render_scale = scene.render.resolution_percentage / 100
     render_size = (int(scene.render.resolution_x * render_scale), int(scene.render.resolution_y * render_scale),)
-    print("Pixel Coords:", (round(co_2d.x * render_size[0]),round(co_2d.y * render_size[1]),))
-    #print (type(obj.location))
-    return co_2d
+    pixel_coords = [(round(point.x * render_size[0]),round(point.y * render_size[1]),) for point in co_2d]
+    return pixel_coords
 
 def filter(entities, constraints):
     result = []
@@ -556,6 +511,49 @@ def process_descr(relatum, response):
     #        print (proj(entity.constituents[0], bpy.data.objects["Camera"]))
     return eval_find(relation, get_relatum_constraints(relatum, rel_constraint), refs)
 
+def scaled_axial_distance(a_bbox, b_bbox):
+    a_span = (a_bbox[1] - a_bbox[0], a_bbox[3] - a_bbox[2])
+    b_span = (b_bbox[1] - b_bbox[0], b_bbox[3] - b_bbox[2])
+    a_center = ((a_bbox[0] + a_bbox[1]) / 2, (a_bbox[2] + a_bbox[3]) / 2)
+    b_center = ((b_bbox[0] + b_bbox[1]) / 2, (b_bbox[2] + b_bbox[3]) / 2)
+    axis_dist = (a_center[0] - b_center[0], a_center[1] - b_center[1])
+    return (axis_dist[0] / max(a_span[0] + b_span[0], 1), axis_dist[1] / max(a_span[1] + b_span[1], 1))
+
+def get_weighted_measure(a, b, observer):
+    a_bbox = get_2d_bbox(vp_project(a, observer))
+    b_bbox = get_2d_bbox(vp_project(b, observer))
+    axial_dist = scaled_axial_distance(a_bbox, b_bbox)
+    if axial_dist[0] <= 0:
+        return 0
+    horizontal_component = sigmoid(axial_dist[0], 1.0, 0.5) - 0.5
+    vertical_component = gaussian(axial_dist[1], 0, 2.0)
+    distance_factor = math.exp(-0.01 * axial_dist[0])
+    return 0.5 * horizontal_component + 0.3 * vertical_component + 0.2 * distance_factor
+
+def asym_inv_exp(x, left, right, left_cutoff):
+    return math.exp(- right * x**2) if x >= 0 else max(0, x
+
+def to_the_right_of_deic(a, b, observer):
+    a_bbox = get_2d_bbox(vp_project(a, observer))
+    #print (center_a)
+    b_bbox = get_2d_bbox(vp_project(b, observer))
+    print (a_bbox, b_bbox)
+    axial_dist = scaled_axial_distance(a_bbox, b_bbox)
+    print (axial_dist)
+    if axial_dist[0] <= 0:
+        return 0
+    horizontal_component = asym_inv_exp(axial_dist[0] - 0.5, 10, )#sigmoid(axial_dist[0], 2.0, 5.0) - 1.0
+    vertical_component = math.exp(- axial_dist[1]**2)
+    distance_factor = math.exp(- 0.1 * axial_dist[0])
+    print ("Hor:", horizontal_component, "VERT:", vertical_component, "DIST:", distance_factor)
+    weighted_measure = 0.7 * horizontal_component + 0.3 * vertical_component# + 0.2 * distance_factor
+    return weighted_measure
+        #for entity in entities:
+        #    if entity != a and entity != b:
+        
+                
+                
+
 def main():
     for obj in scene.objects:
         if obj.get('main') is not None:
@@ -566,7 +564,17 @@ def main():
             avg_dist += dist_obj(pair[0], pair[1])
         avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
 
-    args = sys.argv[sys.argv.index("--") + 1:]
+
+
+    observer = get_observer()
+    #print(vp_project(entities[0], observer))    
+    #picture 2 red chair 1#print (entities[5].name, entities[0].name)
+    for entity1 in entities:
+        for entity2 in entities:
+            if entity1.name == 'Red Chair 2' and entity2.name == 'Table':
+                print (entity1.name, entity2.name)
+                print (to_the_right_of_deic(entity1, entity2, observer))
+    '''args = sys.argv[sys.argv.index("--") + 1:]
     init_parser([entity.name for entity in entities])
     if len(args) != 6:
         result = "*RESULT: MALFORMED*"
@@ -585,47 +593,8 @@ def main():
             print("RESULT:", get_entity_by_name(relatum) == best_cand)
         else:
             print("RESULT:", process_truthjudg(relation, relatum, referent1, referent2, response))
+'''
 
-
-        '''global types
-        types = get_types()
-        relatum = args[0].lower()
-        raw_response = args[1].lower()
-        relatum = relatum.replace('cube', 'block')
-        raw_response = raw_response.replace('cube', 'block')
-        relatum = get_entity_by_name(relatum)
-        response = parse_response(raw_response)
-        for item in response:
-            if type(item) is Relation:
-                ref_list = []
-                for entity in entities:
-                    for ref in item.referent_list:
-                        if ref.token in entity.get_type_structure() and (ref.color_mod is None or ref.color_mod.token == entity.color_mod) and entity not in ref_list:
-                            ref_list.append(entity)
-                            #print (item.referent_list, ref_list)
-                            item.entity_list = ref_list
-
-        print ("*ORIGINAL: ", relatum.name, ", " ,raw_response)
-        print ("*PARSED STRUCTURE: ", [r.readable() for r in response])
-        best_target_value = 0
-        for item in response:
-            if type(item) is Relation:
-                best_candidate = None
-                target_value = 0
-                best_target_value = 0
-                for entity in item.entity_list:
-                    if id(relatum) != id(entity):
-                        target_value = globals()[rf_mapping[item.token]](relatum, entity)
-                        if target_value > best_target_value:
-                            best_target_value = target_value
-                            best_candidate = entity
-                            #print (best_candidate)
-            print ("*FINAL: ", relatum.name, item.token, best_candidate.name, best_target_value)
-        result = "*RESULT: OK*"
-        for item in response:
-            if type(item) is Relation:
-                print ('*RELATION:', item.token, best_target_value, '*')
-        print (result)'''
 
 if __name__ == "__main__":
     # save_screenshot()
