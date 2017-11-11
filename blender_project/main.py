@@ -266,8 +266,6 @@ def touching(a, b):
 
 
 
-def to_the_left_of_deic(a, b):
-	return to_the_right_of_deic(b, a)
 
 def inside(a, b):
 	return 1
@@ -517,7 +515,7 @@ def scaled_axial_distance(a_bbox, b_bbox):
     a_center = ((a_bbox[0] + a_bbox[1]) / 2, (a_bbox[2] + a_bbox[3]) / 2)
     b_center = ((b_bbox[0] + b_bbox[1]) / 2, (b_bbox[2] + b_bbox[3]) / 2)
     axis_dist = (a_center[0] - b_center[0], a_center[1] - b_center[1])
-    return (axis_dist[0] / max(a_span[0] + b_span[0], 1), axis_dist[1] / max(a_span[1] + b_span[1], 1))
+    return (2 * axis_dist[0] / max(a_span[0] + b_span[0], 2), 2 * axis_dist[1] / max(a_span[1] + b_span[1], 2))
 
 def get_weighted_measure(a, b, observer):
     a_bbox = get_2d_bbox(vp_project(a, observer))
@@ -530,28 +528,50 @@ def get_weighted_measure(a, b, observer):
     distance_factor = math.exp(-0.01 * axial_dist[0])
     return 0.5 * horizontal_component + 0.3 * vertical_component + 0.2 * distance_factor
 
-def asym_inv_exp(x, left, right, left_cutoff):
-    return math.exp(- right * x**2) if x >= 0 else max(0, x
+def asym_inv_exp(x, cutoff, left, right):
+    return math.exp(- right * (x - cutoff)**2) if x >= cutoff else max(0, left * (x/cutoff) ** 3)
 
-def to_the_right_of_deic(a, b, observer):
+def asym_inv_exp_left(x, cutoff, left, right):
+    return math.exp(- left * (x - cutoff)**2) if x < cutoff else max(0, right * (x/cutoff) ** 3)
+
+def to_the_right_of_deic(a, b):
     a_bbox = get_2d_bbox(vp_project(a, observer))
     #print (center_a)
     b_bbox = get_2d_bbox(vp_project(b, observer))
-    print (a_bbox, b_bbox)
+    #print (a_bbox, b_bbox)
     axial_dist = scaled_axial_distance(a_bbox, b_bbox)
-    print (axial_dist)
+    #print (axial_dist)
     if axial_dist[0] <= 0:
         return 0
-    horizontal_component = asym_inv_exp(axial_dist[0] - 0.5, 10, )#sigmoid(axial_dist[0], 2.0, 5.0) - 1.0
+    #print (axial_dist)
+    horizontal_component = asym_inv_exp(axial_dist[0], 1, 1, 0.1)#sigmoid(axial_dist[0], 2.0, 5.0) - 1.0
     vertical_component = math.exp(- axial_dist[1]**2)
     distance_factor = math.exp(- 0.1 * axial_dist[0])
     print ("Hor:", horizontal_component, "VERT:", vertical_component, "DIST:", distance_factor)
-    weighted_measure = 0.7 * horizontal_component + 0.3 * vertical_component# + 0.2 * distance_factor
+    weighted_measure = 0.6 * horizontal_component + 0.4 * vertical_component# + 0.2 * distance_factor
     return weighted_measure
         #for entity in entities:
         #    if entity != a and entity != b:
-        
-                
+
+def to_the_left_of_deic(a, b):
+    a_bbox = get_2d_bbox(vp_project(a, observer))
+    #print (center_a)
+    b_bbox = get_2d_bbox(vp_project(b, observer))
+    #print (a_bbox, b_bbox)
+    axial_dist = scaled_axial_distance(a_bbox, b_bbox)
+    #print (axial_dist)
+    if axial_dist[0] >= 0:
+        return 0
+    #print (axial_dist)
+    horizontal_component = asym_inv_exp_left(axial_dist[0], -1, 0.1, 1)#sigmoid(axial_dist[0], 2.0, 5.0) - 1.0
+    vertical_component = math.exp(- axial_dist[1]**2)
+    distance_factor = math.exp(- 0.1 * axial_dist[0])
+    print ("Hor:", horizontal_component, "VERT:", vertical_component, "DIST:", distance_factor)
+    weighted_measure = 0.6 * horizontal_component + 0.4 * vertical_component# + 0.2 * distance_factor
+    return weighted_measure
+        #for entity in entities:
+        #    if entity != a and entity != b:
+
                 
 
 def main():
@@ -564,17 +584,17 @@ def main():
             avg_dist += dist_obj(pair[0], pair[1])
         avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
 
-
-
+    global observer
     observer = get_observer()
     #print(vp_project(entities[0], observer))    
     #picture 2 red chair 1#print (entities[5].name, entities[0].name)
-    for entity1 in entities:
+    '''for entity1 in entities:
         for entity2 in entities:
-            if entity1.name == 'Red Chair 2' and entity2.name == 'Table':
+            if entity1.name != entity2.name:
                 print (entity1.name, entity2.name)
-                print (to_the_right_of_deic(entity1, entity2, observer))
-    '''args = sys.argv[sys.argv.index("--") + 1:]
+                print ("RIGHT:", to_the_right_of_deic(entity1, entity2, observer))
+                print ("LEFT:", to_the_left_of_deic(entity1, entity2, observer))'''
+    args = sys.argv[sys.argv.index("--") + 1:]
     init_parser([entity.name for entity in entities])
     if len(args) != 6:
         result = "*RESULT: MALFORMED*"
@@ -593,7 +613,6 @@ def main():
             print("RESULT:", get_entity_by_name(relatum) == best_cand)
         else:
             print("RESULT:", process_truthjudg(relation, relatum, referent1, referent2, response))
-'''
 
 
 if __name__ == "__main__":

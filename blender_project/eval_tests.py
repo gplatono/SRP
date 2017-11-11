@@ -89,6 +89,7 @@ dict["0"] = 0
 tcounts = {}
 ur_yn = {}
 ur_relations = {}
+system_yn = {}
 for subm in open('annotations').readlines():
 #    print (subm)
     subm = subm.strip().split(":")
@@ -112,31 +113,54 @@ for subm in open('annotations').readlines():
         ur_relations[user][testcase] = resp_code
     else:
         ur_yn[user][testcase] = resp#yn_to_index[resp]
-    tests += [u[scene_path, relation, relatum, referent1, referent2, task_type, resp]]
+    tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]
 
-#Interannotator agreement
-print(ur_yn.keys())
-keys = [key for key in iter(ur_yn)]
-for us1 in range(len(keys)):
-    for us2 in range(us1, len(keys)):
-        if us1 != us2:            
-            weighted_cohen_kappa(ur_yn[keys[us1]], ur_yn[keys[us2]])
-            
-desc_corr = 0
-total_succ = 0
-print ("description task resp:", dict["1"], "\ntruth judgment task resp:", dict["0"], "\n# of responses:", len(tests), count, "testcases: ", len(tcounts))
-for test in tests:    
-    if test[5] == "1":
-        subprocess.call(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
-        '''res = subprocess.check_output(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
+    
+    if task_type == "0" and (relation == "to the left of" or relation == "to the right of"):
+        print ("ID:", subm[0].split("=")[1])
+        #subprocess.call(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
+        res = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
         res = res.decode("utf-8").split("\n")
         print (res)
         for item in res:
             if "RESULT" in item:
                 res = item.split(":")[1]
-                break        
+                break
+        res = float(res)
+        res = math.floor(5 * res)
+        print ("RESULT:", res, "USER RESULT:", ur_yn[user][testcase])
+        system_yn[testcase] = res
+
+for user in ur_yn:
+    print (weighted_cohen_kappa(ur_yn[user], system_yn))
+        
+#Interannotator agreement
+'''print(ur_yn.keys())
+keys = [key for key in iter(ur_yn)]
+for us1 in range(len(keys)):
+    for us2 in range(us1, len(keys)):
+        if us1 != us2:            
+            weighted_cohen_kappa(ur_yn[keys[us1]], ur_yn[keys[us2]])
+'''         
+desc_corr = 0
+total_succ = 0
+print ("description task resp:", dict["1"], "\ntruth judgment task resp:", dict["0"], "\n# of responses:", len(tests), count, "testcases: ", len(tcounts))
+'''for test in tests:
+    print (test)
+    if test[5] == "0" and (test[1] == "to the left of" or test[1] == "to the right of"):
+        #subprocess.call(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
+        res = subprocess.check_output(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
+        res = res.decode("utf-8").split("\n")
+        print (res)
+        for item in res:
+            if "RESULT" in item:
+                res = item.split(":")[1]
+                break
+        print (res)
+        
         if res == " True" or res == " False":
             total_succ += 1
             if res == " True":
                 desc_corr += 1
-            print ("TEST RESULT:", test[2], res, desc_corr, 100.0 * desc_corr / total_succ)'''
+            print ("TEST RESULT:", test[2], res, desc_corr, 100.0 * desc_corr / total_succ)
+'''
