@@ -25,6 +25,7 @@ class Entity:
         self.longitudinal = []
         self.frontal = []
         self.parent_offset = self.get_parent_offset()
+        self.total_mesh = self.get_total_mesh()
         queue = [main]
         while len(queue) != 0:
             par = queue[0]
@@ -135,3 +136,12 @@ class Entity:
             return self.constituents[0].location.x - span[0], self.constituents[0].location.y - span[2], self.constituents[0].location.z - span[4]
         else:
             return None
+
+
+    def get_total_mesh(self):
+        if not hasattr(self, 'total_mesh'):
+            vertices = []
+            for obj in self.constituents:
+                vertices += [obj.matrix_world * v.co for v in obj.data.vertices]
+            self.total_mesh = vertices
+        return self.total_mesh

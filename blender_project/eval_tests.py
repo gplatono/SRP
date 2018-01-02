@@ -34,15 +34,22 @@ def weighted_cohen_kappa(resp1, resp2):
     for i in range(weights.shape[0]):
         for j in range(weights.shape[1]):
             weights[i][j] = abs(i - j)
-    y1 = []
-    y2 = []
-    for testcase in resp1:
-        if testcase in resp2:
-            y1 += [resp1[testcase]]
-            y2 += [resp2[testcase]]
+    y1 = [resp1[testcase] for testcase in resp1 if testcase in resp2]
+    y2 = [resp2[testcase] for testcase in resp1 if testcase in resp2]
+
     #print (y1, y2)
-    y1 = [yn_to_index[y] for y in y1]
-    y2 = [yn_to_index[y] for y in y2]
+    
+    #y1 = []
+    #y2 = []
+    
+    #for testcase in resp1:
+    #    if testcase in resp2:
+    #        y1 += [resp1[testcase]]
+    #        y2 += [resp2[testcase]]
+    
+    #print (y1, y2)
+    #y1 = [yn_to_index[y] for y in y1]
+    #y2 = [yn_to_index[y] for y in y2]
 
     if len(y1) > 0 and len(y2) > 0:
         resp_distr = np.zeros((5, 5))
@@ -51,10 +58,18 @@ def weighted_cohen_kappa(resp1, resp2):
         total_resp = np.sum(resp_distr)
         observed_agreement = sum([resp_distr[i][i] for i in range(resp_distr.shape[0])]) * 1.0
         observed_agreement /= total_resp
-        total_coincidence = 1.0 * sum([np.sum(resp_distr[i:]) * np.sum(resp_distr[:i]) for i in range(resp_distr.shape[0])])
+        total_coincidence = 1.0 * sum([np.sum(resp_distr[i,:]) * np.sum(resp_distr[:,i]) for i in range(resp_distr.shape[0])])
         total_coincidence /= total_resp * total_resp
         kappa = (observed_agreement - total_coincidence) / (1 - total_coincidence)
-        print (resp_distr, total_resp, total_coincidence, observed_agreement, kappa)
+        num = 0
+        denom = 0
+        for i in range(5):
+            for j in range(5):
+                num += weights[i][j] * resp_distr[i][j]
+                denom += weights[i][j] * np.sum(resp_distr[i,:]) * np.sum(resp_distr[:,j])
+        weighted_kappa = 1 - total_resp * 1.0 * num / denom
+        print (resp_distr, total_resp, total_coincidence, observed_agreement, "Kappa:", kappa, "weighted kappa:", weighted_kappa)
+        return weighted_kappa
 
 def cohen_kappa(resp1, resp2):
     y1 = []
@@ -90,6 +105,7 @@ tcounts = {}
 ur_yn = {}
 ur_relations = {}
 system_yn = {}
+test_counter =0
 for subm in open('annotations').readlines():
 #    print (subm)
     subm = subm.strip().split(":")
@@ -107,17 +123,18 @@ for subm in open('annotations').readlines():
         ur_yn[user] = {}
     if user not in ur_relations:
         ur_relations[user] = {}    
-    resp_code = map_response_to_index(resp)
+    #resp_code = map_response_to_index(resp)
 #    print ("RESP_CODE:", resp_code)
-    if resp_code != -1:
-        ur_relations[user][testcase] = resp_code
-    else:
-        ur_yn[user][testcase] = resp#yn_to_index[resp]
-    tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]
-
-    
-    if task_type == "0" and (relation == "to the left of" or relation == "to the right of"):
-        print ("ID:", subm[0].split("=")[1])
+    #if task_type == 1: #resp_code != -1:
+    #    ur_relations[user][testcase] = map_response_to_index(resp)
+    #else:
+    if task_type == '0':
+        #print ("ID:", subm[0].split("=")[1], resp, user, testcase)
+        ur_yn[user][testcase] = yn_to_index[resp]#resp#yn_to_index[resp]
+    tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]    
+    if task_type == "0" and (relation == "above" or relation == "below" or relation == "to the left of" or relation == "to the right of"):        
+        print ("ID:", subm[0].split("=")[1], resp, user, testcase)
+        #print (ur_yn[user][testcase])
         #subprocess.call(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
         res = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
         res = res.decode("utf-8").split("\n")
@@ -130,18 +147,31 @@ for subm in open('annotations').readlines():
         res = math.floor(5 * res)
         print ("RESULT:", res, "USER RESULT:", ur_yn[user][testcase])
         system_yn[testcase] = res
+        #test_counter += 1
+        #if test_counter == 10:
+        #    break
 
-for user in ur_yn:
-    print (weighted_cohen_kappa(ur_yn[user], system_yn))
-        
+       
 #Interannotator agreement
-'''print(ur_yn.keys())
+print(ur_yn.keys())
+avg = 0
+tot = 0
 keys = [key for key in iter(ur_yn)]
 for us1 in range(len(keys)):
     for us2 in range(us1, len(keys)):
-        if us1 != us2:            
-            weighted_cohen_kappa(ur_yn[keys[us1]], ur_yn[keys[us2]])
-'''         
+        if us1 != us2:
+            print (keys[us1], keys[us2])
+            result = weighted_cohen_kappa(ur_yn[keys[us1]], ur_yn[keys[us2]])
+            if result is not None:
+                avg += result
+                tot += 1
+print ("AVG KAPPA:", 1.0 * avg / tot)
+
+for user in ur_yn:
+    print ("USER:", user)
+    print (weighted_cohen_kappa(ur_yn[user], system_yn))
+
+         
 desc_corr = 0
 total_succ = 0
 print ("description task resp:", dict["1"], "\ntruth judgment task resp:", dict["0"], "\n# of responses:", len(tests), count, "testcases: ", len(tcounts))

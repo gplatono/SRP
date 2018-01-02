@@ -147,17 +147,23 @@ def get_planar_orientation(a):
         return (0, 1, 0)
     else: return (0, 0, 1)
 
-def above(a, b):
-    bbox_a = a.get_bbox()
-    bbox_b = b.get_bbox()
-    center_a = a.get_bbox_centroid()
-    center_b = b.get_bbox_centroid()
-    return 0.33333 * (max(int(bbox_a[0][2] > bbox_b[7][2]), e ** (- math.fabs(bbox_a[0][2] - bbox_b[7][2]))) + sigmoid(5 * (center_a[2] - center_b[2]) / (0.01 + bbox_a[7][2] - bbox_a[0][2] + bbox_b[7][2] - bbox_b[0][2]), 1, 1) + get_proj_intersection(a, b))
+def get_frame_size():
+    max_x = -100
+    min_x = 100
+    max_y = -100
+    min_y = 100
+    max_z = -100
+    min_z = 100
+    for entity in entities:
+        max_x = max(max_x, entity.span[1])
+        min_x = min(min_x, entity.span[0])
+        max_y = max(max_y, entity.span[3])
+        min_y = min(min_y, entity.span[2])
+        max_z = max(max_z, entity.span[5])
+        min_z = min(min_z, entity.span[4])
+    return max(max_x - min_x, max_y - min_y, max_z - min_z)
     
-def below(a, b):
-    return above(b, a)
-
-def near(a, b):
+def near_raw(a, b):
     bbox_a = a.get_bbox()
     bbox_b = b.get_bbox()
     dist = dist_obj(a, b)
@@ -167,8 +173,30 @@ def near(a, b):
                     bbox_a[7][2] - bbox_a[0][2])
     max_dim_b = max(bbox_b[7][0] - bbox_b[0][0],
                     bbox_b[7][1] - bbox_b[0][1],
-                    bbox_b[7][2] - bbox_b[0][2])   
-    return 0.5 * (1 - min(1, dist / avg_dist + 0.01) + e ** (- (0.005 * math.log(dist + 0.01) / (max_dim_a + max_dim_b + 0.01))))
+                    bbox_b[7][2] - bbox_b[0][2])
+    if a.get('planar') is not None:
+        dist = min(dist, get_planar_distance_scaled(a, b))
+    elif b.get('planat') is not None:
+        dist = min(dist, get_planar_distance_scaled(b, a))
+    elif a.get('vertical_rod') is not None or a.get('horizontal_rod') is not None:
+        dist = min(dist, get_line_distance_scaled(a, b))
+    elif b.get('vertical_rod') is not None or b.get('horizontal_rod') is not None:
+        dist = min(dist, get_line_distance_scaled(b, a))
+    elif a.get('concave') is not None or b.get('concave') is not None:
+        dist = min(dist, closest_mesh_distance_scaled(a, b))
+
+    fr_size = get_frame_size()
+    return 0.5 * (1 - min(1, dist / avg_dist + 0.01) + e ** (- (0.005 * math.log(dist + 0.01)))) / fr_size
+
+def near(a, b):
+    raw_dist_a = []
+    raw_dist_b = []
+    for entity in entities:
+        if entity != a and entity != b:
+            raw_dist_a += [near_raw(a, entity)]
+            raw_dist_b += [near_raw(b, entity)]
+    
+    return 0
 
 #determines whether a is between b and c
 def between(a, b, c):
@@ -536,43 +564,35 @@ def asym_inv_exp_left(x, cutoff, left, right):
 
 def to_the_right_of_deic(a, b):
     a_bbox = get_2d_bbox(vp_project(a, observer))
-    #print (center_a)
     b_bbox = get_2d_bbox(vp_project(b, observer))
-    #print (a_bbox, b_bbox)
     axial_dist = scaled_axial_distance(a_bbox, b_bbox)
-    #print (axial_dist)
     if axial_dist[0] <= 0:
         return 0
-    #print (axial_dist)
     horizontal_component = asym_inv_exp(axial_dist[0], 1, 1, 0.1)#sigmoid(axial_dist[0], 2.0, 5.0) - 1.0
-    vertical_component = math.exp(- axial_dist[1]**2)
+    vertical_component = math.exp(- 1.2 * axial_dist[1]**2)
     distance_factor = math.exp(- 0.1 * axial_dist[0])
     print ("Hor:", horizontal_component, "VERT:", vertical_component, "DIST:", distance_factor)
-    weighted_measure = 0.6 * horizontal_component + 0.4 * vertical_component# + 0.2 * distance_factor
+    weighted_measure = 0.5 * horizontal_component + 0.5 * vertical_component# + 0.2 * distance_factor
     return weighted_measure
         #for entity in entities:
         #    if entity != a and entity != b:
 
 def to_the_left_of_deic(a, b):
-    a_bbox = get_2d_bbox(vp_project(a, observer))
-    #print (center_a)
-    b_bbox = get_2d_bbox(vp_project(b, observer))
-    #print (a_bbox, b_bbox)
-    axial_dist = scaled_axial_distance(a_bbox, b_bbox)
-    #print (axial_dist)
-    if axial_dist[0] >= 0:
-        return 0
-    #print (axial_dist)
-    horizontal_component = asym_inv_exp_left(axial_dist[0], -1, 0.1, 1)#sigmoid(axial_dist[0], 2.0, 5.0) - 1.0
-    vertical_component = math.exp(- axial_dist[1]**2)
-    distance_factor = math.exp(- 0.1 * axial_dist[0])
-    print ("Hor:", horizontal_component, "VERT:", vertical_component, "DIST:", distance_factor)
-    weighted_measure = 0.6 * horizontal_component + 0.4 * vertical_component# + 0.2 * distance_factor
-    return weighted_measure
-        #for entity in entities:
-        #    if entity != a and entity != b:
+    return to_the_right_of_deic(b, a)
 
-                
+def above(a, b):
+    bbox_a = a.get_bbox()
+    bbox_b = b.get_bbox()
+    span_a = a.get_span()
+    span_b = b.get_span()
+    center_a = a.get_bbox_centroid()
+    center_b = b.get_bbox_centroid()
+    scaled_vertical_distance = (center_a[2] - center_b[2]) / ((span_a[5] - span_a[4]) + (span_b[5] - span_b[4]))
+    return 0.33333 * (max(int(bbox_a[0][2] > bbox_b[7][2]), e ** (- math.fabs(bbox_a[0][2] - bbox_b[7][2]))) + sigmoid(5 * (center_a[2] - center_b[2]) / (0.01 + bbox_a[7][2] - bbox_a[0][2] + bbox_b[7][2] - bbox_b[0][2]), 1, 1) + get_proj_intersection(a, b))
+    
+def below(a, b):
+    return above(b, a)
+
 
 def main():
     for obj in scene.objects:
