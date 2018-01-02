@@ -107,3 +107,42 @@ def closest_mesh_distance_scaled(ent_a, ent_b):
     a_dims = ent_a.get_dimensions()
     b_dims = ent_b.get_dimensions()
     return closest_mesh_distance(ent_t, ent_b) / (max(a_dims) + max(b_dims) + 0.0001)
+
+def get_bbox_intersection(ent_a, ent_b):
+    span_a = ent_a.span
+    span_b = ent_b.span
+    x_int = 0
+    y_int = 0
+    z_int = 0
+    if span_a[0] >= span_b[0] and span_a[1] <= span_b[1]:
+        int_x = span_a[1] - span_a[0]
+    elif span_b[0] >= span_a[0] and span_b[1] <= span_a[1]:
+        int_x = span_b[1] - span_b[0]
+    elif span_a[0] <= span_b[0] and span_a[1] >= span_b[0] and span_a[1] <= span_b[1]:
+        int_x = span_a[1] - span_b[0]
+    elif span_a[0] >= span_b[0] and span_a[0] <= span_b[1] and span_a[1] >= span_b[1]:
+        int_x = span_b[1] - span_a[0]
+
+    if span_a[2] >= span_b[2] and span_a[3] <= span_b[3]:
+        int_y = span_a[3] - span_a[2]
+    elif span_b[2] >= span_a[2] and span_b[3] <= span_a[3]:
+        int_y = span_b[3] - span_b[2]
+    elif span_a[2] <= span_b[2] and span_a[3] >= span_b[2] and span_a[3] <= span_b[3]:
+        int_y = span_a[3] - span_b[2]
+    elif span_a[2] >= span_b[2] and span_a[2] <= span_b[3] and span_a[3] >= span_b[3]:
+        int_y = span_b[3] - span_a[2]
+
+    if span_a[4] >= span_b[4] and span_a[5] <= span_b[5]:
+        int_z = span_a[5] - span_a[4]
+    elif span_b[4] >= span_a[4] and span_b[5] <= span_a[5]:
+        int_z = span_b[5] - span_b[4]
+    elif span_a[4] <= span_b[4] and span_a[5] >= span_b[4] and span_a[5] <= span_b[5]:
+        int_z = span_a[5] - span_b[4]
+    elif span_a[4] >= span_b[4] and span_a[4] <= span_b[5] and span_a[5] >= span_b[5]:
+        int_z = span_b[5] - span_a[4]
+
+    return int_x * int_y * int_z
+
+
+def isVertical(ent_a):
+    return ent_a.dims[0] < 0.5 * ent_a.dims[2] or ent_a.dims[1] < 0.5 * ent_a.dims[2]

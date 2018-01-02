@@ -189,14 +189,21 @@ def near_raw(a, b):
     return 0.5 * (1 - min(1, dist / avg_dist + 0.01) + e ** (- (0.005 * math.log(dist + 0.01)))) / fr_size
 
 def near(a, b):
-    raw_dist_a = []
-    raw_dist_b = []
+    raw_near_a = []
+    raw_near_b = []
+    raw_near_measure = near_raw(a, b)
     for entity in entities:
         if entity != a and entity != b:
-            raw_dist_a += [near_raw(a, entity)]
-            raw_dist_b += [near_raw(b, entity)]
-    
-    return 0
+            near_a_entity = near_raw(a, entity)
+            near_b_entity = near_raw(b, entity)
+            #if dist_a_to_entity < raw_dist:
+            raw_near_a += [near_a_entity]
+            #if dist_b_to_entity < raw_dist:
+            raw_near_b += [near_b_entity]
+    average_near_a = sum(raw_dist_a) / len(raw_dist_a)
+    average_near_b = sum(raw_dist_b) / len(raw_dist_b)
+    raw_near_measure += (raw_near_measure - (average_closer_a + average_closer_b) / 2) * (1 - raw_near_measure)
+    return raw_near_measure
 
 #determines whether a is between b and c
 def between(a, b, c):
@@ -206,11 +213,12 @@ def between(a, b, c):
     center_a = a.get_bbox_centroid()
     center_b = b.get_bbox_centroid()
     center_c = c.get_bbox_centroid()
-    dist = get_distance_from_line(center_b, center_c, center_a)
-    max_dim_a = max(bbox_a[7][0] - bbox_a[0][0],
-                    bbox_a[7][1] - bbox_a[0][1],
-                    bbox_a[7][2] - bbox_a[0][2])
-    return 1
+    dist = get_distance_from_line(center_b, center_c, center_a) / max(max(a.dimensions), max(b.dimensions), max(c.dimensions))
+    #max_dim_a = max(bbox_a[7][0] - bbox_a[0][0],
+    #                bbox_a[7][1] - bbox_a[0][1],
+    #                bbox_a[7][2] - bbox_a[0][2])
+    
+    return dist
     
 def v_align(a, b):
     dim_a = a.get_dimensions()
@@ -226,23 +234,33 @@ def v_offset(a, b):
     center_a = a.get_bbox_centroid()
     center_b = b.get_bbox_centroid()
     h_dist = math.sqrt((center_a[0] - center_b[0]) ** 2 + (center_a[1] - center_b[1]) ** 2)    
-    return gaussian(2 * (center_a[2] - center_b[2] - 0.5*(dim_a[2] + dim_b[2])) / (1e-6 + dim_a[2] + dim_b[2]), 0, 1 / math.sqrt(2*pi))
+    return gaussian(2 * (center_a[2] - center_b[2] - 0.5*(dim_a[2] + dim_b[2])) /  \
+                    (1e-6 + dim_a[2] + dim_b[2]), 0, 1 / math.sqrt(2*pi))
 
 def larger_than(a, b):
     bbox_a = a.get_bbox()
     bbox_b = b.get_bbox()
-    return 1 / (1 + e ** (bbox_b[7][0] - bbox_b[0][0] + bbox_b[7][1] - bbox_b[0][1] + bbox_b[7][2] - bbox_b[0][2] - (bbox_a[7][0] - bbox_a[0][0] + bbox_a[7][1] - bbox_a[0][1] + bbox_a[7][2] - bbox_a[0][2])))
+    return 1 / (1 + e ** (bbox_b[7][0] - bbox_b[0][0] \
+                          + bbox_b[7][1] - bbox_b[0][1] \
+                          + bbox_b[7][2] - bbox_b[0][2] \
+                          - (bbox_a[7][0] - bbox_a[0][0] \
+                             + bbox_a[7][1] - bbox_a[0][1] \
+                             + bbox_a[7][2] - bbox_a[0][2])))
 
 def on(a, b):
-	ret_val = 0.5 * (v_offset(a, b) + get_proj_intersection(a, b))
-	ret_val = max(ret_val, 0.5 * (above(a, b) + touching(a, b)))
-    #for ob in b:
-    #    if ob.get('working_surface') is not None or ob.get('planar') is not None:
-    #        ret_val = max(ret_val, 0.5 * (v_offset(a, ob) + get_proj_intersection(a, ob)))
-    #        ret_val = max(ret_val, 0.5 * (int(near(a, ob) > 0.99) + larger_than(ob, a)))         
+    ret_val = 0.5 * (v_offset(a, b) + get_proj_intersection(a, b))
+    ret_val = max(ret_val, 0.5 * (above(a, b) + touching(a, b)))
+    for ob in b.constituents:
+        if ob.get('working_surface') is not None or ob.get('planar') is not None:
+            ret_val = max(ret_val, 0.5 * (v_offset(a, ob) + get_proj_intersection(a, ob)))
+            ret_val = max(ret_val, 0.5 * (int(near(a, ob) > 0.99) + larger_than(ob, a)))
+    if b.get('planar') is not None and isVertical(b):
+        ret_val = max(ret_val, math.exp(- 0.5 * get_planar_distance_scaled(a, b)))
+    #if b.get('planar') is not None :
+    #    ret_val = max(ret_val, )
     #if ret_val >= 0.6:
     #    return 0.5 * (ret_val + larger_than(b, a))
-	return ret_val
+    return ret_val
 
 def over(a, b):
     bbox_a = a.get_bbox()
@@ -265,38 +283,11 @@ def in_front_of_deic(a, b):
     return 0.5 * (closer_than(a, b, observer) + e ** (-dist / max_dim_a))
 
 def behind_deic(a, b):
-	return in_front_of_behind(b, a)
+	return in_front_of_deic(b, a)
 
-def touching(a, b):
-	bbox_a = a.get_bbox()
-	bbox_b = b.get_bbox()
-	center_a = a.get_bbox_centroid()
-	center_b = b.get_bbox_centroid()
-	rad_a = max(bbox_a[7][0] - bbox_a[0][0],
-                    bbox_a[7][1] - bbox_a[0][1],
-                    bbox_a[7][2] - bbox_a[0][2]) / 2
-	rad_b = max(bbox_b[7][0] - bbox_b[0][0],
-                    bbox_b[7][1] - bbox_b[0][1],
-                    bbox_b[7][2] - bbox_b[0][2]) / 2
-	
-	#if a.name == "Apple 1" and b.name == "Bowl":
-	#	print (center_a, center_b)
-
-	for point in bbox_a:
-		if a.name == "Apple 1" and b.name == "Bowl":
-			print (point_distance(point, center_b))	
-		if point_distance(point, center_b) < rad_b:
-			return 1
-	for point in bbox_b:
-		if point_distance(point, center_a) < rad_a:
-			return 1
-	return 0
-
-
-
-
-def inside(a, b):
-	return 1
+def bbox_inside_test(a, b):
+    shared_volume = get_bbox_intersection(a, b)
+    return shared_volume / (b.dimensions[0] * b.dimensions[1] * b.dimensions[2] + 0.001)
 
 def at(a, b):
 	return 0.8 * near(a, b) + 0.2 * touching(a, b)
@@ -432,6 +423,7 @@ def check_collision(a, b):
     span_b = b.get_span()
     return axis_collision((span_a[0], span_a[1]), (span_b[0], span_b[1])) and axis_collision((span_a[2], span_a[3]), (span_b[2], span_b[3])) and axis_collision((span_a[4], span_a[5]), (span_b[4], span_b[5]))
 
+#STUB
 def put_on_top(a, b):
     pass
 
@@ -470,6 +462,32 @@ def vp_project(entity, observer):
     render_size = (int(scene.render.resolution_x * render_scale), int(scene.render.resolution_y * render_scale),)
     pixel_coords = [(round(point.x * render_size[0]),round(point.y * render_size[1]),) for point in co_2d]
     return pixel_coords
+
+def touching(a, b):
+    bbox_a = a.get_bbox()
+    bbox_b = b.get_bbox()
+    center_a = a.get_bbox_centroid()
+    center_b = b.get_bbox_centroid()
+    rad_a = max(bbox_a[7][0] - bbox_a[0][0], \
+                bbox_a[7][1] - bbox_a[0][1], \
+                bbox_a[7][2] - bbox_a[0][2]) / 2
+    rad_b = max(bbox_b[7][0] - bbox_b[0][0], \
+                bbox_b[7][1] - bbox_b[0][1], \
+                bbox_b[7][2] - bbox_b[0][2]) / 2
+    
+    #if a.name == "Apple 1" and b.name == "Bowl":
+    #print (center_a, center_b)
+
+    for point in bbox_a:
+	#if a.name == "Apple 1" and b.name == "Bowl":
+	#print (point_distance(point, center_b))i
+        if point_distance(point, center_b) < rad_b:
+            return 1
+    for point in bbox_b:
+        if point_distance(point, center_a) < rad_a:
+            return 1
+    mesh_dist = closest_mesh_distance_scaled(a, b)
+    return math.exp(- 2 * mesh_dist)
 
 def filter(entities, constraints):
     result = []
@@ -593,6 +611,13 @@ def above(a, b):
 def below(a, b):
     return above(b, a)
 
+#STUB
+def in_front_of_intr(a, b):
+    pass
+
+#STUB
+def behind_intr(a, b):
+    in_front_of_intr(b, a)
 
 def main():
     for obj in scene.objects:
