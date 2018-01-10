@@ -1,0 +1,86 @@
+################################################################################
+Blender project for computational models of prepositions and spatial reasoning
+Georgiy Platonov
+January, 2018
+################################################################################
+
+System requirements:
+Python v.3
+Blender v.2.79
+
+################################################################################
+Project components:
+
+Source files:
+
+entity.py - source code for the Entity class
+eval.py - code for evaluation of the annotation dataset (obsolete
+and will probably be removed in the future)
+eval_tests.py - updated evaluation code
+geometry_utils.py - contains the code for some basic geometry primitives, e.g.,
+computing various distances, shared volumes, etc.
+main.py - the main source file
+parser.py - parser for the annotations
+
+Folders:
+description - stores the Blender scenes related to the description task
+truth_judgment - stores the Blender scenes related to the truth-judgment 
+task
+objects - stores the models of items used in the scenes
+screenshots - used to store the screenshot of the scenes (for the annotation 
+web-app)
+
+################################################################################
+
+Dependency chart:
+			    
+			    | -> geometry_utils.py
+eval_tests.py -> main.py -> | -> entity.py
+			    | -> parser.py
+
+################################################################################
+
+Details:
+
+entity.py
+
+Used by main.py.
+All the important objects in the scene are stored in a custom "Entity" class.
+Since any compound model in Blender consists of multiple meshes, entity object
+provides a unified way to manage such a model. For example, a model of table has
+the tabletop box and four legs as the visible parts and also several invisible
+parts as well. All these parts are stored in the entity object. Apart from 
+providing unified access, entities also precompute and store some standard data 
+associated with meshes, e.g., bounding boxes, centroids, etc.
+
+eval_tests.py
+
+Evaluation pipeline. Reads the annotations from a file and executes main.py on 
+Blender with the given annotation as a parameter. It also keeps track of the results 
+of evaluation and computes the interannotator agreement metrics (Cohen's kappa 
+and weighted kappa)
+
+geometry_utils.py
+
+Used by main.py as a library of geometric primitives. Stores a bunch of functions
+computing values related to vectors (cross-products, normals to planes), projections,
+orientations, distances between points, lines, planes, meshes, etc.
+
+parser.py
+
+Parses the user annotations (English sentence) and extracts the relations, its 
+arguements and their properties. Returns that data in structured form.
+
+main.py
+
+Main source, should be executed from inside Blender. Contains the functions for 
+the prepositions and all of the code working with Blender primitives (setting up
+the scene, creating entities out of the Blender objects, positioning the cameras,
+rendering etc.) Entry point - function main(). Annotation pipeline: 
+1) reads annotation provided as a parameter 
+2) parses the annotation and extracts the relation with arguements
+3) tries to match the arguments to the candidate entities, based on the their description
+in the annotation (color, type, etc.)
+4) calls the corresponding relation function with all combination of candidate 
+arguments to check if the relation holds.
+5) prints the result to console
