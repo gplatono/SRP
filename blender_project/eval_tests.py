@@ -19,15 +19,21 @@ class Testcase:
         self.referent1 = referent1
         self.referent2 = referent2
         self.response = response
+
+#Dictionaries mapping the responses to numerical values
 yn_to_index = {"yes": 4, "rather yes": 3, "uncertain": 2, "rather no": 1, "no": 0}
 rel_to_index = {"right": 0, "left": 1, "in front of": 2, "behind": 3, "above": 4, "below": 5, "over": 6, "under": 7, "in": 8, "on": 9, "at": 10, "touching": 11, "between": 12, "near": 13}
-        
+
+#Maps the response to its numerical value
 def map_response_to_index(resp):
     for key in rel_to_index:
         if key in resp:
             return rel_to_index[key]
     return -1
 
+#Computes the weighted Cohen's Kappa interannotator agreement metric
+#Inputs: resp1, resp2 - response sequences for two users
+#Return value: the Kappa coefficient (from [0, 1])
 def weighted_cohen_kappa(resp1, resp2):
     #print (resp1, resp2)
     weights = np.zeros((5,5))
@@ -71,6 +77,9 @@ def weighted_cohen_kappa(resp1, resp2):
         print (resp_distr, total_resp, total_coincidence, observed_agreement, "Kappa:", kappa, "weighted kappa:", weighted_kappa)
         return weighted_kappa
 
+#Computes the standard Cohen's Kappa interannotator agreement metric
+#Inputs: resp1, resp2 - response sequences for two users
+#Return value: the Kappa coefficient (from [0, 1])
 def cohen_kappa(resp1, resp2):
     y1 = []
     y2 = []
@@ -93,7 +102,6 @@ def cohen_kappa(resp1, resp2):
         kappa = (observed_agreement - total_coincidence) / (1 - total_coincidence)
         print (resp_distr, total_resp, total_coincidence, observed_agreement, kappa)        
 
-
 tests = []
 count = 0
 trc = 0
@@ -106,10 +114,12 @@ ur_yn = {}
 ur_relations = {}
 system_yn = {}
 test_counter =0
+
+#Main annotation evaluation pipeline
 for subm in open('annotations').readlines():
-#    print (subm)
+
+    #Read-off the annotation components    
     subm = subm.strip().split(":")
-#    print (subm)
     testcase = subm[1].split("=")[1]
     user = subm[2].split("=")[1]
     scene_path = subm[4].split("=")[1]
@@ -136,8 +146,12 @@ for subm in open('annotations').readlines():
         print ("ID:", subm[0].split("=")[1], resp, user, testcase)
         #print (ur_yn[user][testcase])
         #subprocess.call(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
+
+        #Call Blender with the extracted annotation data
         res = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
         res = res.decode("utf-8").split("\n")
+
+        #Print the evaluation results
         print (res)
         for item in res:
             if "RESULT" in item:
@@ -152,7 +166,7 @@ for subm in open('annotations').readlines():
         #    break
 
        
-#Interannotator agreement
+#Compute and print the interannotator agreement
 print(ur_yn.keys())
 avg = 0
 tot = 0
@@ -170,27 +184,3 @@ print ("AVG KAPPA:", 1.0 * avg / tot)
 for user in ur_yn:
     print ("USER:", user)
     print (weighted_cohen_kappa(ur_yn[user], system_yn))
-
-         
-desc_corr = 0
-total_succ = 0
-print ("description task resp:", dict["1"], "\ntruth judgment task resp:", dict["0"], "\n# of responses:", len(tests), count, "testcases: ", len(tcounts))
-'''for test in tests:
-    print (test)
-    if test[5] == "0" and (test[1] == "to the left of" or test[1] == "to the right of"):
-        #subprocess.call(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
-        res = subprocess.check_output(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
-        res = res.decode("utf-8").split("\n")
-        print (res)
-        for item in res:
-            if "RESULT" in item:
-                res = item.split(":")[1]
-                break
-        print (res)
-        
-        if res == " True" or res == " False":
-            total_succ += 1
-            if res == " True":
-                desc_corr += 1
-            print ("TEST RESULT:", test[2], res, desc_corr, 100.0 * desc_corr / total_succ)
-'''

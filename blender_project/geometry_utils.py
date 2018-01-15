@@ -18,7 +18,7 @@ def get_normal(a, b, c):
 #Given a point and a plane defined by a, b and c
 #computes the orthogonal distance from the point to that plane
 #Inputs: point,a,b,c - point coordinates as tuples or lists
-#Return value: the distance value
+#Return value: real number
 def get_distance_from_plane(point, a, b, c):
     normal = numpy.array(get_normal(a, b, c))
     return math.fabs((numpy.array(point).dot(normal) - numpy.array(a).dot(normal)) / numpy.linalg.norm(normal))
@@ -26,7 +26,7 @@ def get_distance_from_plane(point, a, b, c):
 #Computes the orthogonal distance between x3 and the line
 #defined by x1 and x2
 #Inputs: x1, x2, x3 - point coordinates as tuples or lists
-#Return value: the distance value
+#Return value: real number
 def get_distance_from_line(x1, x2, x3):
     t = (x3[0] - x1[0]) * (x2[0] - x1[0]) + (x3[1] - x1[1]) * (x2[1] - x1[1]) * (x3[2] - x1[2]) * (x2[2] - x1[2])
     t = t / (point_distance(x1, x2) ** 2)
@@ -35,7 +35,7 @@ def get_distance_from_line(x1, x2, x3):
 
 #Computes a simple Euclidean distance between two points
 #Inputs: a, b - point coordinates as tuples or lists
-#Return value: the distance value
+#Return value: real number
 def point_distance(a, b):
     return numpy.linalg.norm(numpy.array(a) - numpy.array(b))
 
@@ -43,7 +43,7 @@ def point_distance(a, b):
 #Computes the projection of the bounding box of a set
 #of points onto the XY-plane
 #Inputs: a, b - point coordinates as tuples or lists
-#Return value: the distance value
+#Return value: real number
 def get_2d_bbox(points):
     min_x = 1e9
     min_y = 1e9
@@ -56,13 +56,20 @@ def get_2d_bbox(points):
         max_y = max(max_y, p[1])       
     return [min_x, max_x, min_y, max_y]
 
-#Bounding box centroid distance
+#Computes the distance between the centroids of
+#the bounding boxes of two entities
+#Inputs: ent_a, ent_b - entities
+#Return value: real number
 def get_centroid_distance(ent_a, ent_b):
     a_centroid = ent_a.get_bbox_centroid()
     b_centroid = ent_b.get_bbox_centroid()
     return point_distance(a_centroid, b_centroid)
 
-
+#Computes the distance between the centroids of
+#the bounding boxes of two entities, normalized by the maximum
+#dimension of two entities
+#Inputs: ent_a, ent_b - entities
+#Return value: real number
 def get_centroid_distance_scaled(ent_a, ent_b):
     a_max_dim = max(ent_a.get_dimensions())
     b_max_dim = max(ent_b.get_dimensions())
@@ -71,11 +78,19 @@ def get_centroid_distance_scaled(ent_a, ent_b):
     #avoid division by zero in the case when a_max_dim + b_max_dim == 0
     return get_centroid_distance(ent_a, ent_b) / (a_max_dim + b_max_dim + 0.0001)
 
+
+#Computes the distance between two entities in the special
+#case if the first entity is elongated, i.e., can be approximated by a line or a rod
+#Inputs: ent_a, ent_b - entities
+#Return value: real number
 def get_line_distance_scaled(ent_a, ent_b):
     a_dims = ent_a.get_dimensions()
     b_dims = ent_b.get_dimensions()
     a_bbox = a.get_bbox()
     dist = 0
+
+    #If ent_a is elongated, one dimension should be much bigger than the sum of the other two
+    #Here we check which dimension is that
     if a_dims[0] >= 1.4 * (a_dims[1] + a_dims[2]):
         dist = min(get_distance_from_line(a_bbox[0], a_bbox[4], b.centroid),
                    get_distance_from_line(a_bbox[1], a_bbox[5], b.centroid),
@@ -96,11 +111,18 @@ def get_line_distance_scaled(ent_a, ent_b):
         dist /= ((a_dims[0] + a_dims[1]) / 2 + max(b_dims))
     return dist
 
+#Computes the distance between two entities in the special
+#case if the first entity is planar, i.e., can be approximated by a plane or a thin box
+#Inputs: ent_a, ent_b - entities
+#Return value: real number
 def get_planar_distance_scaled(ent_a, ent_b):
     a_dims = ent_a.get_dimensions()
     b_dims = ent_b.get_dimensions()
     a_bbox = a.get_bbox()
     dist = 0
+
+    #If ent_a is planar, one dimension should be much smaller than the other two
+    #Here we check which dimension is that
     if a_dims[0] <= 0.2 * a_dims[1] and a_dims[0] <= 0.2 * a_dims[2]:
         dist = min(get_distance_from_plane(b.centroid, a_bbox[0], a_bbox[1], a_bbox[2]),
                    get_distance_from_plane(b.centroid, a_bbox[4], a_bbox[5], a_bbox[6]))
@@ -116,6 +138,9 @@ def get_planar_distance_scaled(ent_a, ent_b):
     return dist
 
 
+#Computes the closest distance between the points of two meshes
+#Input: ent_a, ent_b - entities
+#Return value: real number
 def closest_mesh_distance(ent_a, ent_b):
     min_dist = 10e9
     for v in ent_a.total_mesh:
@@ -123,11 +148,18 @@ def closest_mesh_distance(ent_a, ent_b):
             min_dist = min(min_dist, point_distance(u, v))
     return min_dist
 
+#Normalized version of closest_mesh_distance where the distance is scaled
+#by the maximum dimensions of two entities
+#Input: ent_a, ent_b - entities
+#Return value: real number
 def closest_mesh_distance_scaled(ent_a, ent_b):
     a_dims = ent_a.get_dimensions()
     b_dims = ent_b.get_dimensions()
     return closest_mesh_distance(ent_t, ent_b) / (max(a_dims) + max(b_dims) + 0.0001)
 
+#Computes the shared volume of the bounding boxes of two entities
+#Input: ent_a, ent_b - entities
+#Return value: real number
 def get_bbox_intersection(ent_a, ent_b):
     span_a = ent_a.span
     span_b = ent_b.span
@@ -164,5 +196,8 @@ def get_bbox_intersection(ent_a, ent_b):
     return int_x * int_y * int_z
 
 
+#Checks whether the entity is vertically oriented
+#Input: ent_a - entity
+#Return value: boolean value
 def isVertical(ent_a):
     return ent_a.dims[0] < 0.5 * ent_a.dims[2] or ent_a.dims[1] < 0.5 * ent_a.dims[2]

@@ -9,23 +9,62 @@ import sys
 import random
 from geometry_utils import *
 
+#This class comprises the implementation of the special "Entity"-type
+#used in the project to represent the relevant Blender objects
+#
 class Entity:
     scene = bpy.context.scene
     
     def __init__(self, main):
+
+        #Constituent objects
+        #First object in the list is the parent or head object
+        #Defining the entity
         self.constituents = [main]
+
+        #Name of the entity
         self.name = main.name
+
+        #Color of the entity
         self.color_mod = self.get_color_mod()
+
+        #The type structure
+        #Each object belong to hierarchy of types, e.g.,
+        #Props -> Furniture -> Chair
+        #This structure will be stored as a list
+        #['Props', 'Furniture', 'Chair']
         self.type_structure = self.get_type_structure()
+
+        #The coordiante span of the entity. In other words,        
+        #the minimum and maximum coordinates of entity's points
         self.span = self.get_span()
+
+        #The bounding box, stored as a list of triples of vertex coordinates
         self.bbox = self.get_bbox()
+
+        #Bounding box's centroid
         self.bbox_centroid = self.get_bbox_centroid()
+
+        #Dimensions of the entity in the format
+        #[xmax - xmin, ymax - ymin, zmax - zmin]
         self.dimensions = self.get_dimensions()
+
+        #The faces of the mesh comrising the entity
         self.faces = self.get_faces()
+
+        #The longitudinal vector
         self.longitudinal = []
+
+        #The frontal vector
         self.frontal = []
+
+        #The parent offset
         self.parent_offset = self.get_parent_offset()
+
+        #Total mesh of the entity
         self.total_mesh = self.get_total_mesh()
+
+        #Filling in the constituent objects starting with the parent
         queue = [main]
         while len(queue) != 0:
             par = queue[0]
@@ -35,12 +74,15 @@ class Entity:
                     self.constituents.append(ob)
                     queue.append(ob)
 
+    #Sets the direction of the longitudinal axis of the entity
     def set_longitudinal(self, direction):
         self.longitudinal = direction
 
+    #Sets the direction of the frontal axis of the entity
     def set_frontal(self, direction):
        	self.frontal = direction        
-                    
+
+    #Calculates the coordinate span of the entity
     def get_span(self):
         if(hasattr(self, 'span') and self.span is not None):
             return self.span
@@ -51,7 +93,8 @@ class Entity:
 	            max([obj.location.y + obj.dimensions.y / 2.0 for obj in self.constituents]),
 	            min([obj.location.z - obj.dimensions.z / 2.0 for obj in self.constituents]),
 	            max([obj.location.z + obj.dimensions.z / 2.0 for obj in self.constituents])]
-                   
+
+    #Calculates the bounding box of the entity
     def get_bbox(self):
         if(hasattr(self, 'bbox') and self.bbox is not None):
             return self.bbox
@@ -67,6 +110,7 @@ class Entity:
 		    (span[1], span[3], span[4]),
 		    (span[1], span[3], span[5])]
 
+    #Computes the bounding box centroid
     def get_bbox_centroid(self):
         if(hasattr(self, 'bbox_centroid') and self.bbox_centroid is not None):
             return self.bbox_centroid
@@ -76,6 +120,7 @@ class Entity:
                     bbox[0][1] + (bbox[7][1] - bbox[0][1]) / 2,
                     bbox[0][2] + (bbox[7][2] - bbox[0][2]) / 2]
 
+    #Gets the dimensions of the entity as a list of number
     def get_dimensions(self):
         if(hasattr(self, 'dimensions') and self.dimensions is not None):
             return self.dimensions
@@ -83,16 +128,21 @@ class Entity:
             bbox = self.get_bbox()
             return [bbox[7][0] - bbox[0][0], bbox[7][1] - bbox[0][1], bbox[7][2] - bbox[0][2]]
 
+    #Checks if the entity has a given property
     def get(self, property):
         return self.constituents[0].get(property)
 
+
+    #Coomputes the distance from a point to closest face of the entity
     def get_closest_face_distance(self, point):
         return min([get_distance_from_plane(point, face[0], face[1], face[2]) for face in self.faces])
 
+    #STUB
     def get_closest_distance(self, other_entity):
         this_faces = self.get_faces()
         other_faces = other_entity.get_faces()
-            
+
+    #Returns the list of faces of the entity
     def get_faces(self):
         if(hasattr(self, 'faces') and self.faces is not None):
             return self.faces
@@ -106,6 +156,7 @@ class Entity:
     def print(self):
         print (self.name)
 
+    #Displays the bounding box around the entity in Blender
     def show_bbox(self):
         mesh = bpy.data.meshes.new(self.name + '_mesh')
         obj = bpy.data.objects.new(self.name + '_bbox', mesh)
@@ -115,13 +166,15 @@ class Entity:
         mesh.from_pydata(bbox, [], [(0, 1, 3, 2), (0, 1, 5, 4), (2, 3, 7, 6), (0, 2, 6, 4), (1, 3, 7, 5), (4, 5, 7, 6)])
         mesh.update()
 
+    #Returns the hierachy of types of the entity
     def get_type_structure(self):
         if not hasattr(self, 'type_structure') or self.type_structure is None:
             if self.constituents[0].get('id') is not None:
                 self.type_structure = self.constituents[0]['id'].split(".")
             else: self.type_structure = None
         return self.type_structure
-	
+
+    #Returns the color of the entity
     def get_color_mod(self):
         if not hasattr(self, 'color_mod') or self.color_mod is None:
             if self.constituents[0].get('color_mod') is not None:
@@ -130,6 +183,7 @@ class Entity:
                 self.color_mod = None
         return self.color_mod
 
+    #Returns the offset of the entity relative to the location of its head object
     def get_parent_offset(self):
         span = self.get_span()
         if span is not None:
@@ -138,6 +192,8 @@ class Entity:
             return None
 
 
+    #Returns the total mesh of the entity (the union of the meshes
+    #of its constituent objects)
     def get_total_mesh(self):
         if not hasattr(self, 'total_mesh'):
             vertices = []
