@@ -278,9 +278,10 @@ def near(a, b):
             raw_near_a += [near_a_entity]
             #if dist_b_to_entity < raw_dist:
             raw_near_b += [near_b_entity]
-    average_near_a = sum(raw_dist_a) / len(raw_dist_a)
-    average_near_b = sum(raw_dist_b) / len(raw_dist_b)
-    raw_near_measure += (raw_near_measure - (average_closer_a + average_closer_b) / 2) * (1 - raw_near_measure)
+    print (raw_near_a, raw_near_b)
+    average_near_a = sum(raw_near_a) / len(raw_near_a)
+    average_near_b = sum(raw_near_b) / len(raw_near_b)
+    raw_near_measure += (raw_near_measure - (average_near_a + average_near_b) / 2) * (1 - raw_near_measure)
     return raw_near_measure
 
 #Computes the between relation (a is between b and c)
@@ -857,6 +858,33 @@ def main():
 
     global observer
     observer = get_observer()
+    if "--" in sys.argv:
+        args = sys.argv[sys.argv.index("--") + 1:]
+        init_parser([entity.name for entity in entities])
+        if len(args) != 6:
+            result = "*RESULT: MALFORMED*"
+        else:
+            relation = args[0].lower()
+            relatum = args[1].lower()
+            referent1 = args[2].lower()
+            referent2 = args[3].lower()
+            task_type = args[4].lower()
+            response = args[5].lower()
+        
+            if task_type == "1":
+                best_cand = process_descr(relatum, response)
+                if best_cand != None:
+                    print(process_descr(relatum, response).name, "==?", relatum)
+                print("RESULT:", get_entity_by_name(relatum) == best_cand)
+            else:
+                print("RESULT:", process_truthjudg(relation, relatum, referent1, referent2, response))
+        return
+
+    
+    bl4 = get_entity_by_name("Block 4")
+    bl9 = get_entity_by_name("Block 9")
+    print (bl4.name, bl9.name)
+    print (near(bl4, bl9))
     #print(vp_project(entities[0], observer))    
     #picture 2 red chair 1#print (entities[5].name, entities[0].name)
     '''for entity1 in entities:
@@ -865,25 +893,6 @@ def main():
                 print (entity1.name, entity2.name)
                 print ("RIGHT:", to_the_right_of_deic(entity1, entity2, observer))
                 print ("LEFT:", to_the_left_of_deic(entity1, entity2, observer))'''
-    args = sys.argv[sys.argv.index("--") + 1:]
-    init_parser([entity.name for entity in entities])
-    if len(args) != 6:
-        result = "*RESULT: MALFORMED*"
-    else:
-        relation = args[0].lower()
-        relatum = args[1].lower()
-        referent1 = args[2].lower()
-        referent2 = args[3].lower()
-        task_type = args[4].lower()
-        response = args[5].lower()
-        
-        if task_type == "1":
-            best_cand = process_descr(relatum, response)
-            if best_cand != None:
-                print(process_descr(relatum, response).name, "==?", relatum)
-            print("RESULT:", get_entity_by_name(relatum) == best_cand)
-        else:
-            print("RESULT:", process_truthjudg(relation, relatum, referent1, referent2, response))
 
 
 if __name__ == "__main__":

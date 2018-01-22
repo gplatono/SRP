@@ -5,8 +5,37 @@ January, 2018
 ################################################################################
 
 System requirements:
-Python v.3
-Blender v.2.79
+Python v3
+Blender v2.79
+
+################################################################################
+
+Short description:
+The project for computational modeling of spatial prepositions and spatial reasoning
+uses Blender's 3D modeling capabilities augmented with python scripting to 
+construct and process scenes in two domains: the blocks world and the "room world", 
+comprised of ordinary everyday items, such as furniture, food, etc.
+
+Blender supports scripting in Python and provides several custom libraries to 
+interact with the Blender 3D engine. The libraries provide the API to perform 
+typical modeling tasks, usually done manually via GUI, from code.
+
+The fundamental Blender concept is a scene, which is a workspace, containing some 
+set of 3D models with all the associated data, like coordinate system, lighting, 
+physics, etc. Scenes are stored in *.blend files. In order to apply a script to 
+some scene both must loaded into Blender, which can be done either manually, from 
+inside the Blender or lauching the Blender executable with both the scene and script
+file paths provided as command line parameters.
+
+The annotation processing is just a loop that reads the annotations from a list 
+(loaded from a file) and then calls Blender with the corresponding scene and script
+to process it. The result of the script execution for a particular annotation 
+is read from Blender output and saved for calculation of accuracy and interannotator 
+agreement. Each annotation contains all the improtant information, such as the id 
+of the scene is was created for (to load the right scene file), the user id (for 
+agreement calculation), etc.
+
+3D models for the scenes were mostly created by hand.
 
 ################################################################################
 Project components:
@@ -47,15 +76,22 @@ entity.py
 Used by main.py.
 All the important objects in the scene are stored in a custom "Entity" class.
 Since any compound model in Blender consists of multiple meshes, entity object
-provides a unified way to manage such a model. For example, a model of table has
-the tabletop box and four legs as the visible parts and also several invisible
-parts as well. All these parts are stored in the entity object. Apart from 
-providing unified access, entities also precompute and store some standard data 
-associated with meshes, e.g., bounding boxes, centroids, etc.
+provides a unified way to manage such a model. In Blender, the complex models are
+often modeled as a set of component models. For example, a model of a table might
+consist of the tabletop box and four legs as the visible parts and also several 
+invisible parts as well. Blender provides several ways to group objects together, 
+e.g., by assigning a parent object to a set of objects, which enables the 
+manipulation of the group as a whole. However, while it is easy to access the 
+parent object through any of its children, the opposite is not computationally 
+efficient.
+The Entity class was introduced for two reasons:
+1) Provide an efficient and unified access to all components of the composite models
+2) Store in one place some useful precomputed values associated with an object, 
+such as bounding boxes, centroids, etc.
 
 eval_tests.py
 
-Evaluation pipeline. Reads the annotations from a file and executes main.py on 
+Evaluation pipeline. Reads the annotations from a file and executes main.py in 
 Blender with the given annotation as a parameter. It also keeps track of the results 
 of evaluation and computes the interannotator agreement metrics (Cohen's kappa 
 and weighted kappa)
@@ -73,10 +109,12 @@ arguements and their properties. Returns that data in structured form.
 
 main.py
 
-Main source, should be executed from inside Blender. Contains the functions for 
-the prepositions and all of the code working with Blender primitives (setting up
-the scene, creating entities out of the Blender objects, positioning the cameras,
-rendering etc.) Entry point - function main(). Annotation pipeline: 
+Main source file. Should be executed from inside Blender since it depends on Blender's
+custom BPY library. Contains the functions for the prepositions and all of the code
+ working with Blender primitives, e.g., for setting up the scene. Setting up the 
+scene, that is loaded into Blender along main.py, includes initializing various 
+global variables, creating entity objects from the Blender objects, etc.
+Entry point - function main(). Annotation pipeline: 
 1) reads annotation provided as a parameter 
 2) parses the annotation and extracts the relation with arguements
 3) tries to match the arguments to the candidate entities, based on the their description

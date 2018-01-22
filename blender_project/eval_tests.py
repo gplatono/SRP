@@ -114,6 +114,7 @@ ur_yn = {}
 ur_relations = {}
 system_yn = {}
 test_counter =0
+tj_count = 0
 
 #Main annotation evaluation pipeline
 for subm in open('annotations').readlines():
@@ -138,11 +139,12 @@ for subm in open('annotations').readlines():
     #if task_type == 1: #resp_code != -1:
     #    ur_relations[user][testcase] = map_response_to_index(resp)
     #else:
-    if task_type == '0':
+    if task_type == "0":
         #print ("ID:", subm[0].split("=")[1], resp, user, testcase)
         ur_yn[user][testcase] = yn_to_index[resp]#resp#yn_to_index[resp]
+        tj_count = tj_count + 1
     tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]    
-    if task_type == "0" and (relation == "above" or relation == "below" or relation == "to the left of" or relation == "to the right of"):        
+    if task_type == "3" and (relation == "above" or relation == "below" or relation == "to the left of" or relation == "to the right of"):        
         print ("ID:", subm[0].split("=")[1], resp, user, testcase)
         #print (ur_yn[user][testcase])
         #subprocess.call(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
@@ -168,6 +170,7 @@ for subm in open('annotations').readlines():
        
 #Compute and print the interannotator agreement
 print(ur_yn.keys())
+print("TJ_COUNT: ", tj_count)
 avg = 0
 tot = 0
 keys = [key for key in iter(ur_yn)]
