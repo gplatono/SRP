@@ -249,17 +249,21 @@ def near_raw(a, b):
                     bbox_b[7][2] - bbox_b[0][2])
     if a.get('planar') is not None:
         dist = min(dist, get_planar_distance_scaled(a, b))
-    elif b.get('planat') is not None:
+    elif b.get('planar') is not None:
         dist = min(dist, get_planar_distance_scaled(b, a))
-    elif a.get('vertical_rod') is not None or a.get('horizontal_rod') is not None:
+        #print ("PLANAR DIST: ", dist)
+    elif a.get('vertical_rod') is not None or a.get('horizontal_rod') is not None or a.get('rod') is not None:
         dist = min(dist, get_line_distance_scaled(a, b))
-    elif b.get('vertical_rod') is not None or b.get('horizontal_rod') is not None:
+    elif b.get('vertical_rod') is not None or b.get('horizontal_rod') is not None or b.get('rod') is not None:
         dist = min(dist, get_line_distance_scaled(b, a))
     elif a.get('concave') is not None or b.get('concave') is not None:
         dist = min(dist, closest_mesh_distance_scaled(a, b))
 
     fr_size = get_frame_size()
-    return 0.5 * (1 - min(1, dist / avg_dist + 0.01) + e ** (- (0.005 * math.log(dist + 0.01)))) / fr_size
+    #print ("FR_SIZE", fr_size)
+    raw_metric = e ** (-0.05 * dist)
+    '''0.5 * (1 - min(1, dist / avg_dist + 0.01) +'''    
+    return raw_metric * (1 - raw_metric / fr_size)
 
 #Computes the nearness measure for two entities
 #Takes into account the scene statistics:
@@ -274,15 +278,18 @@ def near(a, b):
         if entity != a and entity != b:
             near_a_entity = near_raw(a, entity)
             near_b_entity = near_raw(b, entity)
+            print (entity.name, near_a_entity, near_b_entity)
             #if dist_a_to_entity < raw_dist:
             raw_near_a += [near_a_entity]
             #if dist_b_to_entity < raw_dist:
             raw_near_b += [near_b_entity]
-    print (raw_near_a, raw_near_b)
+    print ("RAW:", raw_near_measure)
     average_near_a = sum(raw_near_a) / len(raw_near_a)
     average_near_b = sum(raw_near_b) / len(raw_near_b)
-    raw_near_measure += (raw_near_measure - (average_near_a + average_near_b) / 2) * (1 - raw_near_measure)
-    return raw_near_measure
+    print ("AVER: ", average_near_a, average_near_b)
+    near_measure = raw_near_measure + (raw_near_measure - (average_near_a + average_near_b) / 2) * (1 - raw_near_measure)
+    print (near_measure)
+    return near_measure
 
 #Computes the between relation (a is between b and c)
 #Inputs: a, b, c - entities
@@ -883,8 +890,10 @@ def main():
     
     bl4 = get_entity_by_name("Block 4")
     bl9 = get_entity_by_name("Block 9")
-    print (bl4.name, bl9.name)
-    print (near(bl4, bl9))
+    pict = get_entity_by_name("Picture 1")
+    pen = get_entity_by_name("Black Pencil")
+    print (bl4.name, bl9.name, pict.name, pen.name)
+    print (near(bl9, pen))
     #print(vp_project(entities[0], observer))    
     #picture 2 red chair 1#print (entities[5].name, entities[0].name)
     '''for entity1 in entities:

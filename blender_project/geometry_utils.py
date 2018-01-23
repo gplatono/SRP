@@ -86,29 +86,38 @@ def get_centroid_distance_scaled(ent_a, ent_b):
 def get_line_distance_scaled(ent_a, ent_b):
     a_dims = ent_a.get_dimensions()
     b_dims = ent_b.get_dimensions()
-    a_bbox = a.get_bbox()
+    a_bbox = ent_a.get_bbox()
     dist = 0
 
     #If ent_a is elongated, one dimension should be much bigger than the sum of the other two
     #Here we check which dimension is that
     if a_dims[0] >= 1.4 * (a_dims[1] + a_dims[2]):
-        dist = min(get_distance_from_line(a_bbox[0], a_bbox[4], b.centroid),
-                   get_distance_from_line(a_bbox[1], a_bbox[5], b.centroid),
-                   get_distance_from_line(a_bbox[2], a_bbox[6], b.centroid),
-                   get_distance_from_line(a_bbox[3], a_bbox[7], b.centroid))
-        dist /= ((a_dims[1] + a_dims[2]) / 2 + max(b_dims))
+        dist = min(get_distance_from_line(a_bbox[0], a_bbox[4], ent_b.centroid),
+                   get_distance_from_line(a_bbox[1], a_bbox[5], ent_b.centroid),
+                   get_distance_from_line(a_bbox[2], a_bbox[6], ent_b.centroid),
+                   get_distance_from_line(a_bbox[3], a_bbox[7], ent_b.centroid))
+        if math.fabs(ent_a.centroid[0] - ent_b.centroid[0]) <= a_dims[0] / 2:
+            dist /= ((a_dims[1] + a_dims[2]) / 2 + max(b_dims))
+        else:
+            dist = math.sqrt(0.5 * (ent_a.centroid[0] - ent_b.centroid[0]) ** 2 + 0.5 * dist ** 2)
     elif a_dims[1] >= 1.4 * (a_dims[0] + a_dims[2]):
-        dist = min(get_distance_from_line(a_bbox[0], a_bbox[2], b.centroid),
-                   get_distance_from_line(a_bbox[1], a_bbox[3], b.centroid),
-                   get_distance_from_line(a_bbox[4], a_bbox[6], b.centroid),
-                   get_distance_from_line(a_bbox[5], a_bbox[7], b.centroid))
-        dist /= ((a_dims[0] + a_dims[2]) / 2 + max(b_dims))
+        dist = min(get_distance_from_line(a_bbox[0], a_bbox[2], ent_b.centroid),
+                   get_distance_from_line(a_bbox[1], a_bbox[3], ent_b.centroid),
+                   get_distance_from_line(a_bbox[4], a_bbox[6], ent_b.centroid),
+                   get_distance_from_line(a_bbox[5], a_bbox[7], ent_b.centroid))
+        if math.fabs(ent_a.centroid[1] - ent_b.centroid[1]) <= a_dims[1] / 2:
+            dist /= ((a_dims[0] + a_dims[2]) / 2 + max(b_dims))
+        else:
+            dist = math.sqrt(0.5 * (ent_a.centroid[1] - ent_b.centroid[1]) ** 2 + 0.5 * dist ** 2)
     elif a_dims[2] >= 1.4 * (a_dims[1] + a_dims[0]):
-        dist = min(get_distance_from_line(a_bbox[0], a_bbox[1], b.centroid),
-                   get_distance_from_line(a_bbox[2], a_bbox[3], b.centroid),
-                   get_distance_from_line(a_bbox[4], a_bbox[5], b.centroid),
-                   get_distance_from_line(a_bbox[6], a_bbox[7], b.centroid))
-        dist /= ((a_dims[0] + a_dims[1]) / 2 + max(b_dims))
+        dist = min(get_distance_from_line(a_bbox[0], a_bbox[1], ent_b.centroid),
+                   get_distance_from_line(a_bbox[2], a_bbox[3], ent_b.centroid),
+                   get_distance_from_line(a_bbox[4], a_bbox[5], ent_b.centroid),
+                   get_distance_from_line(a_bbox[6], a_bbox[7], ent_b.centroid))
+        if math.fabs(ent_a.centroid[2] - ent_b.centroid[2]) <= a_dims[2] / 2:
+            dist /= ((a_dims[0] + a_dims[1]) / 2 + max(b_dims))
+        else:
+            dist = math.sqrt(0.5 * (ent_a.centroid[2] - ent_b.centroid[2]) ** 2 + 0.5 * dist ** 2)
     return dist
 
 #Computes the distance between two entities in the special
@@ -118,23 +127,41 @@ def get_line_distance_scaled(ent_a, ent_b):
 def get_planar_distance_scaled(ent_a, ent_b):
     a_dims = ent_a.get_dimensions()
     b_dims = ent_b.get_dimensions()
-    a_bbox = a.get_bbox()
+    a_bbox = ent_a.get_bbox()
     dist = 0
 
     #If ent_a is planar, one dimension should be much smaller than the other two
     #Here we check which dimension is that
     if a_dims[0] <= 0.2 * a_dims[1] and a_dims[0] <= 0.2 * a_dims[2]:
-        dist = min(get_distance_from_plane(b.centroid, a_bbox[0], a_bbox[1], a_bbox[2]),
-                   get_distance_from_plane(b.centroid, a_bbox[4], a_bbox[5], a_bbox[6]))
-        dist /= (a_dims[0] + max(b_dims))
+        dist = min(get_distance_from_plane(ent_b.centroid, a_bbox[0], a_bbox[1], a_bbox[2]),
+                   get_distance_from_plane(ent_b.centroid, a_bbox[4], a_bbox[5], a_bbox[6]))
+        if math.fabs(ent_a.centroid[1] - ent_b.centroid[1]) <= a_dims[1] / 2 and \
+            math.fabs(ent_a.centroid[2] - ent_b.centroid[2]) <= a_dims[2] / 2:
+            dist /= (a_dims[0] + max(b_dims))
+        else:
+            #dist = closest_mesh_distance(ent_a, ent_b)
+            dist = math.sqrt(0.6 * ((ent_a.centroid[1] - ent_b.centroid[1]) ** 2 + (ent_a.centroid[2] - ent_b.centroid[2]) ** 2) \
+                             + 0.4 * dist ** 2)
     elif a_dims[1] <= 0.2 * a_dims[0] and a_dims[1] <= 0.2 * a_dims[2]:
-        dist = min(get_distance_from_plane(b.centroid, a_bbox[0], a_bbox[1], a_bbox[4]),
-                   get_distance_from_plane(b.centroid, a_bbox[2], a_bbox[3], a_bbox[5]))
-        dist /= (a_dims[1] + max(b_dims))
+        dist = min(get_distance_from_plane(ent_b.centroid, a_bbox[0], a_bbox[1], a_bbox[4]),
+                   get_distance_from_plane(ent_b.centroid, a_bbox[2], a_bbox[3], a_bbox[5]))
+        if math.fabs(ent_a.centroid[0] - ent_b.centroid[0]) <= a_dims[0] / 2 and \
+            math.fabs(ent_a.centroid[2] - ent_b.centroid[2]) <= a_dims[2] / 2:
+            dist /= (a_dims[1] + max(b_dims))
+        else:
+            #dist = closest_mesh_distance(ent_a, ent_b)
+            dist = math.sqrt(0.6 * ((ent_a.centroid[0] - ent_b.centroid[0]) ** 2 + (ent_a.centroid[2] - ent_b.centroid[2]) ** 2) \
+                             + 0.4 * dist ** 2)
     elif a_dims[2] <= 0.2 * a_dims[0] and a_dims[2] <= 0.2 * a_dims[1]:
-        dist = min(get_distance_from_plane(b.centroid, a_bbox[0], a_bbox[2], a_bbox[4]),
-                   get_distance_from_plane(b.centroid, a_bbox[1], a_bbox[3], a_bbox[5]))
-        dist /= (a_dims[2] + max(b_dims))
+        dist = min(get_distance_from_plane(ent_b.centroid, a_bbox[0], a_bbox[2], a_bbox[4]),
+                   get_distance_from_plane(ent_b.centroid, a_bbox[1], a_bbox[3], a_bbox[5]))
+        if math.fabs(ent_a.centroid[1] - ent_b.centroid[1]) <= a_dims[1] / 2 and \
+            math.fabs(ent_a.centroid[0] - ent_b.centroid[0]) <= a_dims[0] / 2:
+            dist /= (a_dims[2] + max(b_dims))
+        else:
+            #dist = closest_mesh_distance(ent_a, ent_b)
+            dist = math.sqrt(0.6 * ((ent_a.centroid[1] - ent_b.centroid[1]) ** 2 + (ent_a.centroid[0] - ent_b.centroid[0]) ** 2) \
+                             + 0.4 * dist ** 2)
     return dist
 
 

@@ -7,6 +7,7 @@ import itertools
 import os
 import sys
 import random
+from mathutils import Vector
 from geometry_utils import *
 
 #This class comprises the implementation of the special "Entity"-type
@@ -21,6 +22,16 @@ class Entity:
         #First object in the list is the parent or head object
         #Defining the entity
         self.constituents = [main]
+
+        #Filling in the constituent objects starting with the parent
+        queue = [main]
+        while len(queue) != 0:
+            par = queue[0]
+            queue.pop(0)
+            for ob in Entity.scene.objects:
+                if ob.parent == par:
+                    self.constituents.append(ob)
+                    queue.append(ob)
 
         #Name of the entity
         self.name = main.name
@@ -45,6 +56,9 @@ class Entity:
         #Bounding box's centroid
         self.bbox_centroid = self.get_bbox_centroid()
 
+        #Entity's mesh centroid
+        self.centroid = self.get_centroid()
+
         #Dimensions of the entity in the format
         #[xmax - xmin, ymax - ymin, zmax - zmin]
         self.dimensions = self.get_dimensions()
@@ -63,17 +77,7 @@ class Entity:
 
         #Total mesh of the entity
         self.total_mesh = self.get_total_mesh()
-
-        #Filling in the constituent objects starting with the parent
-        queue = [main]
-        while len(queue) != 0:
-            par = queue[0]
-            queue.pop(0)
-            for ob in Entity.scene.objects:
-                if ob.parent == par:
-                    self.constituents.append(ob)
-                    queue.append(ob)
-
+        
     #Sets the direction of the longitudinal axis of the entity
     def set_longitudinal(self, direction):
         self.longitudinal = direction
@@ -165,6 +169,19 @@ class Entity:
         bbox = self.get_bbox()
         mesh.from_pydata(bbox, [], [(0, 1, 3, 2), (0, 1, 5, 4), (2, 3, 7, 6), (0, 2, 6, 4), (1, 3, 7, 5), (4, 5, 7, 6)])
         mesh.update()
+
+    #Computes the total mesh centroid
+    def get_centroid(self):
+        if not hasattr(self, 'centroid') or self.centroid is None:
+            centroid = Vector((0, 0, 0))
+            vertex_count = 0
+            for v in self.get_total_mesh():
+                centroid += v
+                vertex_count += 1
+            centroid /= vertex_count
+            self.centroid = centroid
+        return self.centroid
+            
 
     #Returns the hierachy of types of the entity
     def get_type_structure(self):

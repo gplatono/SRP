@@ -35,7 +35,10 @@ agreement. Each annotation contains all the improtant information, such as the i
 of the scene is was created for (to load the right scene file), the user id (for 
 agreement calculation), etc.
 
-3D models for the scenes were mostly created by hand.
+3D models for the scenes were mostly created ad hoc, in Blender, using its standard
+visual modeling tools. The reason behind this is that most 3D artists, who create
+publicly available models, use different part structure in their models, which does 
+not always correspond to our needs.
 
 ################################################################################
 Project components:
