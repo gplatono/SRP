@@ -1,0 +1,84 @@
+#include <iostream>
+
+#include "opencv2/opencv.hpp"
+
+#include "apriltag.h"
+#include "tag36h11.h"
+#include "tag36h10.h"
+#include "tag36artoolkit.h"
+#include "tag25h9.h"
+#include "tag25h7.h"
+#include "common/getopt.h"
+#include "stdlib.h"
+#include "common/homography.h"
+
+using namespace std;
+using namespace cv;
+
+
+int main(int argc, char *argv[])
+{
+  VideoCapture capture0(0);
+  Mat img0;
+
+  apriltag_detector_t *td = apriltag_detector_create();
+  apriltag_detector_add_family(td, tag36h11_create());
+  
+  while(1)
+  {
+    capture0 >> img0;
+    cvtColor(img0, img0, COLOR_BGR2GRAY);
+
+        // Make an image_u8_t header for the Mat data
+        image_u8_t im = { .width = img0.cols,
+            .height = img0.rows,
+            .stride = img0.cols,
+            .buf = img0.data
+        };
+
+        zarray_t *detections0 = apriltag_detector_detect(td, &im);
+        cout << zarray_size(detections0) << " tags detected" << endl;
+ 
+        // Draw detection outlines
+        for (int i = 0; i < zarray_size(detections0); i++) {
+            apriltag_detection_t *det;
+            zarray_get(detections0, i, &det);
+
+	    matd_t* TrRot = matd_create(3, 4);
+	    TrRot = homography_to_pose(det->H, 600, 600, im.width/2, im.height/2);
+	    cout << "Distance: " << sqrt(matd_get(TrRot, 0, 3) * matd_get(TrRot, 0, 3) + matd_get(TrRot, 1, 3) * matd_get(TrRot, 1, 3) + matd_get(TrRot, 2, 3) * matd_get(TrRot, 2, 3)) << endl; 
+            line(img0, Point(det->p[0][0], det->p[0][1]),
+                     Point(det->p[1][0], det->p[1][1]),
+                     Scalar(0, 0xff, 0), 2);
+            line(img0, Point(det->p[0][0], det->p[0][1]),
+                     Point(det->p[3][0], det->p[3][1]),
+                     Scalar(0, 0, 0xff), 2);
+            line(img0, Point(det->p[1][0], det->p[1][1]),
+                     Point(det->p[2][0], det->p[2][1]),
+                     Scalar(0xff, 0, 0), 2);
+            line(img0, Point(det->p[2][0], det->p[2][1]),
+                     Point(det->p[3][0], det->p[3][1]),
+                     Scalar(0xff, 0, 0), 2);
+
+            stringstream ss;
+            ss << det->id;
+            String text = ss.str();
+            int fontface = FONT_HERSHEY_SCRIPT_SIMPLEX;
+            double fontscale = 1.0;
+            int baseline;
+            Size textsize = getTextSize(text, fontface, fontscale, 2,
+                                            &baseline);
+            putText(img0, text, Point(det->c[0]-textsize.width/2,
+                                       det->c[1]+textsize.height/2),
+                    fontface, fontscale, Scalar(0xff, 0x99, 0), 2);
+        }
+	zarray_destroy(detections0);
+
+
+    imshow("0",img0);
+    waitKey(50);
+   
+  }
+  capture0.release();
+  return 0;
+}
