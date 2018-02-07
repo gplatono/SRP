@@ -146,10 +146,8 @@ for subm in open('annotations').readlines():
         ur_yn[user][testcase] = yn_to_index[resp]#resp#yn_to_index[resp]
         tj_count = tj_count + 1
     tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]    
-    if task_type == "0":# and (relation == "above" or relation == "below" or relation == "to the left of" or relation == "to the right of"):        
-        print ("ID:", subm[0].split("=")[1], resp, user, testcase)
-        #print (ur_yn[user][testcase])
-        #subprocess.call(["blender", test[0], "--background", "--python", "main.py", "--", test[1], test[2], test[3], test[4], test[5], test[6]])
+    if task_type == "0" or task_type == "1":
+        print ("ID:", subm[0].split("=")[1], resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data
         res = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])

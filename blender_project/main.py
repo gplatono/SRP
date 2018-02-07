@@ -8,6 +8,7 @@ import itertools
 import os
 import sys
 import random
+import bmesh
 from functools import reduce
 
 #The path to the this source file
@@ -61,6 +62,7 @@ rf_mapping = {'to the left of': 'to_the_left_of_deic',
               'right': 'to_the_right_of_deic',
               'left': 'to_the_left_of_deic',
               'at': 'at',
+              'in front of': 'in_front_of_deic',
               'front': 'in_front_of_deic',
               'behind': 'behind_deic',
               'between': 'between'}
@@ -405,9 +407,10 @@ def in_front_of_deic(a, b):
     max_dim_a = max(bbox_a[7][0] - bbox_a[0][0],
                     bbox_a[7][1] - bbox_a[0][1],
                     bbox_a[7][2] - bbox_a[0][2]) + 0.0001
-    dist = get_distance_from_line(observer.get_bbox_centroid(), b.get_bbox_centroid(), a.get_bbox_centroid())
+    dist = get_distance_from_line(observer.get_centroid(), b.get_bbox_centroid(), a.get_bbox_centroid())
     return 0.5 * (closer_than(a, b, observer) + e ** (-dist / max_dim_a))
 
+#Enable SVA
 #Computes the deictic version of the "behind" relation
 #which is taken to be symmetric to "in-front-of"
 #Inputs: a, b - entities
@@ -515,9 +518,24 @@ def get_observer():
     cam_ob.rotation_euler = (1.1, 0, -1.57)
     bpy.data.cameras['Camera'].lens = 20
     
-    bpy.context.scene.camera = scene.objects["Camera"]    
+    bpy.context.scene.camera = scene.objects["Camera"]
+
+
+    mesh = bpy.data.meshes.new("observer")
+    #scene.objects.active = obj
+    #obj.select = True
+    mesh = bpy.context.object.data
+    bm = bmesh.new()
+    #print (cam_ob.location)
+    bm.verts.new(cam_ob.location)
+    bm.to_mesh(mesh)
+    observer = bpy.data.objects.new("Observer", mesh)
+    scene.objects.link(observer)
+    bm.free()
     scene.update()
-    return cam_ob
+    observer_entity = Entity(observer)
+    observer_entity.camera = cam_ob
+    return observer_entity
 
 #Searches and returns the entity that has the given name
 #associated with it
@@ -637,7 +655,7 @@ def get_argument_entities(arg):
 def vp_project(entity, observer):
     points = reduce((lambda x,y: x + y), [[obj.matrix_world * v.co for v in obj.data.vertices] for obj in entity.constituents if (obj is not None and hasattr(obj.data, 'vertices') and hasattr(obj, 'matrix_world'))])
     #print (points)
-    co_2d = [bpy_extras.object_utils.world_to_camera_view(scene, observer, point) for point in points]
+    co_2d = [bpy_extras.object_utils.world_to_camera_view(scene, observer.camera, point) for point in points]
     render_scale = scene.render.resolution_percentage / 100
     render_size = (int(scene.render.resolution_x * render_scale), int(scene.render.resolution_y * render_scale),)
     pixel_coords = [(round(point.x * render_size[0]),round(point.y * render_size[1]),) for point in co_2d]
@@ -721,7 +739,7 @@ def eval_find(relation, rel_constraints, referents):
 #the relation and its arguments; response - user's response for the test
 #Return value: the value of the corresponding relation function
 def process_truthjudg(relation, relatum, referent1, referent2, response):
-    print (relation, relatum, referent1, referent2, response)
+    #print (relation, relatum, referent1, referent2, response)
     relatum = get_entity_by_name(relatum)
     referent1 = get_entity_by_name(referent1)
     referent2 = get_entity_by_name(referent2)
@@ -877,6 +895,7 @@ def main():
             referent2 = args[3].lower()
             task_type = args[4].lower()
             response = args[5].lower()
+            print (task_type, relatum, relation, referent1, referent2)
         
             if task_type == "1":
                 best_cand = process_descr(relatum, response)
