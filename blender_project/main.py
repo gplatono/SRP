@@ -12,7 +12,7 @@ import bmesh
 from functools import reduce
 
 #The path to the this source file
-filepath = os.path.dirname(os.path.abspath(__file__)) + "/"
+filepath = os.path.dirname(os.path.abspath(__file__))
 #print (filepath)
 sys.path.insert(0, filepath)
 #filepath = filepath[0:filepath.rfind("/") + 1]
@@ -699,11 +699,13 @@ def touching(a, b):
 #Return value: list of entities
 def filter(entities, constraints):
     result = []
-    print ("COLOR_MOD", constraints[1][1])
+    #print ("COLOR_MOD", constraints[1][1])
+    #print ("FILTER:", entities, constraints)
     for entity in entities:
         isPass = True
         #print ("ENT_COLOR_MOD", entity.color_mod)
         for cons in constraints:
+            #print("TYPE_STR:", entity.name, entity.get_type_structure())
             if cons[0] == 'type' and entity.get_type_structure()[-2] != cons[1]:
                 isPass = False
             elif cons[0] == 'color_mod' and entity.color_mod != cons[1]:
@@ -719,9 +721,11 @@ def filter(entities, constraints):
 #Return value: the best candidate entity
 def eval_find(relation, rel_constraints, referents):
     candidates = filter(entities, rel_constraints)
+    print ("CAND:", candidates)
     scores = []
     if relation != "between":
-        scores = [(cand, cand.name, [globals()[rf_mapping[relation]](cand, ref) for ref in referents]) for cand in candidates]
+        print("SCORES:", relation, referents)
+        scores = [(cand, cand.name, sum([globals()[rf_mapping[relation]](cand, ref) for ref in referents])) for cand in candidates]
     else:
         return None ####FIX THIS LATER!!!
     for sc in scores:
@@ -764,6 +768,7 @@ def get_relatum_constraints(relatum, rel_constraints):
 #Return value: the best-candidate entity fo the given description
 def process_descr(relatum, response):
     rel_constraint = parse(response)
+    print ("REL_CONST:", rel_constraint, rel_constraint.referents[0].mod)
     print ("RELATUM:", relatum)
     relatum = get_entity_by_name(relatum)
     print ("RELATUM:", relatum.name)
@@ -774,7 +779,7 @@ def process_descr(relatum, response):
     for ref in rel_constraint.referents:
         print (ref.token)
     refs += get_argument_entities(ref)
-    print ([ref.name for ref in refs])
+    print ("REFERENTS:", [ref.name for ref in refs])
     relation = rel_constraint.token
     #for entity in entities:
     #    if entity.name == "Table" and bpy.data.objects.get("Camera") is not None:
@@ -895,7 +900,7 @@ def main():
             referent2 = args[3].lower()
             task_type = args[4].lower()
             response = args[5].lower()
-            print (task_type, relatum, relation, referent1, referent2)
+            print ("ANNOTATION PARAMS:", task_type, relatum, relation, referent1, referent2)
         
             if task_type == "1":
                 best_cand = process_descr(relatum, response)
