@@ -116,6 +116,9 @@ relatums = {}
 system_yn = {}
 test_counter =0
 tj_count = 0
+descr_count = 0
+descr_success = 0
+
 
 #Main annotation evaluation pipeline
 for subm in open('annotations').readlines():
@@ -146,7 +149,7 @@ for subm in open('annotations').readlines():
         ur_yn[user][testcase] = yn_to_index[resp]#resp#yn_to_index[resp]
         tj_count = tj_count + 1
     tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]    
-    if task_type == "0" or task_type == "1":
+    if task_type == "0" or task_type == "1" and "between" not in resp and "on" not in resp:
         print ("ID:", subm[0].split("=")[1], resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data
@@ -157,12 +160,22 @@ for subm in open('annotations').readlines():
         print (res)
         for item in res:
             if "RESULT" in item:
-                res = item.split(":")[1]
+                res = (item.split(":")[1]).strip()
                 break
-        res = float(res)
-        res = math.floor(5 * res)
-        print ("RESULT:", res, "USER RESULT:", ur_yn[user][testcase])
-        system_yn[testcase] = res
+        if task_type == "1":
+            descr_count += 1
+            if res == "True":
+                res = 1
+            elif res == "False":
+                res = 0       
+            print ("RESULT:", res)
+            if res == 1 or res == 0:
+                descr_success += res
+        else:
+            res = float(res)
+            res = math.floor(5 * res)
+            print ("RESULT:", res, "USER RESULT:", ur_yn[user][testcase])
+            system_yn[testcase] = res
         #test_counter += 1
         #if test_counter == 10:
         #    break

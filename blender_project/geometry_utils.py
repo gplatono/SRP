@@ -182,7 +182,7 @@ def closest_mesh_distance(ent_a, ent_b):
 def closest_mesh_distance_scaled(ent_a, ent_b):
     a_dims = ent_a.get_dimensions()
     b_dims = ent_b.get_dimensions()
-    return closest_mesh_distance(ent_t, ent_b) / (max(a_dims) + max(b_dims) + 0.0001)
+    return closest_mesh_distance(ent_a, ent_b) / (max(a_dims) + max(b_dims) + 0.0001)
 
 #Computes the shared volume of the bounding boxes of two entities
 #Input: ent_a, ent_b - entities

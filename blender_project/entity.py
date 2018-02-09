@@ -22,14 +22,15 @@ class Entity:
         #First object in the list is the parent or head object
         #Defining the entity
         self.constituents = [main]
+        #print ("ENTITY_MAIN:", main)
 
         #Filling in the constituent objects starting with the parent
         queue = [main]
         while len(queue) != 0:
             par = queue[0]
             queue.pop(0)
-            for ob in Entity.scene.objects:
-                if ob.parent == par:
+            for ob in Entity.scene.objects:                
+                if ob.parent == par and ob.type == "MESH":
                     self.constituents.append(ob)
                     queue.append(ob)
 

@@ -48,6 +48,40 @@ color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow']
 
 types = []
 
+types_ids = {
+    'chair':  'props.item.furniture.chair',
+    'table':  'props.item.furniture.table',    
+    'bed':     'props.item.furniture.bed',
+    'sofa':  'props.item.furniture.sofa',
+    'bookshelf':  'props.item.furniture.bookshelf',
+    'desk':  'props.item.furniture.desk',
+    'book': 'props.item.portable.book',
+    'laptop': 'props.item.portable.laptop',
+    'pencil': 'props.item.portable.pencil',
+    'pencil holder': 'props.item.portable.pencil holder',
+    'note': 'props.item.portable.note',
+    'rose': 'props.item.portable.rose',
+    'vase': 'props.item.portable.vase',
+    'cardbox': 'props.item.portable.cardbox',
+    'box': 'props.item.portable.box',
+    'ceiling light': 'props.item.stationary.ceiling light',
+    'lamp': 'props.item.portable.lamp',
+    'apple': 'props.item.food.apple',
+    'banana': 'props.item.food.banana',
+    'plate': 'props.item.portable.plate',
+    'bowl': 'props.item.portable.bowl',
+    'recycle bin': 'props.item.portable.recycle bin',
+    'tv': 'props.item.appliances.tv',
+    'poster': 'props.item.stationary.poster',
+    'picture': 'props.item.stationary.picture',
+    'fridge' : 'props.item.appliances.fridge',
+    'ceiling fan': 'props.item.stationary.ceiling fan',
+    'block': 'props.item.block',
+    'floor': 'world.plane.floor',
+    'ceiling': 'world.plane.ceiling',
+    'wall': 'world.plane.wall'
+}
+    
 #Dictionary that maps the relation names to the names of the functions that implement them
 rf_mapping = {'to the left of': 'to_the_left_of_deic',
               'to the right of': 'to_the_right_of_deic',
@@ -542,6 +576,10 @@ def get_observer():
 #Inputs: name - human-readable name as a string
 #Return value: entity (if exists) or None
 def get_entity_by_name(name):
+    for entity in entities:
+        #print(name, entity.name)
+        if entity.name.lower() == name.lower():
+            return entity
     for col in color_mods:
         if col in name:
             name = name.replace(col + " ", "")
@@ -635,17 +673,21 @@ def save_screenshot():
 #Inputs: arg - argument object
 #Return value: the list of entities
 def get_argument_entities(arg):
-    #print ("ARG = ", arg, arg.mod.det, arg.mod.adj)
+    #print ("ARG = ", arg, ";", arg.token,";", arg.mod.det,";", arg.mod.adj)
     ret_val = [get_entity_by_name(arg.token)]
+    #print ("RET_VAL:", ret_val)
     if ret_val == [None]:
         ret_val = []
-        if arg.mod != None and arg.mod.det == 'a':
+        #if arg.mod != None and arg.mod.det == 'a':
             #print (entities)
-            for entity in entities:
-                print ("ARG: ", arg.token, entity.name, entity.get_type_structure(), entity.color_mod)
-                if arg.token in entity.type_structure and (arg.mod.adj == "" or arg.mod.adj is None or entity.color_mod == arg.mod.adj):
-                    ret_val += [entity]
-    #print ("RETVAL: ", ret_val) 
+        for entity in entities:
+            #print ("ENTITY_ARG: ", arg.token, entity.name, entity.get_type_structure(), entity.color_mod)
+            if (entity.type_structure is None):
+                print ("NONE STRUCTURE", entity.name)
+            if (arg.token in entity.type_structure or arg.token in entity.name.lower() or arg.token == "block" and "cube" in entity.type_structure) \
+               and (arg.mod.adj == "" or arg.mod.adj is None or entity.color_mod == arg.mod.adj):
+                ret_val += [entity]
+    #print ("REFER RETVAL: ", ret_val) 
     return ret_val
 
 #Computes the projection of an entity onto the observer's visual plane
@@ -733,8 +775,8 @@ def eval_find(relation, rel_constraints, referents):
     max_score = 0
     best_candidate = None
     for ev in scores:
-        if ev[2][0] > max_score:
-            max_score = ev[2][0]
+        if ev[2] > max_score:
+            max_score = ev[2]
             best_candidate = ev[0]
     return best_candidate
 
@@ -874,6 +916,13 @@ def behind_intr(a, b):
     in_front_of_intr(b, a)
 
 
+def fix_ids():
+    for ob in scene.objects:
+        if ob.get('main') is not None:# and ob.get('id') is None:
+            for key in types_ids.keys():
+                if key in ob.name.lower():
+                    ob['id'] = types_ids[key] + "." + ob.name
+                    
 #Entry point
 #Implements the evaluation pipeline
 def main():
@@ -900,7 +949,7 @@ def main():
             referent2 = args[3].lower()
             task_type = args[4].lower()
             response = args[5].lower()
-            print ("ANNOTATION PARAMS:", task_type, relatum, relation, referent1, referent2)
+            print ("ANNOTATION PARAMS:", task_type, relatum, relation, referent1, referent2, response)
         
             if task_type == "1":
                 best_cand = process_descr(relatum, response)
@@ -912,12 +961,12 @@ def main():
         return
 
     
-    bl4 = get_entity_by_name("Block 4")
+    '''bl4 = get_entity_by_name("Block 4")
     bl9 = get_entity_by_name("Block 9")
     pict = get_entity_by_name("Picture 1")
     pen = get_entity_by_name("Black Pencil")
     print (bl4.name, bl9.name, pict.name, pen.name)
-    print (near(bl9, pen))
+    print (near(bl9, pen))'''
     #print(vp_project(entities[0], observer))    
     #picture 2 red chair 1#print (entities[5].name, entities[0].name)
     '''for entity1 in entities:
@@ -927,9 +976,9 @@ def main():
                 print ("RIGHT:", to_the_right_of_deic(entity1, entity2, observer))
                 print ("LEFT:", to_the_left_of_deic(entity1, entity2, observer))'''
 
-
 if __name__ == "__main__":
     # save_screenshot()
+    fix_ids()
+    print (bpy.data.filepath)
+    bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
     main()
-
-
