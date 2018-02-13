@@ -158,7 +158,7 @@ def init_parser(objects):
 def replace_args(argument):
     #if "wall" in argument.token:
     #    return Argument("world_" + "_".join(argument.token.lower().split()), argument.mod)
-    if (argument.mod.adj + " " + argument.token).lower() in scene_objects:
+    if argument.mod is not None and argument.mod.adj is not None and (argument.mod.adj + " " + argument.token).lower() in scene_objects:
         return Argument((argument.mod.adj + " " + argument.token).lower(), argument.mod)
     return argument
     

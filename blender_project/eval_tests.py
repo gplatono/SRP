@@ -119,12 +119,12 @@ tj_count = 0
 descr_count = 0
 descr_success = 0
 
-
 #Main annotation evaluation pipeline
 for subm in open('annotations').readlines():
 
-    #Read-off the annotation components    
+    #Read-off the annotation components
     subm = subm.strip().split(":")
+    ID = subm[0].split("=")[1]
     testcase = subm[1].split("=")[1]
     user = subm[2].split("=")[1]
     scene_path = subm[4].split("=")[1]
@@ -149,8 +149,8 @@ for subm in open('annotations').readlines():
         ur_yn[user][testcase] = yn_to_index[resp]#resp#yn_to_index[resp]
         tj_count = tj_count + 1
     tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]    
-    if task_type == "0" or task_type == "1" and "between" not in resp and "on" not in resp:
-        print ("ID:", subm[0].split("=")[1], resp, user, testcase, task_type)
+    if descr_count <= 200 and (task_type == "1" and "between" not in resp and "on" not in resp):
+        print ("ID:", ID, resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data
         res = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
@@ -180,6 +180,7 @@ for subm in open('annotations').readlines():
         #if test_counter == 10:
         #    break
 
+print ("DESCRIPTION TASK ACCURACY: {}".format(descr_success / descr_count))
        
 #Compute and print the interannotator agreement
 print(ur_yn.keys())

@@ -314,17 +314,17 @@ def near(a, b):
         if entity != a and entity != b:
             near_a_entity = near_raw(a, entity)
             near_b_entity = near_raw(b, entity)
-            print (entity.name, near_a_entity, near_b_entity)
+            #print (entity.name, near_a_entity, near_b_entity)
             #if dist_a_to_entity < raw_dist:
             raw_near_a += [near_a_entity]
             #if dist_b_to_entity < raw_dist:
             raw_near_b += [near_b_entity]
-    print ("RAW:", raw_near_measure)
+    #print ("RAW:", raw_near_measure)
     average_near_a = sum(raw_near_a) / len(raw_near_a)
     average_near_b = sum(raw_near_b) / len(raw_near_b)
-    print ("AVER: ", average_near_a, average_near_b)
+    #print ("AVER: ", average_near_a, average_near_b)
     near_measure = raw_near_measure + (raw_near_measure - (average_near_a + average_near_b) / 2) * (1 - raw_near_measure)
-    print (near_measure)
+    #print (near_measure)
     return near_measure
 
 #Computes the between relation (a is between b and c)
@@ -583,7 +583,7 @@ def get_entity_by_name(name):
     for col in color_mods:
         if col in name:
             name = name.replace(col + " ", "")
-            print ("MOD NAME:", name)
+            #print ("MOD NAME:", name)
     for entity in entities:
         #print(name, entity.name)
         if entity.name.lower() == name.lower():
@@ -606,7 +606,7 @@ def place_entity(entity, position=(0,0,0), rotation=(0,0,0)):
 def arrange_entities(reg, collection):
     for entity in collection:
         if entity.get('fixed') is None:
-            print (entity.name)
+            #print (entity.name)
             if reg[4] == reg[5]:
                 pos = (random.uniform(reg[0], reg[1]), random.uniform(reg[2], reg[3]), reg[4])#entity.get_parent_offset()[2])
             else:
@@ -763,15 +763,15 @@ def filter(entities, constraints):
 #Return value: the best candidate entity
 def eval_find(relation, rel_constraints, referents):
     candidates = filter(entities, rel_constraints)
-    print ("CAND:", candidates)
+    #print ("CAND:", candidates)
     scores = []
     if relation != "between":
-        print("SCORES:", relation, referents)
+        #print("SCORES:", relation, referents)
         scores = [(cand, cand.name, sum([globals()[rf_mapping[relation]](cand, ref) for ref in referents])) for cand in candidates]
     else:
         return None ####FIX THIS LATER!!!
-    for sc in scores:
-        print ("CAND:", sc[1], sc[2])
+    #for sc in scores:
+    #    print ("CAND:", sc[1], sc[2])
     max_score = 0
     best_candidate = None
     for ev in scores:
@@ -821,7 +821,7 @@ def process_descr(relatum, response):
     for ref in rel_constraint.referents:
         print (ref.token)
     refs += get_argument_entities(ref)
-    print ("REFERENTS:", [ref.name for ref in refs])
+    #print ("REFERENTS:", [ref.name for ref in refs])
     relation = rel_constraint.token
     #for entity in entities:
     #    if entity.name == "Table" and bpy.data.objects.get("Camera") is not None:
