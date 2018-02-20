@@ -5,7 +5,7 @@ import sys
 import numpy as np
 import math
 
-filepath = os.path.dirname(os.path.abspath(__file__)) + "/"
+filepath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, filepath)
 
 from parser import *
@@ -149,7 +149,7 @@ for subm in open('annotations').readlines():
         ur_yn[user][testcase] = yn_to_index[resp]#resp#yn_to_index[resp]
         tj_count = tj_count + 1
     tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]    
-    if descr_count <= 200 and (task_type == "1" and "between" not in resp and "on" not in resp):
+    if "between" in resp:#descr_count <= 200 and task_type == "1" and "between" not in resp:
         print ("ID:", ID, resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data
@@ -167,8 +167,9 @@ for subm in open('annotations').readlines():
             if res == "True":
                 res = 1
             elif res == "False":
-                res = 0       
-            print ("RESULT:", res)
+                res = 0
+            if res == 0:
+                print ("RESULT:", res)
             if res == 1 or res == 0:
                 descr_success += res
         else:
@@ -181,9 +182,10 @@ for subm in open('annotations').readlines():
         #    break
 
 print ("DESCRIPTION TASK ACCURACY: {}".format(descr_success / descr_count))
-       
+
+
 #Compute and print the interannotator agreement
-print(ur_yn.keys())
+'''print(ur_yn.keys())
 print("TJ_COUNT: ", tj_count)
 avg = 0
 tot = 0
@@ -196,8 +198,9 @@ for us1 in range(len(keys)):
             if result is not None:
                 avg += result
                 tot += 1
-print ("AVG KAPPA:", 1.0 * avg / tot)
-
+print ("AVG KAPPA:", 1.0 * avg / tot)'''
+'''
 for user in ur_yn:
     print ("USER:", user)
     print (weighted_cohen_kappa(ur_yn[user], system_yn))
+'''

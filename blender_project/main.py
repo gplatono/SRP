@@ -731,8 +731,11 @@ def touching(a, b):
     for point in bbox_b:
         if point_distance(point, center_a) < rad_a:
             return 1
-    mesh_dist = closest_mesh_distance_scaled(a, b)
-    return math.exp(- 2 * mesh_dist)
+    mesh_dist = 1e9
+    #print ("CENTROID DIST:" , get_centroid_distance_scaled(a, b))
+    if get_centroid_distance_scaled(a, b) <= 0.8:
+        mesh_dist = closest_mesh_distance_scaled(a, b)    
+    return math.exp(- 5 * mesh_dist)
 
 #Filters the entities list according to the set of constraints, i.e.,
 #returns the list of entities satisfying certain criteria
@@ -768,6 +771,7 @@ def eval_find(relation, rel_constraints, referents):
     if relation != "between":
         #print("SCORES:", relation, referents)
         scores = [(cand, cand.name, sum([globals()[rf_mapping[relation]](cand, ref) for ref in referents])) for cand in candidates]
+        print(scores)
     else:
         return None ####FIX THIS LATER!!!
     #for sc in scores:
@@ -961,12 +965,12 @@ def main():
         return
 
     
-    '''bl4 = get_entity_by_name("Block 4")
+    bl4 = get_entity_by_name("Block 4")
     bl9 = get_entity_by_name("Block 9")
-    pict = get_entity_by_name("Picture 1")
-    pen = get_entity_by_name("Black Pencil")
-    print (bl4.name, bl9.name, pict.name, pen.name)
-    print (near(bl9, pen))'''
+    #pict = get_entity_by_name("Picture 1")
+    #pen = get_entity_by_name("Black Pencil")
+    print (bl4.name, bl9.name)
+    print (touching(bl9, bl4))
     #print(vp_project(entities[0], observer))    
     #picture 2 red chair 1#print (entities[5].name, entities[0].name)
     '''for entity1 in entities:
@@ -978,7 +982,7 @@ def main():
 
 if __name__ == "__main__":
     # save_screenshot()
-    fix_ids()
-    print (bpy.data.filepath)
-    bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
+    #fix_ids()
+    #print (bpy.data.filepath)
+    #bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
     main()

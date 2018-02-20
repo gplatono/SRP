@@ -169,10 +169,27 @@ def get_planar_distance_scaled(ent_a, ent_b):
 #Input: ent_a, ent_b - entities
 #Return value: real number
 def closest_mesh_distance(ent_a, ent_b):
-    min_dist = 10e9
-    for v in ent_a.total_mesh:
-        for u in ent_b.total_mesh:
-            min_dist = min(min_dist, point_distance(u, v))
+    min_dist = 1e9
+    count = 0
+    print (len(ent_a.total_mesh), len(ent_b.total_mesh))
+    u0 = ent_a.total_mesh[0]
+    v0 = ent_b.total_mesh[0]
+    min_dist = point_distance(u0, v0)
+    for v in ent_b.total_mesh:
+        if point_distance(u0, v) <= min_dist:
+            min_dist = point_distance(u0, v)
+            v0 = v
+    for u in ent_a.total_mesh:
+        if point_distance(u, v0) <= min_dist:
+            min_dist = point_distance(u, v0)
+            u0 = u
+    lin_dist = min_dist
+    #min_dist = 1e9
+    #for v in ent_a.total_mesh:
+    #    for u in ent_b.total_mesh:
+    #        min_dist = min(min_dist, point_distance(u, v))
+    #        count += 1
+    #print ("COUNT:", count, min_dist, lin_dist)
     return min_dist
 
 #Normalized version of closest_mesh_distance where the distance is scaled
