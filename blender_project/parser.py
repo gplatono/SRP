@@ -55,6 +55,17 @@ class RightConj(Conj):
     def signature(self):
         return "rconj"
 
+class RightArgConj(Conj):
+    def __init__(self, token, arg=None):
+        self.token = token
+        self.arg = arg
+
+    def conjoin(self, arg):
+        return CompleteConj(self.token, [self.arg, arg])
+
+    def signature(self):
+        return "rargconj"    
+
 class CompleteConj(Token):
     def __init__(self, token, args):
         self.token = token
@@ -89,6 +100,9 @@ class Num(Token):
 
     def signature(self):
         return "num"
+
+    def __repr__(self):
+        return self.signature() + ":" + self.token
 
 class Pro(Token):
     def __init__(self, token):
@@ -126,7 +140,7 @@ class Argument(Token):
 
     def __str__(self):
         md = self.mod.__repr__() if self.mod is not None else ""
-        return self.signature() + ":" + self.token + " " + md
+        return self.signature() + ":" + md + self.token.__str__()
 
 class Relation(Token):
     def __init__(self, relation, relatums=[], referents=[]):
@@ -161,6 +175,13 @@ def replace_args(argument):
     if argument.mod is not None and argument.mod.adj is not None and (argument.mod.adj + " " + argument.token).lower() in scene_objects:
         return Argument((argument.mod.adj + " " + argument.token).lower(), argument.mod)
     return argument
+
+def match_word(word, word_class):
+    for w in word_class:
+        if word == w or word[:-1] == w and word[-1] == 's' or word[:-3] + 'f' == w or \
+           word[:-2] == w and word[-2:-1] == "es":
+            return w
+    return None
     
 def tokenize(word):
     if word in relations:
@@ -173,12 +194,15 @@ def tokenize(word):
         return Mod(adj=word)
     elif word in determiners:
         return Mod(det=word)
-    elif word in arguments or word[:-1] in arguments or word[:-3] + "f" in arguments:
-        return Argument(word)
-    elif word in parts or word[:-1] in parts or word[:-3] + "f" in parts:
-        return Part(word)
     elif word in numerals:
-        return Mod(num=word)
+        return Num(word)
+        #return Mod(num=word)
+    w = match_word(word, arguments)
+    if w is not None:
+        return Argument(w)
+    w = match_word(word, parts)
+    if word is not None:
+        return Part(w)
     return word
 
 grammar = {}
@@ -190,15 +214,19 @@ grammar["rel", "part"] = lambda rel, part: \
                          Relation(rel.token, rel.relatums, rel.referents[:-1] + [Argument(rel.referents[-1].token + " " + part.token, rel.referents[-1].mod)]) \
                          if len(rel.referents) > 0 else \
                             Relation(rel.token, rel.relatums, [Argument(part.token)])
-grammar["mod", "conj"] = lambda mod, conj: conj.conjoin(mod)
-grammar["arg", "conj"] = lambda arg, conj: conj.conjoin(arg)
-grammar["conj", "arg"] = lambda conj, arg: RightConj(conj.token, arg)
+#grammar["mod", "conj"] = lambda mod, conj: conj.conjoin(mod)
+#grammar["arg", "conj"] = lambda arg, conj: conj.conjoin(arg)
+grammar["arg", "rargconj"] = lambda arg, conj: conj.conjoin(arg)
+grammar["mod", "rargconj"] = lambda mod, conj: conj.conjoin(Argument(conj.arg.token, mod))
+grammar["conj", "arg"] = lambda conj, arg: RightArgConj(conj.token, arg)
 grammar["part", "part"] = lambda part1, part2: Argument(part1.token + " " + part2.token)
 grammar["arg", "part"] = lambda arg, part: Argument(arg.token + " " + part.token, arg.mod)
 grammar["rel", "compconj"] = lambda rel, compconj: Relation(rel.token, rel.relatums, compconj.args)
 grammar["rel", "rel"] = lambda rel1, rel2: rel2
 grammar["mod", "rel"] = lambda mod, rel: rel
-grammar["rel", "rconj"] = lambda rel, rconj: Relation(rel.token, rel.relatums, rconj.conjoin(rel.referents[0]).args)
+grammar["rel", "rargconj"] = lambda rel, rconj: Relation(rel.token, rel.relatums, rconj.conjoin(rel.referents[0]).args)
+grammar["num", "arg"] = lambda num, arg: CompleteConj("and", [arg, arg]) if num.token =="two" \
+                        else CompleteConj("and", [arg, arg, arg])
 
 def parse(response):
     parse_stack = []
@@ -207,7 +235,7 @@ def parse(response):
     #print (response)
     
     response = [tokenize(item) for item in response if issubclass(type(tokenize(item)), Token)]
-    #print (response)
+    #print ("RESP:", response)
     if response == []:
         return None
     #for item in response:
@@ -215,11 +243,11 @@ def parse(response):
     current = response[0]
     while idx < len(response):
         if parse_stack != [] and (parse_stack[-1].signature(), current.signature()) in grammar:
-            #print ("BEFORE. stack: ", parse_stack[-1], "current: ",  current)
+            #print ("BEFORE. stack: {} current: {}".format(parse_stack[-1], current))
             current = grammar[(parse_stack[-1].signature(), current.signature())](parse_stack[-1], current)
             parse_stack.pop()
             #if parse_stack !=[]:
-            #    print ("AFTER. stack: ", parse_stack[-1], "current: ",  current)
+            #    print ("AFTER. stack: {} current: {}".format(parse_stack[-1], current))
         else:
             parse_stack += [current]
             idx += 1
@@ -238,29 +266,6 @@ def parse(response):
     #for item in parse_stack:
     #    if type(item) is Relation and item.token == "between":
     #        print (item.referents)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

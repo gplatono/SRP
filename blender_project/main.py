@@ -1,7 +1,7 @@
 import bpy
 import bpy_types
 import bpy_extras
-import numpy
+import numpy as np
 import math
 from math import e, pi
 import itertools
@@ -337,12 +337,17 @@ def between(a, b, c):
     center_a = a.get_bbox_centroid()
     center_b = b.get_bbox_centroid()
     center_c = c.get_bbox_centroid()
+    vec1 = np.array(center_b) - np.array(center_a)
+    vec2 = np.array(center_c) - np.array(center_a)
+    cos = np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2) + 0.001)
     dist = get_distance_from_line(center_b, center_c, center_a) / max(max(a.dimensions), max(b.dimensions), max(c.dimensions))
+    #print ("{}\n{}\n{}\n{}\n{}".format(center_a, center_b,center_c, vec1, vec2))
+    #print (cos)
     #max_dim_a = max(bbox_a[7][0] - bbox_a[0][0],
     #                bbox_a[7][1] - bbox_a[0][1],
     #                bbox_a[7][2] - bbox_a[0][2])
     
-    return dist
+    return math.exp(- 2 * math.fabs(-1 - cos))
 
 
 #Computes the degree of vertical alignment (coaxiality) between two entities
@@ -685,7 +690,7 @@ def get_argument_entities(arg):
             if (entity.type_structure is None):
                 print ("NONE STRUCTURE", entity.name)
             if (arg.token in entity.type_structure or arg.token in entity.name.lower() or arg.token == "block" and "cube" in entity.type_structure) \
-               and (arg.mod.adj == "" or arg.mod.adj is None or entity.color_mod == arg.mod.adj):
+               and (arg.mod is None or arg.mod.adj is None or arg.mod.adj == "" or entity.color_mod == arg.mod.adj):
                 ret_val += [entity]
     #print ("REFER RETVAL: ", ret_val) 
     return ret_val
@@ -766,14 +771,15 @@ def filter(entities, constraints):
 #Return value: the best candidate entity
 def eval_find(relation, rel_constraints, referents):
     candidates = filter(entities, rel_constraints)
+    #print ("REF:", referents)
     #print ("CAND:", candidates)
     scores = []
-    if relation != "between":
-        #print("SCORES:", relation, referents)
-        scores = [(cand, cand.name, sum([globals()[rf_mapping[relation]](cand, ref) for ref in referents])) for cand in candidates]
-        print(scores)
-    else:
-        return None ####FIX THIS LATER!!!
+    #if relation != "between":
+    #print("SCORES:", relation, referents)
+    scores = [(cand, cand.name, max([globals()[rf_mapping[relation]](cand, *ref) for ref in referents])) for cand in candidates]
+    #print(scores)
+#    else:
+ #       return scores = [(cand, cand.name, max([globals()[rf_mapping[relation]](cand, ref) for ref in referents])) for cand in candidates]####FIX THIS LATER!!!
     #for sc in scores:
     #    print ("CAND:", sc[1], sc[2])
     max_score = 0
@@ -804,7 +810,7 @@ def process_truthjudg(relation, relatum, referent1, referent2, response):
 #rel_constraints - the type and color properties of the relatum
 #Return value: The list of pairs ('constraint_name', 'constraint_value')
 def get_relatum_constraints(relatum, rel_constraints):
-    print ("RELATUM TYPE:", relatum.get_type_structure()[-2])
+    #print ("RELATUM TYPE:", relatum.get_type_structure()[-2])
     ret_val = [('type', relatum.get_type_structure()[-2]), ('color_mod', relatum.color_mod)]
     return ret_val
 
@@ -815,22 +821,23 @@ def get_relatum_constraints(relatum, rel_constraints):
 def process_descr(relatum, response):
     rel_constraint = parse(response)
     print ("REL_CONST:", rel_constraint, rel_constraint.referents[0].mod)
-    print ("RELATUM:", relatum)
+    #print ("RELATUM:", relatum)
     relatum = get_entity_by_name(relatum)
-    print ("RELATUM:", relatum.name)
-    print ("RESPONSE:", response)
-    refs = []
+    #print ("RELATUM:", relatum.name)
+    #print ("RESPONSE:", response)
+    #refs = []
     if rel_constraint is None:
         return "*RESULT: NO RELATIONS*"
-    for ref in rel_constraint.referents:
-        print (ref.token)
-    refs += get_argument_entities(ref)
+    referents = list(itertools.product(*[get_argument_entities(ref) for ref in rel_constraint.referents]))
+    print("REFS:", referents)
+    #for ref in rel_constraint.referents:
+    #    refs += get_argument_entities(ref)
     #print ("REFERENTS:", [ref.name for ref in refs])
     relation = rel_constraint.token
     #for entity in entities:
     #    if entity.name == "Table" and bpy.data.objects.get("Camera") is not None:
     #        print (proj(entity.constituents[0], bpy.data.objects["Camera"]))
-    return eval_find(relation, get_relatum_constraints(relatum, rel_constraint), refs)
+    return eval_find(relation, get_relatum_constraints(relatum, rel_constraint), referents)
 
 def scaled_axial_distance(a_bbox, b_bbox):
     a_span = (a_bbox[1] - a_bbox[0], a_bbox[3] - a_bbox[2])
@@ -967,10 +974,11 @@ def main():
     
     bl4 = get_entity_by_name("Block 4")
     bl9 = get_entity_by_name("Block 9")
+    bl11 = get_entity_by_name("Block 11")
     #pict = get_entity_by_name("Picture 1")
     #pen = get_entity_by_name("Black Pencil")
-    print (bl4.name, bl9.name)
-    print (touching(bl9, bl4))
+    print (bl4.name, bl9.name, bl11.name)
+    print (between(bl9, bl11, bl4))
     #print(vp_project(entities[0], observer))    
     #picture 2 red chair 1#print (entities[5].name, entities[0].name)
     '''for entity1 in entities:
