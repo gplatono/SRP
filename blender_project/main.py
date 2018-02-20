@@ -734,7 +734,7 @@ def touching(a, b):
     mesh_dist = 1e9
     #print ("CENTROID DIST:" , get_centroid_distance_scaled(a, b))
     if get_centroid_distance_scaled(a, b) <= 0.8:
-        mesh_dist = closest_mesh_distance_scaled(a, b)    
+        mesh_dist = closest_mesh_distance_scaled(a, b)
     return math.exp(- 5 * mesh_dist)
 
 #Filters the entities list according to the set of constraints, i.e.,
