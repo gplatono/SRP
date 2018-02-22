@@ -149,7 +149,7 @@ for subm in open('annotations').readlines():
         ur_yn[user][testcase] = yn_to_index[resp]#resp#yn_to_index[resp]
         tj_count = tj_count + 1
     tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]    
-    if task_type == "1":#descr_count <= 200 and task_type == "1" and "between" not in resp:
+    if task_type == "1" and ID == "1002040":#descr_count <= 200 and task_type == "1" and "between" not in resp:
         print ("ID:", ID, resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data

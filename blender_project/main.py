@@ -398,9 +398,10 @@ def on(a, b):
     ret_val = 0.5 * (v_offset(a, b) + get_proj_intersection(a, b))
     ret_val = max(ret_val, 0.5 * (above(a, b) + touching(a, b)))
     for ob in b.constituents:
+        ob_ent = Entity(ob)
         if ob.get('working_surface') is not None or ob.get('planar') is not None:
-            ret_val = max(ret_val, 0.5 * (v_offset(a, ob) + get_proj_intersection(a, ob)))
-            ret_val = max(ret_val, 0.5 * (int(near(a, ob) > 0.99) + larger_than(ob, a)))
+            ret_val = max(ret_val, 0.5 * (v_offset(a, ob_ent) + get_proj_intersection(a, ob_ent)))
+            ret_val = max(ret_val, 0.5 * (int(near(a, ob_ent) > 0.99) + larger_than(ob_ent, a)))
     if b.get('planar') is not None and isVertical(b):
         ret_val = max(ret_val, math.exp(- 0.5 * get_planar_distance_scaled(a, b)))
     #if b.get('planar') is not None :
@@ -582,7 +583,7 @@ def get_observer():
 #Return value: entity (if exists) or None
 def get_entity_by_name(name):
     for entity in entities:
-        #print(name, entity.name)
+        print("NAME:",name, entity.name)
         if entity.name.lower() == name.lower():
             return entity
     for col in color_mods:
@@ -685,14 +686,15 @@ def get_argument_entities(arg):
         ret_val = []
         #if arg.mod != None and arg.mod.det == 'a':
             #print (entities)
-        for entity in entities:
+        for entity in entities:            
             #print ("ENTITY_ARG: ", arg.token, entity.name, entity.get_type_structure(), entity.color_mod)
+            #print ("TYPE_STR: {}".format(entity.type_structure))
             if (entity.type_structure is None):
-                print ("NONE STRUCTURE", entity.name)
+                print ("NONE STRUCTURE", entity.name)                
             if (arg.token in entity.type_structure or arg.token in entity.name.lower() or arg.token == "block" and "cube" in entity.type_structure) \
-               and (arg.mod is None or arg.mod.adj is None or arg.mod.adj == "" or entity.color_mod == arg.mod.adj):
-                ret_val += [entity]
-    #print ("REFER RETVAL: ", ret_val) 
+               and (arg.mod is None or arg.mod.adj is None or arg.mod.adj == "" or entity.color_mod == arg.mod.adj or arg.mod.adj in entity.type_structure[-1].lower()):
+                ret_val += [entity]    
+    #print ("REF_EXTRACTION:", arg.token, arg.mod.adj, ret_val)
     return ret_val
 
 #Computes the projection of an entity onto the observer's visual plane

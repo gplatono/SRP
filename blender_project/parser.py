@@ -140,7 +140,7 @@ class Argument(Token):
 
     def __str__(self):
         md = self.mod.__repr__() if self.mod is not None else ""
-        return self.signature() + ":" + md + self.token.__str__()
+        return self.signature() + ":" + md + " " + self.token.__str__()
 
 class Relation(Token):
     def __init__(self, relation, relatums=[], referents=[]):
@@ -201,9 +201,9 @@ def tokenize(word):
     if w is not None:
         return Argument(w)
     w = match_word(word, parts)
-    if word is not None:
+    if w is not None:
         return Part(w)
-    return word
+    return None
 
 grammar = {}
 grammar["mod", "mod"] = lambda mod1, mod2: Mod(mod1.det + mod2.det, mod1.adj + mod2.adj, mod1.num + mod2.num)
@@ -232,9 +232,18 @@ def parse(response):
     parse_stack = []
     response = response.lower().split()
         
-    #print (response)
+    print (response)
+
+    resp = []
+    for item in response:
+        #print ("ITEM1:", item)
+        item = tokenize(item)
+        #print ("ITEM2:", item)
+        if issubclass(type(item), Token):
+            resp += [item]
+    response = resp
     
-    response = [tokenize(item) for item in response if issubclass(type(tokenize(item)), Token)]
+    #response = [tokenize(item) for item in response if issubclass(type(tokenize(item)), Token)]
     #print ("RESP:", response)
     if response == []:
         return None

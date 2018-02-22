@@ -244,4 +244,4 @@ def get_bbox_intersection(ent_a, ent_b):
 #Input: ent_a - entity
 #Return value: boolean value
 def isVertical(ent_a):
-    return ent_a.dims[0] < 0.5 * ent_a.dims[2] or ent_a.dims[1] < 0.5 * ent_a.dims[2]
+    return ent_a.dimensions[0] < 0.5 * ent_a.dimensions[2] or ent_a.dimensions[1] < 0.5 * ent_a.dimensions[2]
