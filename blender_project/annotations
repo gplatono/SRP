@@ -790,13 +790,13 @@ id=1000758:testcase=566:user_id=12:scene_id=210:scene_path=description/115.blend
 id=1000759:testcase=574:user_id=12:scene_id=188:scene_path=description/200.blend:relation=-:relatum=red book 2:referent1=-:referent2=null:task_type=1:response=on the blue book
 id=1000759:testcase=574:user_id=12:scene_id=188:scene_path=description/200.blend:relation=-:relatum=red book 2:referent1=-:referent2=null:task_type=1:response=below the yellow book
 id=1000760:testcase=576:user_id=12:scene_id=209:scene_path=description/201.blend:relation=-:relatum=banana 1:referent1=-:referent2=null:task_type=1:response=near the laptop
-id=1000762:testcase=531:user_id=12:scene_id=192:scene_path=description/104.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=to the right of a black box
-id=1000763:testcase=548:user_id=12:scene_id=202:scene_path=description/109.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=touching a blue box
-id=1000764:testcase=570:user_id=12:scene_id=191:scene_path=description/116.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the right of a black box
+id=1000762:testcase=531:user_id=12:scene_id=192:scene_path=description/104.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=to the right of a black block
+id=1000763:testcase=548:user_id=12:scene_id=202:scene_path=description/109.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=touching a blue block
+id=1000764:testcase=570:user_id=12:scene_id=191:scene_path=description/116.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the right of a black block
 id=1000765:testcase=605:user_id=12:scene_id=190:scene_path=description/205.blend:relation=-:relatum=blue chair 1:referent1=-:referent2=null:task_type=1:response=near the west wall
-id=1000766:testcase=529:user_id=12:scene_id=197:scene_path=description/103.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=near a black box
+id=1000766:testcase=529:user_id=12:scene_id=197:scene_path=description/103.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=near a black block
 id=1000768:testcase=579:user_id=12:scene_id=198:scene_path=description/202.blend:relation=-:relatum=red book 1:referent1=-:referent2=null:task_type=1:response=on the table
-id=1000769:testcase=565:user_id=12:scene_id=210:scene_path=description/115.blend:relation=-:relatum=green block 12:referent1=-:referent2=null:task_type=1:response=on a black box
+id=1000769:testcase=565:user_id=12:scene_id=210:scene_path=description/115.blend:relation=-:relatum=green block 12:referent1=-:referent2=null:task_type=1:response=on a black block
 id=1000770:testcase=601:user_id=12:scene_id=190:scene_path=description/205.blend:relation=-:relatum=apple 1:referent1=-:referent2=null:task_type=1:response=on the plate
 id=1000771:testcase=597:user_id=12:scene_id=206:scene_path=description/204.blend:relation=-:relatum=picture 2:referent1=-:referent2=null:task_type=1:response=on the east wall
 id=1000772:testcase=524:user_id=12:scene_id=194:scene_path=description/101.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=below a blue block

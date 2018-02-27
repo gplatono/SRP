@@ -1008,7 +1008,7 @@ def main():
 
 if __name__ == "__main__":
     # save_screenshot()
-    fix_ids()
+    #fix_ids()
     #print (bpy.data.filepath)
-    bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
+    #bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
     main()
