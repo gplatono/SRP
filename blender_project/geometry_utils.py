@@ -29,7 +29,8 @@ def get_distance_from_plane(point, a, b, c):
 #Return value: real number
 def get_distance_from_line(x1, x2, x3):
     t = (x3[0] - x1[0]) * (x2[0] - x1[0]) + (x3[1] - x1[1]) * (x2[1] - x1[1]) * (x3[2] - x1[2]) * (x2[2] - x1[2])
-    t = t / (point_distance(x1, x2) ** 2)
+    dist = point_distance(x1, x2) ** 2    
+    t = t / dist if dist != 0 else 1e10
     x0 = (x1[0] + (x2[0] - x1[0]) * t, x1[1] + (x2[1] - x1[1]) * t, x1[2] + (x2[2] - x1[2]) * t)
     return point_distance(x0, x3)
 
@@ -207,9 +208,9 @@ def closest_mesh_distance_scaled(ent_a, ent_b):
 def get_bbox_intersection(ent_a, ent_b):
     span_a = ent_a.span
     span_b = ent_b.span
-    x_int = 0
-    y_int = 0
-    z_int = 0
+    int_x = 0
+    int_y = 0
+    int_z = 0
     if span_a[0] >= span_b[0] and span_a[1] <= span_b[1]:
         int_x = span_a[1] - span_a[0]
     elif span_b[0] >= span_a[0] and span_b[1] <= span_a[1]:
@@ -237,9 +238,11 @@ def get_bbox_intersection(ent_a, ent_b):
     elif span_a[4] >= span_b[4] and span_a[4] <= span_b[5] and span_a[5] >= span_b[5]:
         int_z = span_b[5] - span_a[4]
 
-    return int_x * int_y * int_z
+    vol = int_x * int_y * int_z
+    #print ("VOLUME: {}".format(vol))
+    return vol
 
-
+    
 #Checks whether the entity is vertically oriented
 #Input: ent_a - entity
 #Return value: boolean value

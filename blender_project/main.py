@@ -45,6 +45,7 @@ relation_list = ['near',
 
 #List of  possible color modifiers
 color_mods = ['black', 'red', 'blue', 'brown', 'green', 'yellow']
+relations = {}
 
 types = []
 
@@ -70,7 +71,7 @@ types_ids = {
     'banana': 'props.item.food.banana',
     'plate': 'props.item.portable.plate',
     'bowl': 'props.item.portable.bowl',
-    'recycle bin': 'props.item.portable.recycle bin',
+    'trash bin': 'props.item.portable.trash bin',
     'tv': 'props.item.appliances.tv',
     'poster': 'props.item.stationary.poster',
     'picture': 'props.item.stationary.picture',
@@ -92,6 +93,7 @@ rf_mapping = {'to the left of': 'to_the_left_of_deic',
               'over': 'over',
               'under': 'under',
               'in': 'inside',
+              'inside': 'inside',
               'touching': 'touching',
               'right': 'to_the_right_of_deic',
               'left': 'to_the_left_of_deic',
@@ -470,8 +472,15 @@ def bbox_inside_test(a, b):
 def at(a, b):
     return 0.8 * near(a, b) + 0.2 * touching(a, b)
 
-relations = {}
 
+def inside(a, b):
+    a_bbox = a.bbox
+    b_bbox = b.bbox
+    shared_volume = get_bbox_intersection(a, b)
+    proportion = shared_volume / b.volume
+    return sigmoid(proportion, 1.0, 1.0)
+
+    
 #The following functions are for precomputing the corresponding
 #relation for every pair of entities
 #
@@ -564,7 +573,7 @@ def get_observer():
     mesh = bpy.data.meshes.new("observer")
     #scene.objects.active = obj
     #obj.select = True
-    mesh = bpy.context.object.data
+    #mesh = bpy.context.object.data
     bm = bmesh.new()
     #print (cam_ob.location)
     bm.verts.new(cam_ob.location)
@@ -583,7 +592,7 @@ def get_observer():
 #Return value: entity (if exists) or None
 def get_entity_by_name(name):
     for entity in entities:
-        print("NAME:",name, entity.name)
+        #print("NAME:",name, entity.name)
         if entity.name.lower() == name.lower():
             return entity
     for col in color_mods:
@@ -682,13 +691,15 @@ def get_argument_entities(arg):
     #print ("ARG = ", arg, ";", arg.token,";", arg.mod.det,";", arg.mod.adj)
     ret_val = [get_entity_by_name(arg.token)]
     #print ("RET_VAL:", ret_val)
+    print ("REFERENT: {}".format(arg.token))
     if ret_val == [None]:
         ret_val = []
         #if arg.mod != None and arg.mod.det == 'a':
             #print (entities)
         for entity in entities:            
             #print ("ENTITY_ARG: ", arg.token, entity.name, entity.get_type_structure(), entity.color_mod)
-            #print ("TYPE_STR: {}".format(entity.type_structure))
+            #print ("TYPE_STR: {} {}".format(entity.name, entity.type_structure))
+
             if (entity.type_structure is None):
                 print ("NONE STRUCTURE", entity.name)                
             if (arg.token in entity.type_structure or arg.token in entity.name.lower() or arg.token == "block" and "cube" in entity.type_structure) \
@@ -812,7 +823,7 @@ def process_truthjudg(relation, relatum, referent1, referent2, response):
 #rel_constraints - the type and color properties of the relatum
 #Return value: The list of pairs ('constraint_name', 'constraint_value')
 def get_relatum_constraints(relatum, rel_constraints):
-    #print ("RELATUM TYPE:", relatum.get_type_structure()[-2])
+    #print ("RELATUM: {}".format(relatum))
     ret_val = [('type', relatum.get_type_structure()[-2]), ('color_mod', relatum.color_mod)]
     return ret_val
 
@@ -822,9 +833,13 @@ def get_relatum_constraints(relatum, rel_constraints):
 #Return value: the best-candidate entity fo the given description
 def process_descr(relatum, response):
     rel_constraint = parse(response)
-    print ("REL_CONST:", rel_constraint, rel_constraint.referents[0].mod)
+    if rel_constraint is None:
+        return None
+    #print ("REL_CONST:{}".format(rel_constraint))
     #print ("RELATUM:", relatum)
+    print ("RELATUM STR: {}".format(relatum))
     relatum = get_entity_by_name(relatum)
+    print ("RELATUM ENT: {}".format(relatum))
     #print ("RELATUM:", relatum.name)
     #print ("RESPONSE:", response)
     #refs = []
@@ -933,6 +948,7 @@ def fix_ids():
     for ob in scene.objects:
         if ob.get('main') is not None:# and ob.get('id') is None:
             for key in types_ids.keys():
+                #if ob.name == "Pencil Holder":
                 if key in ob.name.lower():
                     ob['id'] = types_ids[key] + "." + ob.name
                     
@@ -992,7 +1008,7 @@ def main():
 
 if __name__ == "__main__":
     # save_screenshot()
-    #fix_ids()
+    fix_ids()
     #print (bpy.data.filepath)
-    #bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
+    bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
     main()

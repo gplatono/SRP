@@ -78,6 +78,8 @@ class Entity:
 
         #Total mesh of the entity
         self.total_mesh = self.get_total_mesh()
+
+        self.volume = self.get_volume()
         
     #Sets the direction of the longitudinal axis of the entity
     def set_longitudinal(self, direction):
@@ -219,3 +221,9 @@ class Entity:
                 vertices += [obj.matrix_world * v.co for v in obj.data.vertices]
             self.total_mesh = vertices
         return self.total_mesh
+
+    def get_volume(self):
+        if not hasattr(self, 'volume'):
+            span = self.get_span()
+            self.volume = (span[1] - span[0]) * (span[3] - span[2]) * (span[5] - span[4])
+        return self.volume

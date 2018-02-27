@@ -1,7 +1,7 @@
 relations = ['on', 'above', 'below', 'left', 'right', 'at', 'touching', 'near', 'front', 'behind', 'over', 'under', 'in', 'between']
 colors = ['black', 'red' ,'brown', 'green', 'blue', 'yellow']
-arguments = ['bed', 'picture', 'poster', 'lamp', 'cardbox', 'box', 'lamp', 'table', 'block', 'book', 'chair', 'bookshelf', 'ceiling light', 'ceiling fan', 'desk', 'sofa', 'tv', 'recycle bin', 'pencil', 'laptop', 'apple', 'bowl', 'plate', 'banana', 'pencil holder']
-parts = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'pencil', 'holder', 'east', 'north', 'west', 'ceiling', 'recycle', 'bin', 'wall', 'light', 'fan']
+arguments = ['bed', 'picture', 'poster', 'lamp', 'cardbox', 'box', 'lamp', 'table', 'block', 'book', 'chair', 'bookshelf', 'ceiling light', 'ceiling fan', 'desk', 'sofa', 'tv', 'trash bin', 'pencil', 'laptop', 'apple', 'bowl', 'plate', 'banana', 'pencil holder', 'note', 'west', 'east', 'north', 'wall', 'ceiling', 'floor', 'vase']
+parts = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'pencil', 'holder', 'east', 'north', 'west', 'ceiling', 'recycle', 'bin', 'wall', 'light', 'fan', 'trash']
 determiners = ['a', 'the', 'other', 'another', 'all']
 pronouns = ['it', 'this', 'these', 'those']
 conj = ['and']
@@ -164,7 +164,6 @@ def set_objects(scene_objects):
     arguments = scene_objects
 
 
-
 def init_parser(objects):
     global scene_objects
     scene_objects = [name.lower() for name in objects]
@@ -202,7 +201,7 @@ def tokenize(word):
         return Argument(w)
     w = match_word(word, parts)
     if w is not None:
-        return Part(w)
+        return Part(w)   
     return None
 
 grammar = {}
@@ -225,26 +224,25 @@ grammar["rel", "compconj"] = lambda rel, compconj: Relation(rel.token, rel.relat
 grammar["rel", "rel"] = lambda rel1, rel2: rel2
 grammar["mod", "rel"] = lambda mod, rel: rel
 grammar["rel", "rargconj"] = lambda rel, rconj: Relation(rel.token, rel.relatums, rconj.conjoin(rel.referents[0]).args)
-grammar["num", "arg"] = lambda num, arg: CompleteConj("and", [arg, arg]) if num.token =="two" \
+grammar["num", "arg"] = lambda num, arg: CompleteConj("and", [arg, arg]) if num.token == "two" \
                         else CompleteConj("and", [arg, arg, arg])
 
 def parse(response):
     parse_stack = []
     response = response.lower().split()
         
-    print (response)
-
-    resp = []
-    for item in response:
-        #print ("ITEM1:", item)
-        item = tokenize(item)
-        #print ("ITEM2:", item)
-        if issubclass(type(item), Token):
-            resp += [item]
-    response = resp
-    
+    resp = [tokenize(item) for item in response if issubclass(type(tokenize(item)), Token)]
+    response = []
+    print ("RESP VERBAL: {}".format(resp))
+    for item in resp:
+        if (type(item) == Argument or type(item) == Part) and len(response) > 0 and\
+           (type(response[-1]) == Argument or type(response[-1]) == Part):
+            response[-1] = Argument(response[-1].token + " " + item.token)
+        else:
+            response += [item]
+     
     #response = [tokenize(item) for item in response if issubclass(type(tokenize(item)), Token)]
-    #print ("RESP:", response)
+    print ("RESP: {}".format(response))
     if response == []:
         return None
     #for item in response:
@@ -264,12 +262,9 @@ def parse(response):
                 current = response[idx]
     #print ("STACK: ", parse_stack)
     for item in parse_stack:
-        if type(item) is Relation:
-            #print (item)
-            #print (scene_objects)
+        if type(item) is Relation and item.token is not None and item.referents is not []:
             item.relatums = [replace_args(arg) for arg in item.relatums]
             item.referents = [replace_args(arg) for arg in item.referents]
-            #print (item)
             return item
     return None
     #for item in parse_stack:

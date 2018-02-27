@@ -149,16 +149,17 @@ for subm in open('annotations').readlines():
         ur_yn[user][testcase] = yn_to_index[resp]#resp#yn_to_index[resp]
         tj_count = tj_count + 1
     tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]    
-    if task_type == "1" and ID == "1002040":#descr_count <= 200 and task_type == "1" and "between" not in resp:
+    if task_type == "1":#descr_count <= 200 and task_type == "1" and "between" not in resp:
         print ("ID:", ID, resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data
-        res = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
-        res = res.decode("utf-8").split("\n")
+        result = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
+        result = result.decode("utf-8").split("\n")
 
         #Print the evaluation results
-        print (res)
-        for item in res:
+        #print (result)
+        res = ""
+        for item in result:
             if "RESULT" in item:
                 res = (item.split(":")[1]).strip()
                 break
@@ -168,10 +169,11 @@ for subm in open('annotations').readlines():
                 res = 1
             elif res == "False":
                 res = 0
-            if res == 0:
-                print ("RESULT:", res)
+            if res != 1:
+                print ("{}\nRESULT: {}".format(result, res))
             if res == 1 or res == 0:
                 descr_success += res
+            print ("TOTAL PROCESSED: {}".format(descr_count))
         else:
             res = float(res)
             res = math.floor(5 * res)
