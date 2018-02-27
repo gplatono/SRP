@@ -1,7 +1,7 @@
 relations = ['on', 'above', 'below', 'left', 'right', 'at', 'touching', 'near', 'front', 'behind', 'over', 'under', 'in', 'between']
 colors = ['black', 'red' ,'brown', 'green', 'blue', 'yellow']
-arguments = ['bed', 'picture', 'poster', 'lamp', 'cardbox', 'box', 'lamp', 'table', 'block', 'book', 'chair', 'bookshelf', 'ceiling light', 'ceiling fan', 'desk', 'sofa', 'tv', 'trash bin', 'pencil', 'laptop', 'apple', 'bowl', 'plate', 'banana', 'pencil holder', 'note', 'west', 'east', 'north', 'wall', 'ceiling', 'floor', 'vase']
-parts = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'pencil', 'holder', 'east', 'north', 'west', 'ceiling', 'recycle', 'bin', 'wall', 'light', 'fan', 'trash']
+arguments = ['bed', 'picture', 'poster', 'lamp', 'cardbox', 'box', 'lamp', 'table', 'block', 'book', 'chair', 'bookshelf', 'ceiling light', 'ceiling fan', 'desk', 'sofa', 'tv', 'trash bin', 'pencil', 'laptop', 'apple', 'bowl', 'plate', 'banana', 'pencil holder', 'note', 'west', 'east', 'north', 'wall', 'ceiling', 'floor', 'vase', 'rose']
+parts = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'pencil', 'holder', 'east', 'north', 'west', 'ceiling', 'trash', 'bin', 'wall', 'light', 'fan', 'trash']
 determiners = ['a', 'the', 'other', 'another', 'all']
 pronouns = ['it', 'this', 'these', 'those']
 conj = ['and']
@@ -81,8 +81,9 @@ class CompleteConj(Token):
         return "compconj"
 
 class Part(Token):
-    def __init__(self, token):
+    def __init__(self, token, plural=False):
         self.token = token
+        self.plural = plural
 
     def signature(self):
         return "part"
@@ -131,9 +132,10 @@ class Mod(Token):
         return self.signature() + ":" + self.det + " " + self.num + " " + self.adj
 
 class Argument(Token):
-    def __init__(self, argument, mod=None):
+    def __init__(self, argument, mod=None, plural=False):
         self.token = argument
         self.mod = mod
+        self.plural = plural
 
     def signature(self):
         return "arg"
@@ -181,6 +183,17 @@ def match_word(word, word_class):
            word[:-2] == w and word[-2:-1] == "es":
             return w
     return None
+
+def is_plural(word):
+    for w in arguments:
+        if word != w and word[:-1] == w and word[-1] == 's' or word[:-3] + 'f' == w or \
+           word[:-2] == w and word[-2:-1] == "es":
+            return True
+    for w in parts:
+        if word != w and word[:-1] == w and word[-1] == 's' or word[:-3] + 'f' == w or \
+           word[:-2] == w and word[-2:-1] == "es":
+            return True
+    return False
     
 def tokenize(word):
     if word in relations:
@@ -196,30 +209,32 @@ def tokenize(word):
     elif word in numerals:
         return Num(word)
         #return Mod(num=word)
+    if  word == "all":
+        return Num("two")
     w = match_word(word, arguments)
     if w is not None:
-        return Argument(w)
+        return Argument(w, None, is_plural(word))    
     w = match_word(word, parts)
     if w is not None:
-        return Part(w)   
+        return Part(w, is_plural(word))
     return None
 
 grammar = {}
 grammar["mod", "mod"] = lambda mod1, mod2: Mod(mod1.det + mod2.det, mod1.adj + mod2.adj, mod1.num + mod2.num)
-grammar["mod", "arg"] = lambda mod, arg: Argument(arg.token, mod)
+grammar["mod", "arg"] = lambda mod, arg: Argument(arg.token, mod, arg.plural)
 grammar["arg", "rel"] = lambda x, y: Relation(y.token, y.relatums + [x], y.referents)
-grammar["rel", "arg"] = lambda x, y: Relation(x.token, x.relatums, x.referents + [y])
+grammar["rel", "arg"] = lambda x, y: Relation(x.token, x.relatums, x.referents + [y]) if print ("ARG_PLUR {}".format(y.plural)) or y.plural == False else Relation(x.token, x.relatums, x.referents + [y, y])
 grammar["rel", "part"] = lambda rel, part: \
-                         Relation(rel.token, rel.relatums, rel.referents[:-1] + [Argument(rel.referents[-1].token + " " + part.token, rel.referents[-1].mod)]) \
+                         Relation(rel.token, rel.relatums, rel.referents[:-1] + [Argument(rel.referents[-1].token + " " + part.token, rel.referents[-1].mod, rel.referents[-1].plural)]) \
                          if len(rel.referents) > 0 else \
-                            Relation(rel.token, rel.relatums, [Argument(part.token)])
+                            Relation(rel.token, rel.relatums, [Argument(part.token, None, part.plural)])
 #grammar["mod", "conj"] = lambda mod, conj: conj.conjoin(mod)
 #grammar["arg", "conj"] = lambda arg, conj: conj.conjoin(arg)
 grammar["arg", "rargconj"] = lambda arg, conj: conj.conjoin(arg)
-grammar["mod", "rargconj"] = lambda mod, conj: conj.conjoin(Argument(conj.arg.token, mod))
+grammar["mod", "rargconj"] = lambda mod, conj: conj.conjoin(Argument(conj.arg.token, mod, conj.arg.plural))
 grammar["conj", "arg"] = lambda conj, arg: RightArgConj(conj.token, arg)
-grammar["part", "part"] = lambda part1, part2: Argument(part1.token + " " + part2.token)
-grammar["arg", "part"] = lambda arg, part: Argument(arg.token + " " + part.token, arg.mod)
+grammar["part", "part"] = lambda part1, part2: Argument(part1.token + " " + part2.token, None, part1.plural or part2.plural)
+grammar["arg", "part"] = lambda arg, part: Argument(arg.token + " " + part.token, arg.mod, arg.plural)
 grammar["rel", "compconj"] = lambda rel, compconj: Relation(rel.token, rel.relatums, compconj.args)
 grammar["rel", "rel"] = lambda rel1, rel2: rel2
 grammar["mod", "rel"] = lambda mod, rel: rel
@@ -233,11 +248,16 @@ def parse(response):
         
     resp = [tokenize(item) for item in response if issubclass(type(tokenize(item)), Token)]
     response = []
+    plural_marker = False
     print ("RESP VERBAL: {}".format(resp))
     for item in resp:
+        if type(item) == Argument:
+            print ("PLU: {}".format(item.plural))
+        if type(item) == Num or type(item) == Mod and item.det == "the":
+            plural_marker = True
         if (type(item) == Argument or type(item) == Part) and len(response) > 0 and\
            (type(response[-1]) == Argument or type(response[-1]) == Part):
-            response[-1] = Argument(response[-1].token + " " + item.token)
+            response[-1] = Argument(response[-1].token + " " + item.token, None, item.plural)            
         else:
             response += [item]
      

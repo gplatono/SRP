@@ -784,17 +784,15 @@ def filter(entities, constraints):
 #Return value: the best candidate entity
 def eval_find(relation, rel_constraints, referents):
     candidates = filter(entities, rel_constraints)
-    #print ("REF:", referents)
+    print ("REF:", referents)
     #print ("CAND:", candidates)
     scores = []
     #if relation != "between":
     #print("SCORES:", relation, referents)
-    scores = [(cand, cand.name, max([globals()[rf_mapping[relation]](cand, *ref) for ref in referents])) for cand in candidates]
-    #print(scores)
-#    else:
- #       return scores = [(cand, cand.name, max([globals()[rf_mapping[relation]](cand, ref) for ref in referents])) for cand in candidates]####FIX THIS LATER!!!
-    #for sc in scores:
-    #    print ("CAND:", sc[1], sc[2])
+    if len(referents[0]) == 1 or relation == "between":
+        scores = [(cand, cand.name, max([globals()[rf_mapping[relation]](cand, *ref) for ref in referents])) for cand in candidates]
+    else:
+        scores = [(cand, cand.name, max([np.mean([globals()[rf_mapping[relation]](cand, ref) for ref in refset]) for refset in referents])) for cand in candidates]
     max_score = 0
     best_candidate = None
     for ev in scores:
@@ -837,12 +835,13 @@ def process_descr(relatum, response):
         return None
     #print ("REL_CONST:{}".format(rel_constraint))
     #print ("RELATUM:", relatum)
-    print ("RELATUM STR: {}".format(relatum))
+    #print ("RELATUM STR: {}".format(relatum))
     relatum = get_entity_by_name(relatum)
-    print ("RELATUM ENT: {}".format(relatum))
+    #print ("RELATUM ENT: {}".format(relatum))
     #print ("RELATUM:", relatum.name)
     #print ("RESPONSE:", response)
     #refs = []
+    print ("REF: {}".format(rel_constraint.referents))
     if rel_constraint is None:
         return "*RESULT: NO RELATIONS*"
     referents = list(itertools.product(*[get_argument_entities(ref) for ref in rel_constraint.referents]))
