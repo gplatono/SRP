@@ -1,0 +1,59 @@
+################################################################################
+Web application for collecting the annotation dataset
+Georgiy Platonov
+January, 2018
+################################################################################
+
+System requirements:
+The project was created using NetBeans 8.2 IDE
+
+################################################################################
+Project components:
+
+build.xml - Ant build script
+nbproject - folder for NetBeans project configuration files
+They are automatically generated and SHOULD NOT be changed manually
+build - used for compilation purposes
+dist - stores a complied and deployment-ready web-app package
+test - folder for unit tests
+
+src - back end (server side) sources
+web - web front end (client side) sources
+
+################################################################################
+
+Details:
+
+The back end source files in src/java can are divided into three groups:
+
+application - application logic
+JDBCHelper.java - a class for working with the JDBC database interface and 
+database manipulations
+TestGenerator.java - a class responsible for generating the random task to present
+to the user
+UserSecurityManager.java - handles authentication and authorization operations
+
+beans - classes incapsulating datatypes
+Scene.java - incapsulates scene data (path to file, associated task type, etc.)
+User.java - incapsulates the user-related info: id, username, password, 
+permissions.
+Testcase.java - incapsulates parameters of a testcase, such as database id, path 
+to the scene file, task type (truth judgment or description), etc.
+TestInstance.java - incapsulates the test instance data. The test instance differs
+from the test case in that it records a particular user's response to the specific
+test case. So, while the testcase can be reused (the same question presented several
+times), the test instance is unique for each answer.
+
+controllers - classes associated with web-app's URLs and handling all the 
+incoming HTTP requests.
+LoginManager.java - provides the authentication interface
+Navigator.java - navigates between the user-accessible pages (if logged in)
+SceneUpload.java - admin-level class for adding new "annotatable" scenes
+TestcaseProcessor.java - admin-level class for adding new test cases
+SubmissionHandler.java - Processes and saves the annotations provided by user
+(called after the answer submission)
+Configurator.java - auxiliary class for initializing certain parameters when the 
+application starts up.
+
+The front end in the "web" is comprised of the jsp pages (augmented html code),
+css stylesheets and scripts.

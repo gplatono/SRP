@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/beans/TestInstance.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/scn_upload.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/index_1.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/js/scripts.js</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/application/UserSecurityManager.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/beans/Testcase.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/signup.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/application/JDBCHelper.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/testcases.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/controllers/Navigator.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/beans/User.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/exam_1.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/WEB-INF/shiro.ini</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/login.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/index.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/complete.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/controllers/LoginManager.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/application/TestGenerator.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/exam_2.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/WEB-INF/web.xml</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/annotations.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/description.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/controllers/SceneUpload.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/beans/Scene.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/eval.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/evaluation.jsp</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/controllers/Configurator.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/src/java/controllers/TestcaseProcessor.java</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/nbproject/build-impl.xml</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/css/main.css</file>
+            <file>file:/home/vax10/u6/gplatono/annotation_webapp/web/jsp/examples.jsp</file>
+        </group>
+    </open-files>
+</project-private>
