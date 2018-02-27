@@ -1123,7 +1123,6 @@ id=1000929:testcase=617:user_id=13:scene_id=216:scene_path=description/120.blend
 id=1000930:testcase=540:user_id=11:scene_id=196:scene_path=description/107.blend:relation=-:relatum=red block 7:referent1=-:referent2=null:task_type=1:response=below a green block
 id=1000931:testcase=567:user_id=11:scene_id=210:scene_path=description/115.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the left of a green block
 id=1000931:testcase=567:user_id=11:scene_id=210:scene_path=description/115.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the right of a red block
-id=1000932:testcase=556:user_id=11:scene_id=203:scene_path=description/112.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=skip
 id=1000933:testcase=575:user_id=11:scene_id=188:scene_path=description/200.blend:relation=-:relatum=apple 1:referent1=-:referent2=null:task_type=1:response=in a bowl
 id=1000934:testcase=634:user_id=11:scene_id=217:scene_path=description/125.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=on a red block
 id=1000935:testcase=595:user_id=11:scene_id=206:scene_path=description/204.blend:relation=-:relatum=cardbox 1:referent1=-:referent2=null:task_type=1:response=on a blue chair
