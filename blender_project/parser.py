@@ -24,18 +24,13 @@ class Conj(Token):
         self.arg = arg
 
     def conjoin(self, arg):
-        print (self.arg, arg)
         if self.arg is None:
             return Conj(self.token, arg)
-        #print ("+++++++++\n+++++++++++\n+++++++++++", [Argument(arg.token, ar) for ar in self.args if type(ar) is Mod] + [arg])
         elif type(arg) is Mod and type(self.arg) is Argument:
-            #print ("----------\n---------\n---------", [Argument(arg.token, ar) for ar in self.args if type(ar) is Mod] + [arg])
             return CompleteConj(self.token, [self.arg, Argument(self.arg.token, arg)])
         elif type(arg) is Argument and type(self.arg) is Mod:
-            #print ("==========\n========\n=========", [Argument(arg.token, ar) for ar in self.args if type(ar) is Mod] + [arg])
             return CompleteConj(self.token, [Argument(arg.token, self.arg), arg])
         else:
-            #print ("__________\n_________\n_________", [Argument(arg.token, ar) for ar in self.args if type(ar) is Mod] + [arg])
             return CompleteConj(self.token, self.args + [arg])
 
     def signature(self):
@@ -223,7 +218,7 @@ grammar = {}
 grammar["mod", "mod"] = lambda mod1, mod2: Mod(mod1.det + mod2.det, mod1.adj + mod2.adj, mod1.num + mod2.num)
 grammar["mod", "arg"] = lambda mod, arg: Argument(arg.token, mod, arg.plural)
 grammar["arg", "rel"] = lambda x, y: Relation(y.token, y.relatums + [x], y.referents)
-grammar["rel", "arg"] = lambda x, y: Relation(x.token, x.relatums, x.referents + [y]) if print ("ARG_PLUR {}".format(y.plural)) or y.plural == False else Relation(x.token, x.relatums, x.referents + [y, y])
+grammar["rel", "arg"] = lambda x, y: Relation(x.token, x.relatums, x.referents + [y]) if y.plural == False else Relation(x.token, x.relatums, x.referents + [y, y])
 grammar["rel", "part"] = lambda rel, part: \
                          Relation(rel.token, rel.relatums, rel.referents[:-1] + [Argument(rel.referents[-1].token + " " + part.token, rel.referents[-1].mod, rel.referents[-1].plural)]) \
                          if len(rel.referents) > 0 else \
@@ -249,10 +244,7 @@ def parse(response):
     resp = [tokenize(item) for item in response if issubclass(type(tokenize(item)), Token)]
     response = []
     plural_marker = False
-    print ("RESP VERBAL: {}".format(resp))
     for item in resp:
-        if type(item) == Argument:
-            print ("PLU: {}".format(item.plural))
         if type(item) == Num or type(item) == Mod and item.det == "the":
             plural_marker = True
         if (type(item) == Argument or type(item) == Part) and len(response) > 0 and\
@@ -261,11 +253,9 @@ def parse(response):
         else:
             response += [item]
      
-    #response = [tokenize(item) for item in response if issubclass(type(tokenize(item)), Token)]
     print ("RESP: {}".format(response))
     if response == []:
         return None
-    #for item in response:
     idx = 0    
     current = response[0]
     while idx < len(response):
@@ -280,30 +270,12 @@ def parse(response):
             idx += 1
             if idx < len(response):
                 current = response[idx]
-    #print ("STACK: ", parse_stack)
     for item in parse_stack:
         if type(item) is Relation and item.token is not None and item.referents is not []:
             item.relatums = [replace_args(arg) for arg in item.relatums]
             item.referents = [replace_args(arg) for arg in item.referents]
             return item
     return None
-    #for item in parse_stack:
-    #    if type(item) is Relation and item.token == "between":
-    #        print (item.referents)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

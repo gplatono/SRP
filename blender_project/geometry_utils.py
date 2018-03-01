@@ -171,8 +171,7 @@ def get_planar_distance_scaled(ent_a, ent_b):
 #Return value: real number
 def closest_mesh_distance(ent_a, ent_b):
     min_dist = 1e9
-    count = 0
-    print (len(ent_a.total_mesh), len(ent_b.total_mesh))
+    count = 0    
     u0 = ent_a.total_mesh[0]
     v0 = ent_b.total_mesh[0]
     min_dist = point_distance(u0, v0)
@@ -184,7 +183,7 @@ def closest_mesh_distance(ent_a, ent_b):
         if point_distance(u, v0) <= min_dist:
             min_dist = point_distance(u, v0)
             u0 = u
-    lin_dist = min_dist
+    #lin_dist = min_dist
     #min_dist = 1e9
     #for v in ent_a.total_mesh:
     #    for u in ent_b.total_mesh:
@@ -238,8 +237,7 @@ def get_bbox_intersection(ent_a, ent_b):
     elif span_a[4] >= span_b[4] and span_a[4] <= span_b[5] and span_a[5] >= span_b[5]:
         int_z = span_b[5] - span_a[4]
 
-    vol = int_x * int_y * int_z
-    #print ("VOLUME: {}".format(vol))
+    vol = int_x * int_y * int_z    
     return vol
 
     

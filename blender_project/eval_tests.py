@@ -138,18 +138,12 @@ for subm in open('annotations').readlines():
         ur_yn[user] = {}
     if user not in ur_relations:
         ur_relations[user] = {}    
-    #resp_code = map_response_to_index(resp)
-#    print ("RESP_CODE:", resp_code)
-    #if task_type == "1": #resp_code != -1:
-    #    if testcase not in relatums:
-            
-    #    ur_relations[user][testcase] = relatum#map_response_to_index(resp)
     if task_type == "0":
         #print ("ID:", subm[0].split("=")[1], resp, user, testcase)
         ur_yn[user][testcase] = yn_to_index[resp]#resp#yn_to_index[resp]
         tj_count = tj_count + 1
     tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]    
-    if task_type == "1":# and int(ID) < 1002000 and int(ID) > 1000800:#descr_count <= 200 and task_type == "1" and "between" not in resp:
+    if task_type == "1":
         print ("ID:", ID, resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data
@@ -157,7 +151,6 @@ for subm in open('annotations').readlines():
         result = result.decode("utf-8").split("\n")
 
         #Print the evaluation results
-        #print (result)
         res = ""
         for item in result:
             if "RESULT" in item:
@@ -174,6 +167,12 @@ for subm in open('annotations').readlines():
             if res == 1 or res == 0:
                 descr_success += res
             print ("TOTAL PROCESSED: {}".format(descr_count))
+
+
+            result = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", " ", relatum, " ", " ", "2", " "])
+            result = result.decode("utf-8").split("\n")
+            print (result)
+
         else:
             res = float(res)
             res = math.floor(5 * res)
