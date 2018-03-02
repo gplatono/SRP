@@ -829,7 +829,7 @@ id=1000785:testcase=522:user_id=13:scene_id=195:scene_path=description/100.blend
 id=1000785:testcase=522:user_id=13:scene_id=195:scene_path=description/100.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=below a green block
 id=1000786:testcase=536:user_id=13:scene_id=207:scene_path=description/105.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=to the left of the other blue block
 id=1000787:testcase=658:user_id=13:scene_id=211:scene_path=description/208.blend:relation=-:relatum=poster 2:referent1=-:referent2=null:task_type=1:response=on the west wall
-id=1000787:testcase=658:user_id=13:scene_id=211:scene_path=description/208.blend:relation=-:relatum=poster 2:referent1=-:referent2=null:task_type=1:response=above a table
+id=1000787:testcase=658:user_id=13:scene_id=211:scene_path=description/208.blend:relation=-:relatum=poster 2:referent1=-:referent2=null:task_type=1:response=above a desk
 id=1000787:testcase=658:user_id=13:scene_id=211:scene_path=description/208.blend:relation=-:relatum=poster 2:referent1=-:referent2=null:task_type=1:response=over a red book
 id=1000788:testcase=523:user_id=13:scene_id=194:scene_path=description/101.blend:relation=-:relatum=black block 2:referent1=-:referent2=null:task_type=1:response=behind a green block
 id=1000788:testcase=523:user_id=13:scene_id=194:scene_path=description/101.blend:relation=-:relatum=black block 2:referent1=-:referent2=null:task_type=1:response=to the right of a red block

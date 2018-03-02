@@ -24,6 +24,8 @@ class Testcase:
 yn_to_index = {"yes": 4, "rather yes": 3, "uncertain": 2, "rather no": 1, "no": 0}
 rel_to_index = {"right": 0, "left": 1, "in front of": 2, "behind": 3, "above": 4, "below": 5, "over": 6, "under": 7, "in": 8, "on": 9, "at": 10, "touching": 11, "between": 12, "near": 13}
 
+rel_accuracy = {"right": [0,0], "left": [0,0], "front": [0,0], "behind": [0,0], "above": [0,0], "over": [0,0], "below": [0,0], "under": [0,0], "between": [0,0], "at": [0,0], "touching": [0,0], "near": [0,0], "in ": [0,0], "on ": [0, 0]}
+
 #Maps the response to its numerical value
 def map_response_to_index(resp):
     for key in rel_to_index:
@@ -114,10 +116,11 @@ ur_yn = {}
 ur_relations = {}
 relatums = {}
 system_yn = {}
-test_counter =0
+test_counter = 0
 tj_count = 0
 descr_count = 0
 descr_success = 0
+suggested_rels = {}
 
 #Main annotation evaluation pipeline
 for subm in open('annotations').readlines():
@@ -138,12 +141,7 @@ for subm in open('annotations').readlines():
         ur_yn[user] = {}
     if user not in ur_relations:
         ur_relations[user] = {}    
-    if task_type == "0":
-        #print ("ID:", subm[0].split("=")[1], resp, user, testcase)
-        ur_yn[user][testcase] = yn_to_index[resp]#resp#yn_to_index[resp]
-        tj_count = tj_count + 1
-    tests += [[scene_path, relation, relatum, referent1, referent2, task_type, resp]]    
-    if task_type == "1":
+    if task_type == "1":# and "behind" in resp:
         print ("ID:", ID, resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data
@@ -156,34 +154,65 @@ for subm in open('annotations').readlines():
             if "RESULT" in item:
                 res = (item.split(":")[1]).strip()
                 break
-        if task_type == "1":
-            descr_count += 1
-            if res == "True":
-                res = 1
-            elif res == "False":
-                res = 0
-            if res != 1:
-                print ("{}\nRESULT: {}".format(result, res))
-            if res == 1 or res == 0:
-                descr_success += res
-            print ("TOTAL PROCESSED: {}".format(descr_count))
 
+        rel = ""
+        for key in rel_accuracy:
+            if key in resp and (key != "in " or "front" not in resp):
+                rel = key
+                break
+        rel_accuracy[rel][0] += 1
+        descr_count += 1
+        if res == "1" or res == "0":
+            res = int(res)
+            descr_success += res
+            rel_accuracy[rel][1] += res
+        if res != 1:
+            print ("{}\nRESULT: {}".format(result, res))
+        print ("TOTAL PROCESSED: {}".format(descr_count))
+
+        '''if testcase not in suggested_rels:
+            ur_relations[testcase] = {}
+            for rel in relations:
+                if rel in resp and (rel != "in" or rel == "in" and "in " in resp and "front" not in resp):
+                    ur_relations[testcase][user] = rel
 
             result = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", " ", relatum, " ", " ", "2", " "])
             result = result.decode("utf-8").split("\n")
-            print (result)
-
-        else:
-            res = float(res)
-            res = math.floor(5 * res)
-            print ("RESULT:", res, "USER RESULT:", ur_yn[user][testcase])
-            system_yn[testcase] = res
-        #test_counter += 1
-        #if test_counter == 10:
-        #    break
+            res = ""
+            for item in result:
+                if "RESULT" in item:
+                    res = (item.split(":")[1]).strip()
+                    break
+            suggested_rels[testcase] = res.split("#")
+            print (res.split("#"))'''
+        
+    elif task_type == "0" and ID == "100000000":
+        result = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
+        result = result.decode("utf-8").split("\n")
+        print (result)
+        ur_yn[user][testcase] = yn_to_index[resp]
+        tj_count = tj_count + 1
+        res = ""
+        for item in result:
+            if "RESULT" in item:
+                res = (item.split(":")[1]).strip()
+                break        
+        res = math.floor(5 * float(res))
+        print ("RESULT:", res, "USER RESULT:", ur_yn[user][testcase])
+        system_yn[testcase] = res
 
 print ("DESCRIPTION TASK ACCURACY: {}".format(descr_success / descr_count))
+print ("PER-RELATION ACCURACY: {}".format(rel_accuracy))
 
+correct_suggestions = 0
+for key in suggested_rels:
+    for user in ur_relations[key]:
+        if ur_relations[key][user] in suggested_rels[key]:
+            correct_suggestions += 1
+            break
+
+print ("SUGGESTION ACCURACY: {}".format(correct_suggestions / descr_count))
+    
 
 #Compute and print the interannotator agreement
 '''print(ur_yn.keys())

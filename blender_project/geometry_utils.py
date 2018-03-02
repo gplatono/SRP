@@ -28,11 +28,23 @@ def get_distance_from_plane(point, a, b, c):
 #Inputs: x1, x2, x3 - point coordinates as tuples or lists
 #Return value: real number
 def get_distance_from_line(x1, x2, x3):
-    t = (x3[0] - x1[0]) * (x2[0] - x1[0]) + (x3[1] - x1[1]) * (x2[1] - x1[1]) * (x3[2] - x1[2]) * (x2[2] - x1[2])
-    dist = point_distance(x1, x2) ** 2    
-    t = t / dist if dist != 0 else 1e10
-    x0 = (x1[0] + (x2[0] - x1[0]) * t, x1[1] + (x2[1] - x1[1]) * t, x1[2] + (x2[2] - x1[2]) * t)
-    return point_distance(x0, x3)
+    if x1 == x2:
+        return point_distance(x1, x3)    
+    #print ("POINTS: {}, {}, {}".format(x1, x2, x3))
+    v1 = numpy.array(x3) - numpy.array(x1)
+    v2 = numpy.array(x2) - numpy.array(x1)
+    #v1 = numpy.array(x3 - x1)
+    #v2 = numpy.array(x2 - x1)
+    #print ("VECTORS: {}, {}".format(v1, v2))
+    l1 = numpy.linalg.norm(v1)
+    l2 = numpy.dot(v1, v2) / numpy.linalg.norm(v2)
+    #print ("L1, L2", l1, l2)
+    return math.sqrt(l1 * l1 - l2 * l2)
+    #t = (x3[0] - x1[0]) * (x2[0] - x1[0]) + (x3[1] - x1[1]) * (x2[1] - x1[1]) * (x3[2] - x1[2]) * (x2[2] - x1[2])
+    #dist = point_distance(x1, x2) ** 2    
+    #t = t / dist if dist != 0 else 1e10
+    #x0 = (x1[0] + (x2[0] - x1[0]) * t, x1[1] + (x2[1] - x1[1]) * t, x1[2] + (x2[2] - x1[2]) * t)
+    #return point_distance(x0, x3)
 
 #Computes a simple Euclidean distance between two points
 #Inputs: a, b - point coordinates as tuples or lists
@@ -239,10 +251,29 @@ def get_bbox_intersection(ent_a, ent_b):
 
     vol = int_x * int_y * int_z    
     return vol
-
     
 #Checks whether the entity is vertically oriented
 #Input: ent_a - entity
 #Return value: boolean value
 def isVertical(ent_a):
     return ent_a.dimensions[0] < 0.5 * ent_a.dimensions[2] or ent_a.dimensions[1] < 0.5 * ent_a.dimensions[2]
+
+def cosine_similarity(v1, v2):
+    l1 = numpy.linalg.norm(v1)
+    l2 = numpy.linalg.norm(v2)
+    if l1 == 0 or l2 == 0:
+        return None
+    cos = numpy.dot(v1, v2) / (l1 * l2)
+    if cos > 1:
+        cos = 1
+    if cos < -1:
+        cos = -1
+    return cos
+
+def within_cone(v1, v2, threshold):
+    cos = cosine_similarity(v1, v2)
+    if cos is None:
+        return None
+    else:
+        #print ("ARG: {} FUNC: {}".format(0.5 * math.pi * (cos - threshold) / (1 - threshold), math.e ** math.tan(0.5 * math.pi * (cos - threshold) / (1 - threshold))))
+        return 1 / (1 + math.e ** -math.tan(0.5 * math.pi * (cos - threshold) / (1 - threshold)))

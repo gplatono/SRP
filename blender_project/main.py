@@ -10,6 +10,7 @@ import sys
 import random
 import bmesh
 from functools import reduce
+from mathutils import Vector
 
 #The path to the this source file
 filepath = os.path.dirname(os.path.abspath(__file__))
@@ -298,9 +299,9 @@ def larger_than(a, b):
 #Return value: real number from [0, 1]
 def on(a, b):
     ret_val = 0.5 * (v_offset(a, b) + get_proj_intersection(a, b))
-    print ("ON {}, {}, {}".format(ret_val, get_proj_intersection(a, b), v_offset(a, b)))
+    #print ("ON {}, {}, {}".format(ret_val, get_proj_intersection(a, b), v_offset(a, b)))
     ret_val = max(ret_val, 0.5 * (above(a, b) + touching(a, b)))
-    print ("ON {}".format(ret_val))
+    #print ("ON {}".format(ret_val))
     for ob in b.constituents:
         ob_ent = Entity(ob)
         if ob.get('working_surface') is not None or ob.get('planar') is not None:
@@ -337,7 +338,7 @@ def under(a, b):
 #Inputs: a, b - entities
 #Return value: real number from [0, 1]
 def closer_than(a, b, pivot):
-    return 1 if point_distance(a.get_bbox(), pivot.get_bbox()) < point_distance(b.get_bbox(), pivot.get_bbox()) else 0
+    return int(point_distance(a.centroid, pivot.centroid) < point_distance(b.centroid, pivot.centroid))
 
 
 #Computes the deictic version of the "in-front-of" relation
@@ -351,8 +352,12 @@ def in_front_of_deic(a, b):
     max_dim_a = max(bbox_a[7][0] - bbox_a[0][0],
                     bbox_a[7][1] - bbox_a[0][1],
                     bbox_a[7][2] - bbox_a[0][2]) + 0.0001
-    dist = get_distance_from_line(observer.get_centroid(), b.get_bbox_centroid(), a.get_bbox_centroid())
-    return 0.5 * (closer_than(a, b, observer) + e ** (-dist / max_dim_a))
+    dist = get_distance_from_line(observer.centroid, b.centroid, a.centroid)
+    #print ("{}, {}, CLOSER: {}, WC_DEIC: {}, WC_EXTR: {}, DIST: {}".format(a.name, b.name, closer_than(a, b, observer), within_cone(b.centroid - observer.centroid, a.centroid - observer.centroid, 0.95), within_cone(b.centroid - a.centroid, Vector((0, -1, 0)) - a.centroid, 0.8), e ** (- 0.1 * get_centroid_distance_scaled(a, b))))
+    return 0.5 * (closer_than(a, b, observer) + \
+                  max(within_cone(b.centroid - observer.centroid, a.centroid - observer.centroid, 0.95),
+                      within_cone(b.centroid - a.centroid, Vector((1, 0, 0)), 0.7))) * \
+                      e ** (- 0.05 * get_centroid_distance_scaled(a, b))#e ** (-dist / max_dim_a))
 
 #Enable SVA
 #Computes the deictic version of the "behind" relation
@@ -667,12 +672,13 @@ def filter(entities, constraints):
 #Return value: the best candidate entity
 def eval_find(relation, rel_constraints, referents):
     candidates = filter(entities, rel_constraints)
-    print ("REF:", referents)
+    print ("CANDIDATES: {}".format(candidates))
     scores = []
     if len(referents[0]) == 1 or relation == "between":
-        scores = [(cand, cand.name, max([globals()[rf_mapping[relation]](cand, *ref) for ref in referents])) for cand in candidates]
+        scores = [(cand, cand.name, max([globals()[rf_mapping[relation]](cand, *ref) for ref in referents if cand not in ref])) for cand in candidates]
     else:
-        scores = [(cand, cand.name, max([np.mean([globals()[rf_mapping[relation]](cand, ref) for ref in refset]) for refset in referents])) for cand in candidates]
+        scores = [(cand, cand.name, max([np.mean([globals()[rf_mapping[relation]](cand, ref) for ref in refset]) for refset in referents if cand not in refset])) for cand in candidates]
+    print ("SCORES: {}".format(scores))
     max_score = 0
     best_candidate = None
     for ev in scores:
@@ -812,28 +818,44 @@ def fix_ids():
             for key in types_ids.keys():
                 if key in ob.name.lower():
                     ob['id'] = types_ids[key] + "." + ob.name
+            if ob.get('color_mod') is None:
+                for color in color_mods:
+                    if color in ob.name.lower():
+                        ob['color_mod'] = color
+                        break
 
+def get_similar_entities(relatum):
+    ret_val = []
+    relatum = get_entity_by_name(relatum)
+    for entity in entities:
+        if relatum.type_structure[-2] == entity.type_structure[-2] and (relatum.color_mod is None \
+           and entity.color_mod is None or relatum.color_mod == entity.color_mod):
+            ret_val += [entity]
+    return ret_val
 
 def pick_descriptions(relatum):
+    candidates = get_similar_entities(relatum)
     relatum = get_entity_by_name(relatum)
     max_vals = []
     for relation in relations:
         max_val = 0
-        if relation != 'between':           
-            for entity in entities:
-                if entity != relatum:
-                    max_val = max(max_val, globals()[rf_mapping[relation]](relatum, entity))
+        if relation != 'between':            
+            for ref in entities:
+                if ref != relatum:
+                    max_val = max([(globals()[rf_mapping[relation]](cand, ref), cand) for cand in candidates], key=lambda arg: arg[0])
         else:
             for pair in itertools.combinations(entities, r = 2):
                 if relatum != pair[0] and relatum != pair[1]:
-                    max_val = max(max_val, globals()[rf_mapping[relation]](relatum, pair[0], pair[1]))
-        max_vals += [(relation, max_val)]
+                    max_val = max([(globals()[rf_mapping[relation]](cand, pair[0], pair[1]), cand) for cand in candidates], key=lambda arg: arg[0])
+        if max_val[1] == relatum:
+            max_vals += [(relation, max_val[0])]
     max_vals.sort(key=lambda arg: arg[1])
     print ("MAX_VALS: {}".format(max_vals))
-    return (max_vals[0][0], max_vals[1][0], max_vals[2][0])
+    max_vals = [item[0] for item in max_vals]
+    return tuple(max_vals[0:3])
 
 #Entry point
-#Implements the evaluation pipeline
+#Implementation of the evaluation pipeline
 def main():
     for obj in scene.objects:
         if obj.get('main') is not None:
@@ -864,12 +886,12 @@ def main():
                 best_cand = process_descr(relatum, response)
                 if best_cand != None:
                     print(process_descr(relatum, response).name, "==?", relatum)
-                print("RESULT:", get_entity_by_name(relatum) == best_cand)
+                print("RESULT:", int(get_entity_by_name(relatum) == best_cand))
             elif task_type == "0":
                 print("RESULT:", process_truthjudg(relation, relatum, referent1, referent2, response))
             elif task_type == "2":
                 descr = pick_descriptions(relatum)
-                print("RESULT: {}".format(descr[0] + " " + descr[1] + " " + descr[2]))
+                print("RESULT: {}".format("#".join(descr)))
         return
 
     bl4 = get_entity_by_name("Block 4")
@@ -883,6 +905,6 @@ def main():
 
 if __name__ == "__main__":
     #save_screenshot()
-    #fix_ids()
-    #bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
+    fix_ids()
+    bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
     main()
