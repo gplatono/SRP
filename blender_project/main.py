@@ -123,23 +123,38 @@ def sigmoid(x, a, b):
 def get_proj_intersection(a, b):
     bbox_a = a.get_bbox()
     bbox_b = b.get_bbox()
-    axmin = bbox_a[0][0]
-    axmax = bbox_a[7][0]
-    aymin = bbox_a[0][1]
-    aymax = bbox_a[7][1]
-    bxmin = bbox_b[0][0]
-    bxmax = bbox_b[7][0]
-    bymin = bbox_b[0][1]
-    bymax = bbox_b[7][1]
-    dim1 = max(axmax, bxmax) - min(axmin, bxmin) - (axmax - axmin + bxmax - bxmin)
-    dim2 = max(aymax, bymax) - min(aymin, bymin) - (aymax - aymin + bymax - bymin)
-    area = math.fabs(dim1 * dim2)
-    if dim1 >= 0 or dim2 >= 0:
-        area = -area
-    #Normalize the intersection area to [0, 1]
-    return e ** ((area - min((axmax - axmin) * (aymax - aymin), (bxmax - bxmin) * (bymax - bymin))) / 
-                    min((axmax - axmin) * (aymax - aymin), (bxmax - bxmin) * (bymax - bymin)))
+    axmin = a.span[0]
+    axmax = a.span[1]
+    aymin = a.span[2]
+    aymax = a.span[3]
+    bxmin = b.span[0]
+    bxmax = b.span[1]
+    bymin = b.span[2]
+    bymax = b.span[3]
+    xdim = 0
+    ydim = 0
+    if axmin >= bxmin and axmax <= bxmax:
+        xdim = axmax - axmin
+    elif bxmin >= axmin and bxmax <= axmax:
+        xdim = bxmax - bxmin
+    elif axmin <= bxmin and axmax <= bxmax and axmax >= bxmin:
+        xdim = axmax - bxmin
+    elif axmin >= bxmin and axmin <= bxmax and axmax >= bxmax:
+        xdim = bxmax - axmin
 
+    if aymin >= bymin and aymax <= bymax:
+        ydim = aymax - aymin
+    elif bymin >= aymin and bymax <= aymax:
+        ydim = bymax - bymin
+    elif aymin <= bymin and aymax <= bymax and aymax >= bymin:
+        ydim = aymax - bymin
+    elif aymin >= bymin and aymin <= bymax and aymax >= bymax:
+        ydim = bymax - aymin
+    area = xdim * ydim
+    
+    #Normalize the intersection area to [0, 1]
+    return e ** (area - min((axmax - axmin) * (aymax - aymin), (bxmax - bxmin) * (bymax - bymin)))
+    
 #Returns the orientation of the entity relative to the coordinate axes
 #Inputs: a - entity
 #Return value: triple representing the coordinates of the orientation vector
@@ -189,6 +204,7 @@ def near_raw(a, b):
                     bbox_b[7][1] - bbox_b[0][1],
                     bbox_b[7][2] - bbox_b[0][2])
     if a.get('planar') is not None:
+        #print ("TEST", a.name, b.name)
         dist = min(dist, get_planar_distance_scaled(a, b))
     elif b.get('planar') is not None:
         dist = min(dist, get_planar_distance_scaled(b, a))        
@@ -222,7 +238,7 @@ def near(a, b):
             raw_near_a += [near_a_entity]
             #if dist_b_to_entity < raw_dist:
             raw_near_b += [near_b_entity]
-    #print ("RAW:", raw_near_measure)
+    #print ("RAW:", a.name, b.name, raw_near_measure)
     average_near_a = sum(raw_near_a) / len(raw_near_a)
     average_near_b = sum(raw_near_b) / len(raw_near_b)
     #print ("AVER: ", average_near_a, average_near_b)
@@ -244,11 +260,6 @@ def between(a, b, c):
     vec2 = np.array(center_c) - np.array(center_a)
     cos = np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2) + 0.001)
     dist = get_distance_from_line(center_b, center_c, center_a) / max(max(a.dimensions), max(b.dimensions), max(c.dimensions))
-    #print ("{}\n{}\n{}\n{}\n{}".format(center_a, center_b,center_c, vec1, vec2))
-    #print (cos)
-    #max_dim_a = max(bbox_a[7][0] - bbox_a[0][0],
-    #                bbox_a[7][1] - bbox_a[0][1],
-    #                bbox_a[7][2] - bbox_a[0][2])
     
     return math.exp(- 2 * math.fabs(-1 - cos))
 
@@ -298,9 +309,12 @@ def larger_than(a, b):
 #Inputs: a, b - entities
 #Return value: real number from [0, 1]
 def on(a, b):
-    ret_val = 0.5 * (v_offset(a, b) + get_proj_intersection(a, b))
+    ret_val = 0.5 * (above(a, b) + touching(a, b))
+    if b.get('planar') is not None and larger_than(b, a) and a.centroid[2] > 0.5 * a.dimensions[2]:
+        ret_val = max(ret_val, touching(a, b))    
+    #ret_val = 0.5 * (v_offset(a, b) + get_proj_intersection(a, b))
     #print ("ON {}, {}, {}".format(ret_val, get_proj_intersection(a, b), v_offset(a, b)))
-    ret_val = max(ret_val, 0.5 * (above(a, b) + touching(a, b)))
+    #ret_val = max(ret_val, 0.5 * (above(a, b) + touching(a, b)))
     #print ("ON {}".format(ret_val))
     for ob in b.constituents:
         ob_ent = Entity(ob)
@@ -309,10 +323,6 @@ def on(a, b):
             ret_val = max(ret_val, 0.5 * (int(near(a, ob_ent) > 0.99) + larger_than(ob_ent, a)))
     if b.get('planar') is not None and isVertical(b):
         ret_val = max(ret_val, math.exp(- 0.5 * get_planar_distance_scaled(a, b)))
-    #if b.get('planar') is not None :
-    #    ret_val = max(ret_val, )
-    #if ret_val >= 0.6:
-    #    return 0.5 * (ret_val + larger_than(b, a))
     return ret_val
 
 #Computes the "over" relation
@@ -635,14 +645,14 @@ def touching(a, b):
                 bbox_b[7][1] - bbox_b[0][1], \
                 bbox_b[7][2] - bbox_b[0][2]) / 2
     
-    for point in bbox_a:
+    '''for point in bbox_a:
         if point_distance(point, center_b) < rad_b:
             return 1
     for point in bbox_b:
         if point_distance(point, center_a) < rad_a:
-            return 1
+            return 1'''
     mesh_dist = 1e9
-    if get_centroid_distance_scaled(a, b) <= 0.8:
+    if get_centroid_distance_scaled(a, b) <= 1.5:
         mesh_dist = closest_mesh_distance_scaled(a, b)
     return math.exp(- 5 * mesh_dist)
 
@@ -788,14 +798,14 @@ def to_the_left_of_deic(a, b):
 #Inputs: a, b - entities
 #Return value: real number from [0, 1]
 def above(a, b):
-    bbox_a = a.get_bbox()
-    bbox_b = b.get_bbox()
-    span_a = a.get_span()
-    span_b = b.get_span()
-    center_a = a.get_bbox_centroid()
-    center_b = b.get_bbox_centroid()
-    scaled_vertical_distance = (center_a[2] - center_b[2]) / ((span_a[5] - span_a[4]) + (span_b[5] - span_b[4]))
-    return 0.33333 * (max(int(bbox_a[0][2] > bbox_b[7][2]), e ** (- math.fabs(bbox_a[0][2] - bbox_b[7][2]))) + sigmoid(5 * (center_a[2] - center_b[2]) / (0.01 + bbox_a[7][2] - bbox_a[0][2] + bbox_b[7][2] - bbox_b[0][2]), 1, 1) + get_proj_intersection(a, b))
+    #bbox_a = a.get_bbox()
+    #bbox_b = b.get_bbox()
+    #span_a = a.get_span()
+    #span_b = b.get_span()
+    #center_a = a.get_bbox_centroid()
+    #center_b = b.get_bbox_centroid()
+    #scaled_vertical_distance = (center_a[2] - center_b[2]) / ((span_a[5] - span_a[4]) + (span_b[5] - span_b[4]))
+    return within_cone(a.centroid - b.centroid, Vector((0, 0, 1)), 0.45) * e ** (- 0.05 * get_centroid_distance_scaled(a, b))
 
 #Computes the below relation, which is taken to be symmetric to above
 #Inputs: a, b - entities
@@ -905,6 +915,6 @@ def main():
 
 if __name__ == "__main__":
     #save_screenshot()
-    fix_ids()
-    bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
+    #fix_ids()
+    #bpy.ops.wm.save_mainfile(filepath=bpy.data.filepath)
     main()

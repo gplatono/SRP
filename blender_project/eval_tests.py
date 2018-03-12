@@ -24,7 +24,7 @@ class Testcase:
 yn_to_index = {"yes": 4, "rather yes": 3, "uncertain": 2, "rather no": 1, "no": 0}
 rel_to_index = {"right": 0, "left": 1, "in front of": 2, "behind": 3, "above": 4, "below": 5, "over": 6, "under": 7, "in": 8, "on": 9, "at": 10, "touching": 11, "between": 12, "near": 13}
 
-rel_accuracy = {"right": [0,0], "left": [0,0], "front": [0,0], "behind": [0,0], "above": [0,0], "over": [0,0], "below": [0,0], "under": [0,0], "between": [0,0], "at": [0,0], "touching": [0,0], "near": [0,0], "in ": [0,0], "on ": [0, 0]}
+rel_accuracy = {"right": [0,0], "left": [0,0], "front": [0,0], "behind": [0,0], "above": [0,0], "over": [0,0], "below": [0,0], "under": [0,0], "between": [0,0], "at ": [0,0], "touching": [0,0], "near": [0,0], "in ": [0,0], "on ": [0, 0]}
 
 #Maps the response to its numerical value
 def map_response_to_index(resp):
@@ -36,12 +36,12 @@ def map_response_to_index(resp):
 #Computes the weighted Cohen's Kappa interannotator agreement metric
 #Inputs: resp1, resp2 - response sequences for two users
 #Return value: the Kappa coefficient (from [0, 1])
-def weighted_cohen_kappa(resp1, resp2):
+def weighted_cohen_kappa(resp1, resp2, use_weighted=False):
     #print (resp1, resp2)
     weights = np.zeros((5,5))
     for i in range(weights.shape[0]):
-        for j in range(weights.shape[1]):
-            weights[i][j] = abs(i - j)
+        for j in range(weights.shape[1]):            
+            weights[i][j] = abs(i - j) if use_weighted else int(i != j)
     y1 = [resp1[testcase] for testcase in resp1 if testcase in resp2]
     y2 = [resp2[testcase] for testcase in resp1 if testcase in resp2]
 
@@ -76,7 +76,8 @@ def weighted_cohen_kappa(resp1, resp2):
                 num += weights[i][j] * resp_distr[i][j]
                 denom += weights[i][j] * np.sum(resp_distr[i,:]) * np.sum(resp_distr[:,j])
         weighted_kappa = 1 - total_resp * 1.0 * num / denom
-        print (resp_distr, total_resp, total_coincidence, observed_agreement, "Kappa:", kappa, "weighted kappa:", weighted_kappa)
+        #print (resp_distr, total_resp, total_coincidence, observed_agreement, "Kappa:", kappa, "weighted kappa:", weighted_kappa)
+        print ("KAPPA METRIC: {}; WEIGHTED_KAPPA: {}".format(kappa, weighted_kappa))
         return weighted_kappa
 
 #Computes the standard Cohen's Kappa interannotator agreement metric
@@ -102,15 +103,12 @@ def cohen_kappa(resp1, resp2):
         total_coincidence = 1.0 * sum([np.sum(resp_distr[i:]) * np.sum(resp_distr[:i]) for i in range(resp_distr.shape[0])])
         total_coincidence /= total_resp * total_resp
         kappa = (observed_agreement - total_coincidence) / (1 - total_coincidence)
-        print (resp_distr, total_resp, total_coincidence, observed_agreement, kappa)        
+        #print (resp_distr, total_resp, total_coincidence, observed_agreement, kappa)        
 
 tests = []
 count = 0
 trc = 0
 desc = 0
-dict = {}
-dict["1"] = 0
-dict["0"] = 0
 tcounts = {}
 ur_yn = {}
 ur_relations = {}
@@ -122,11 +120,15 @@ descr_count = 0
 descr_success = 0
 suggested_rels = {}
 
+annotations = [annotation.strip().split(":") for annotation in open('annotations').readlines()]
+
+#def process_annotation(annotation):
+    
 #Main annotation evaluation pipeline
-for subm in open('annotations').readlines():
+for subm in annotations:
 
     #Read-off the annotation components
-    subm = subm.strip().split(":")
+    #subm = subm.strip().split(":")
     ID = subm[0].split("=")[1]
     testcase = subm[1].split("=")[1]
     user = subm[2].split("=")[1]
@@ -141,7 +143,7 @@ for subm in open('annotations').readlines():
         ur_yn[user] = {}
     if user not in ur_relations:
         ur_relations[user] = {}    
-    if task_type == "1":# and "behind" in resp:
+    if task_type == "1" and ID == "000":
         print ("ID:", ID, resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data
@@ -168,7 +170,6 @@ for subm in open('annotations').readlines():
             rel_accuracy[rel][1] += res
         if res != 1:
             print ("{}\nRESULT: {}".format(result, res))
-        print ("TOTAL PROCESSED: {}".format(descr_count))
 
         '''if testcase not in suggested_rels:
             ur_relations[testcase] = {}
@@ -186,7 +187,7 @@ for subm in open('annotations').readlines():
             suggested_rels[testcase] = res.split("#")
             print (res.split("#"))'''
         
-    elif task_type == "0" and ID == "100000000":
+    elif task_type == "0":# and int(ID) > 1001135 and tj_count < 200:
         result = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
         result = result.decode("utf-8").split("\n")
         print (result)
@@ -201,8 +202,12 @@ for subm in open('annotations').readlines():
         print ("RESULT:", res, "USER RESULT:", ur_yn[user][testcase])
         system_yn[testcase] = res
 
-print ("DESCRIPTION TASK ACCURACY: {}".format(descr_success / descr_count))
-print ("PER-RELATION ACCURACY: {}".format(rel_accuracy))
+    print ("TOTAL PROCESSED: {}".format(descr_count + tj_count))
+
+
+if descr_count != 0:
+    print ("DESCRIPTION TASK ACCURACY: {}".format(descr_success / descr_count))
+    print ("PER-RELATION ACCURACY: {}".format([(key, rel_accuracy[key], float(rel_accuracy[key][1]) / rel_accuracy[key][0]) for key in rel_accuracy]))
 
 correct_suggestions = 0
 for key in suggested_rels:
@@ -211,11 +216,11 @@ for key in suggested_rels:
             correct_suggestions += 1
             break
 
-print ("SUGGESTION ACCURACY: {}".format(correct_suggestions / descr_count))
+#print ("SUGGESTION ACCURACY: {}".format(correct_suggestions / descr_count))
     
 
 #Compute and print the interannotator agreement
-'''print(ur_yn.keys())
+print(ur_yn.keys())
 print("TJ_COUNT: ", tj_count)
 avg = 0
 tot = 0
@@ -224,13 +229,13 @@ for us1 in range(len(keys)):
     for us2 in range(us1, len(keys)):
         if us1 != us2:
             print (keys[us1], keys[us2])
-            result = weighted_cohen_kappa(ur_yn[keys[us1]], ur_yn[keys[us2]])
+            result = weighted_cohen_kappa(ur_yn[keys[us1]], ur_yn[keys[us2]], False)
+            print ("KAPPA1: {}".format(cohen_kappa(ur_yn[keys[us1]], ur_yn[keys[us2]])))
             if result is not None:
                 avg += result
                 tot += 1
-print ("AVG KAPPA:", 1.0 * avg / tot)'''
-'''
+print ("AVG KAPPA:", 1.0 * avg / tot)
+
 for user in ur_yn:
     print ("USER:", user)
-    print (weighted_cohen_kappa(ur_yn[user], system_yn))
-'''
+    weighted_cohen_kappa(ur_yn[user], system_yn, False)

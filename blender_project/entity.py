@@ -47,6 +47,9 @@ class Entity:
         #['Props', 'Furniture', 'Chair']
         self.type_structure = self.get_type_structure()
 
+        #Total mesh of the entity
+        self.total_mesh = self.get_total_mesh()
+
         #The coordiante span of the entity. In other words,        
         #the minimum and maximum coordinates of entity's points
         self.span = self.get_span()
@@ -64,6 +67,8 @@ class Entity:
         #[xmax - xmin, ymax - ymin, zmax - zmin]
         self.dimensions = self.get_dimensions()
 
+        self.radius = self.get_radius()
+
         #The faces of the mesh comrising the entity
         self.faces = self.get_faces()
 
@@ -75,9 +80,6 @@ class Entity:
 
         #The parent offset
         self.parent_offset = self.get_parent_offset()
-
-        #Total mesh of the entity
-        self.total_mesh = self.get_total_mesh()
 
         self.volume = self.get_volume()
         
@@ -94,12 +96,30 @@ class Entity:
         if(hasattr(self, 'span') and self.span is not None):
             return self.span
         else:
-            return [min([obj.location.x - obj.dimensions.x / 2.0 for obj in self.constituents]),
-	            max([obj.location.x + obj.dimensions.x / 2.0 for obj in self.constituents]),
-	            min([obj.location.y - obj.dimensions.y / 2.0 for obj in self.constituents]),
-	            max([obj.location.y + obj.dimensions.y / 2.0 for obj in self.constituents]),
-	            min([obj.location.z - obj.dimensions.z / 2.0 for obj in self.constituents]),
-	            max([obj.location.z + obj.dimensions.z / 2.0 for obj in self.constituents])]
+            mesh = self.get_total_mesh()            
+            return [min([v[0] for v in mesh]),
+                    max([v[0] for v in mesh]),
+                    min([v[1] for v in mesh]),
+                    max([v[1] for v in mesh]),
+                    min([v[2] for v in mesh]),
+                    max([v[2] for v in mesh])]
+                
+            
+            '''lower = [obj.matrix_world * (obj.location.x - obj.dimensions.x / 2.0) for obj in self.constituents]
+            upper = [obj.matrix_world * (obj.location.x + obj.dimensions.x / 2.0) for obj in self.constituents]
+            print (min([item[0] for item in lower]))
+            return [min([item[0] for item in lower]),
+                    max([item[0] for item in lower]),
+                    min([item[1] for item in lower]),
+                    max([item[1] for item in lower]),
+                    min([item[2] for item in lower]),
+                    max([item[2] for item in lower])]'''
+            #return [min([(obj.matrix_world * (obj.location.x - obj.dimensions.x / 2.0)).x for obj in self.constituents]),
+	    #        max([(obj.matrix_world * (obj.location.x + obj.dimensions.x / 2.0)).x for obj in self.constituents]),
+	    #        min([(obj.matrix_world * (obj.location.y - obj.dimensions.y / 2.0)).y for obj in self.constituents]),
+	    #        max([(obj.matrix_world * (obj.location.y + obj.dimensions.y / 2.0)).y for obj in self.constituents]),
+	    #        min([(obj.matrix_world * (obj.location.z - obj.dimensions.z / 2.0)).z for obj in self.constituents]),
+	    #        max([(obj.matrix_world * (obj.location.z + obj.dimensions.z / 2.0)).z for obj in self.constituents])]
 
     #Calculates the bounding box of the entity
     def get_bbox(self):
@@ -211,6 +231,13 @@ class Entity:
         else:
             return None
 
+    def get_radius(self):
+        if not hasattr(self, 'radius'):
+            total_mesh = self.get_total_mesh()
+            centroid = self.get_centroid()
+            self.radius = max([numpy.linalg.norm(v - centroid) for v in total_mesh])
+        return self.radius
+            
 
     #Returns the total mesh of the entity (the union of the meshes
     #of its constituent objects)

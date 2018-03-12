@@ -933,10 +933,10 @@ id=1000831:testcase=587:user_id=13:scene_id=201:scene_path=description/203.blend
 id=1000832:testcase=577:user_id=13:scene_id=209:scene_path=description/201.blend:relation=-:relatum=banana 2:referent1=-:referent2=null:task_type=1:response=in front of the other bananas
 id=1000832:testcase=577:user_id=13:scene_id=209:scene_path=description/201.blend:relation=-:relatum=banana 2:referent1=-:referent2=null:task_type=1:response=in front of another banana
 id=1000833:testcase=615:user_id=13:scene_id=189:scene_path=description/206.blend:relation=-:relatum=laptop 2:referent1=-:referent2=null:task_type=1:response=on the floor
-id=1000834:testcase=653:user_id=13:scene_id=212:scene_path=description/207.blend:relation=-:relatum=blue chair 2:referent1=-:referent2=null:task_type=1:response=in between the red chairs
+id=1000834:testcase=653:user_id=13:scene_id=212:scene_path=description/207.blend:relation=-:relatum=blue chair 2:referent1=-:referent2=null:task_type=1:response=between the red chairs
 id=1000835:testcase=578:user_id=13:scene_id=198:scene_path=description/202.blend:relation=-:relatum=red chair 1:referent1=-:referent2=null:task_type=1:response=at the table
 id=1000836:testcase=610:user_id=13:scene_id=189:scene_path=description/206.blend:relation=-:relatum=blue chair 1:referent1=-:referent2=null:task_type=1:response=in front of a red chair
-id=1000837:testcase=537:user_id=13:scene_id=204:scene_path=description/106.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=in between the other red blocks
+id=1000837:testcase=537:user_id=13:scene_id=204:scene_path=description/106.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=between the other red blocks
 id=1000837:testcase=537:user_id=13:scene_id=204:scene_path=description/106.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=in front of a blue block
 id=1000838:testcase=627:user_id=13:scene_id=215:scene_path=description/123.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=under the other black block
 id=1000838:testcase=627:user_id=13:scene_id=215:scene_path=description/123.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=under a green block
@@ -946,7 +946,7 @@ id=1000839:testcase=572:user_id=13:scene_id=208:scene_path=description/117.blend
 id=1000840:testcase=573:user_id=13:scene_id=208:scene_path=description/117.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=behind a red block
 id=1000840:testcase=573:user_id=13:scene_id=208:scene_path=description/117.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=to the right of a green block
 id=1000841:testcase=531:user_id=13:scene_id=192:scene_path=description/104.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=to the right of a black block
-id=1000841:testcase=531:user_id=13:scene_id=192:scene_path=description/104.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=in between a black block and a red block
+id=1000841:testcase=531:user_id=13:scene_id=192:scene_path=description/104.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=between a black block and a red block
 id=1000842:testcase=648:user_id=13:scene_id=222:scene_path=description/129.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=to the left of a blue block
 id=1000843:testcase=598:user_id=13:scene_id=206:scene_path=description/204.blend:relation=-:relatum=ceiling light 2:referent1=-:referent2=null:task_type=1:response=above the table
 id=1000843:testcase=598:user_id=13:scene_id=206:scene_path=description/204.blend:relation=-:relatum=ceiling light 2:referent1=-:referent2=null:task_type=1:response=near a picture
@@ -961,25 +961,25 @@ id=1000846:testcase=662:user_id=13:scene_id=211:scene_path=description/208.blend
 id=1000847:testcase=570:user_id=13:scene_id=191:scene_path=description/116.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the right of the black blocks
 id=1000847:testcase=570:user_id=13:scene_id=191:scene_path=description/116.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the right of a black block
 id=1000847:testcase=570:user_id=13:scene_id=191:scene_path=description/116.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the left of a red block
-id=1000847:testcase=570:user_id=13:scene_id=191:scene_path=description/116.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=in between a black block and a red block
+id=1000847:testcase=570:user_id=13:scene_id=191:scene_path=description/116.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=between a black block and a red block
 id=1000848:testcase=583:user_id=13:scene_id=198:scene_path=description/202.blend:relation=-:relatum=red book 2:referent1=-:referent2=null:task_type=1:response=on the bookshelf
 id=1000848:testcase=583:user_id=13:scene_id=198:scene_path=description/202.blend:relation=-:relatum=red book 2:referent1=-:referent2=null:task_type=1:response=touching a green book
 id=1000849:testcase=602:user_id=13:scene_id=190:scene_path=description/205.blend:relation=-:relatum=apple 2:referent1=-:referent2=null:task_type=1:response=in the bowl
 id=1000849:testcase=602:user_id=13:scene_id=190:scene_path=description/205.blend:relation=-:relatum=apple 2:referent1=-:referent2=null:task_type=1:response=near the laptop
 id=1000849:testcase=602:user_id=13:scene_id=190:scene_path=description/205.blend:relation=-:relatum=apple 2:referent1=-:referent2=null:task_type=1:response=near the east wall
-id=1000850:testcase=632:user_id=13:scene_id=217:scene_path=description/125.blend:relation=-:relatum=green block 12:referent1=-:referent2=null:task_type=1:response=in between a red block and a black block
+id=1000850:testcase=632:user_id=13:scene_id=217:scene_path=description/125.blend:relation=-:relatum=green block 12:referent1=-:referent2=null:task_type=1:response=between a red block and a black block
 id=1000850:testcase=632:user_id=13:scene_id=217:scene_path=description/125.blend:relation=-:relatum=green block 12:referent1=-:referent2=null:task_type=1:response=to the right of a red block
 id=1000851:testcase=641:user_id=13:scene_id=218:scene_path=description/127.blend:relation=-:relatum=red block 7:referent1=-:referent2=null:task_type=1:response=touching a black block
 id=1000851:testcase=641:user_id=13:scene_id=218:scene_path=description/127.blend:relation=-:relatum=red block 7:referent1=-:referent2=null:task_type=1:response=behind another red block
-id=1000852:testcase=609:user_id=13:scene_id=189:scene_path=description/206.blend:relation=-:relatum=red chair 1:referent1=-:referent2=null:task_type=1:response=in between two tables
+id=1000852:testcase=609:user_id=13:scene_id=189:scene_path=description/206.blend:relation=-:relatum=red chair 1:referent1=-:referent2=null:task_type=1:response=between two tables
 id=1000852:testcase=609:user_id=13:scene_id=189:scene_path=description/206.blend:relation=-:relatum=red chair 1:referent1=-:referent2=null:task_type=1:response=behind a table
 id=1000852:testcase=609:user_id=13:scene_id=189:scene_path=description/206.blend:relation=-:relatum=red chair 1:referent1=-:referent2=null:task_type=1:response=near the west wall
 id=1000853:testcase=655:user_id=13:scene_id=212:scene_path=description/207.blend:relation=-:relatum=laptop 2:referent1=-:referent2=null:task_type=1:response=on the bookshelf
 id=1000854:testcase=651:user_id=13:scene_id=212:scene_path=description/207.blend:relation=-:relatum=red chair 2:referent1=-:referent2=null:task_type=1:response=to the right of the table
-id=1000854:testcase=651:user_id=13:scene_id=212:scene_path=description/207.blend:relation=-:relatum=red chair 2:referent1=-:referent2=null:task_type=1:response=in between the table and the bookshelf
+id=1000854:testcase=651:user_id=13:scene_id=212:scene_path=description/207.blend:relation=-:relatum=red chair 2:referent1=-:referent2=null:task_type=1:response=between the table and the bookshelf
 id=1000855:testcase=640:user_id=13:scene_id=218:scene_path=description/127.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the right of another blue block
 id=1000856:testcase=552:user_id=13:scene_id=193:scene_path=description/111.blend:relation=-:relatum=red block 7:referent1=-:referent2=null:task_type=1:response=to the left of a black block
-id=1000856:testcase=552:user_id=13:scene_id=193:scene_path=description/111.blend:relation=-:relatum=red block 7:referent1=-:referent2=null:task_type=1:response=in between a green block and a black block
+id=1000856:testcase=552:user_id=13:scene_id=193:scene_path=description/111.blend:relation=-:relatum=red block 7:referent1=-:referent2=null:task_type=1:response=between a green block and a black block
 id=1000857:testcase=656:user_id=13:scene_id=212:scene_path=description/207.blend:relation=-:relatum=ceiling light 2:referent1=-:referent2=null:task_type=1:response=above the sofa
 id=1000857:testcase=656:user_id=13:scene_id=212:scene_path=description/207.blend:relation=-:relatum=ceiling light 2:referent1=-:referent2=null:task_type=1:response=above a laptop
 id=1000858:testcase=634:user_id=13:scene_id=217:scene_path=description/125.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=on a red block
@@ -990,10 +990,10 @@ id=1000861:testcase=556:user_id=13:scene_id=203:scene_path=description/112.blend
 id=1000861:testcase=556:user_id=13:scene_id=203:scene_path=description/112.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=above a blue block
 id=1000862:testcase=550:user_id=13:scene_id=200:scene_path=description/110.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=on the other blue block
 id=1000862:testcase=550:user_id=13:scene_id=200:scene_path=description/110.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=touching a red block
-id=1000863:testcase=635:user_id=13:scene_id=220:scene_path=description/126.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=in between two blue blocks
+id=1000863:testcase=635:user_id=13:scene_id=220:scene_path=description/126.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=between two blue blocks
 id=1000863:testcase=635:user_id=13:scene_id=220:scene_path=description/126.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=to the right of a blue block
 id=1000863:testcase=635:user_id=13:scene_id=220:scene_path=description/126.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=in front of another red block
-id=1000864:testcase=521:user_id=13:scene_id=195:scene_path=description/100.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=in a red block
+id=1000864:testcase=521:user_id=13:scene_id=195:scene_path=description/100.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=on a red block
 id=1000864:testcase=521:user_id=13:scene_id=195:scene_path=description/100.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=above a black block
 id=1000864:testcase=521:user_id=13:scene_id=195:scene_path=description/100.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=touching a blue block
 id=1000864:testcase=521:user_id=13:scene_id=195:scene_path=description/100.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=touching a red block
@@ -1037,7 +1037,7 @@ id=1000883:testcase=589:user_id=13:scene_id=201:scene_path=description/203.blend
 id=1000884:testcase=580:user_id=13:scene_id=198:scene_path=description/202.blend:relation=-:relatum=green book 2:referent1=-:referent2=null:task_type=1:response=on the bookshelf
 id=1000885:testcase=547:user_id=13:scene_id=202:scene_path=description/109.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=on a black block
 id=1000885:testcase=547:user_id=13:scene_id=202:scene_path=description/109.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=on a block
-id=1000886:testcase=643:user_id=13:scene_id=214:scene_path=description/128.blend:relation=-:relatum=black block 3:referent1=-:referent2=null:task_type=1:response=in between a green block and a black block
+id=1000886:testcase=643:user_id=13:scene_id=214:scene_path=description/128.blend:relation=-:relatum=black block 3:referent1=-:referent2=null:task_type=1:response=between a green block and a black block
 id=1000886:testcase=643:user_id=13:scene_id=214:scene_path=description/128.blend:relation=-:relatum=black block 3:referent1=-:referent2=null:task_type=1:response=to the left of a blue block
 id=1000886:testcase=643:user_id=13:scene_id=214:scene_path=description/128.blend:relation=-:relatum=black block 3:referent1=-:referent2=null:task_type=1:response=to the right of a black block
 id=1000887:testcase=665:user_id=13:scene_id=211:scene_path=description/208.blend:relation=-:relatum=pencil 1:referent1=-:referent2=null:task_type=1:response=in the pencil holder
@@ -1046,9 +1046,9 @@ id=1000888:testcase=642:user_id=13:scene_id=214:scene_path=description/128.blend
 id=1000889:testcase=530:user_id=13:scene_id=197:scene_path=description/103.blend:relation=-:relatum=red block 9:referent1=-:referent2=null:task_type=1:response=on a green block
 id=1000890:testcase=554:user_id=13:scene_id=193:scene_path=description/111.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=near a green block
 id=1000890:testcase=554:user_id=13:scene_id=193:scene_path=description/111.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=near a black block
-id=1000890:testcase=554:user_id=13:scene_id=193:scene_path=description/111.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=in between a black block and a green block
+id=1000890:testcase=554:user_id=13:scene_id=193:scene_path=description/111.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=between a black block and a green block
 id=1000890:testcase=554:user_id=13:scene_id=193:scene_path=description/111.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=to the left of the other blue block
-id=1000891:testcase=588:user_id=13:scene_id=201:scene_path=description/203.blend:relation=-:relatum=cardbox 2:referent1=-:referent2=null:task_type=1:response=in between the bed and the bookshelf
+id=1000891:testcase=588:user_id=13:scene_id=201:scene_path=description/203.blend:relation=-:relatum=cardbox 2:referent1=-:referent2=null:task_type=1:response=between the bed and the bookshelf
 id=1000891:testcase=588:user_id=13:scene_id=201:scene_path=description/203.blend:relation=-:relatum=cardbox 2:referent1=-:referent2=null:task_type=1:response=near the picture
 id=1000891:testcase=588:user_id=13:scene_id=201:scene_path=description/203.blend:relation=-:relatum=cardbox 2:referent1=-:referent2=null:task_type=1:response=near the bookshelf
 id=1000891:testcase=588:user_id=13:scene_id=201:scene_path=description/203.blend:relation=-:relatum=cardbox 2:referent1=-:referent2=null:task_type=1:response=to the left of the bookshelf
@@ -1068,31 +1068,31 @@ id=1000897:testcase=546:user_id=13:scene_id=202:scene_path=description/109.blend
 id=1000898:testcase=551:user_id=13:scene_id=200:scene_path=description/110.blend:relation=-:relatum=black block 2:referent1=-:referent2=null:task_type=1:response=above the blue blocks
 id=1000898:testcase=551:user_id=13:scene_id=200:scene_path=description/110.blend:relation=-:relatum=black block 2:referent1=-:referent2=null:task_type=1:response=above a blue block
 id=1000898:testcase=551:user_id=13:scene_id=200:scene_path=description/110.blend:relation=-:relatum=black block 2:referent1=-:referent2=null:task_type=1:response=above the other black block
-id=1000899:testcase=629:user_id=13:scene_id=213:scene_path=description/124.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=in between a red block and a blue block
-id=1000899:testcase=629:user_id=13:scene_id=213:scene_path=description/124.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=in between a black block and a red block
+id=1000899:testcase=629:user_id=13:scene_id=213:scene_path=description/124.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=between a red block and a blue block
+id=1000899:testcase=629:user_id=13:scene_id=213:scene_path=description/124.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=between a black block and a red block
 id=1000900:testcase=538:user_id=13:scene_id=204:scene_path=description/106.blend:relation=-:relatum=red block 9:referent1=-:referent2=null:task_type=1:response=behind a black block
 id=1000901:testcase=668:user_id=13:scene_id=223:scene_path=description/118.blend:relation=-:relatum=red block 9:referent1=-:referent2=null:task_type=1:response=to the right of a black block
-id=1000902:testcase=566:user_id=13:scene_id=210:scene_path=description/115.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=in between a black block and a blue block
+id=1000902:testcase=566:user_id=13:scene_id=210:scene_path=description/115.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=between a black block and a blue block
 id=1000902:testcase=566:user_id=13:scene_id=210:scene_path=description/115.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=to the left of a blue block
 id=1000902:testcase=566:user_id=13:scene_id=210:scene_path=description/115.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=to the left of the other red block
 id=1000903:testcase=557:user_id=13:scene_id=203:scene_path=description/112.blend:relation=-:relatum=red block 7:referent1=-:referent2=null:task_type=1:response=to the right of a blue block
 id=1000904:testcase=637:user_id=13:scene_id=220:scene_path=description/126.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the right of a green block
 id=1000904:testcase=637:user_id=13:scene_id=220:scene_path=description/126.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=in front of two red blocks
-id=1000904:testcase=637:user_id=13:scene_id=220:scene_path=description/126.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=in between a green block and a black block
+id=1000904:testcase=637:user_id=13:scene_id=220:scene_path=description/126.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=between a green block and a black block
 id=1000905:testcase=664:user_id=13:scene_id=211:scene_path=description/208.blend:relation=-:relatum=note 3:referent1=-:referent2=null:task_type=1:response=in the trash bin
 id=1000906:testcase=559:user_id=13:scene_id=199:scene_path=description/113.blend:relation=-:relatum=black block 2:referent1=-:referent2=null:task_type=1:response=under a blue block
 id=1000906:testcase=559:user_id=13:scene_id=199:scene_path=description/113.blend:relation=-:relatum=black block 2:referent1=-:referent2=null:task_type=1:response=on a red block
 id=1000907:testcase=560:user_id=13:scene_id=199:scene_path=description/113.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=on a black block
 id=1000908:testcase=652:user_id=13:scene_id=212:scene_path=description/207.blend:relation=-:relatum=blue chair 1:referent1=-:referent2=null:task_type=1:response=in front of the sofa
 id=1000909:testcase=549:user_id=13:scene_id=200:scene_path=description/110.blend:relation=-:relatum=green block 11:referent1=-:referent2=null:task_type=1:response=under a blue block
-id=1000909:testcase=549:user_id=13:scene_id=200:scene_path=description/110.blend:relation=-:relatum=green block 11:referent1=-:referent2=null:task_type=1:response=in between two red blocks
+id=1000909:testcase=549:user_id=13:scene_id=200:scene_path=description/110.blend:relation=-:relatum=green block 11:referent1=-:referent2=null:task_type=1:response=between two red blocks
 id=1000910:testcase=527:user_id=13:scene_id=187:scene_path=description/102.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=to the left of a red block
-id=1000911:testcase=533:user_id=13:scene_id=192:scene_path=description/104.blend:relation=-:relatum=green block 11:referent1=-:referent2=null:task_type=1:response=in between two red blocks
+id=1000911:testcase=533:user_id=13:scene_id=192:scene_path=description/104.blend:relation=-:relatum=green block 11:referent1=-:referent2=null:task_type=1:response=between two red blocks
 id=1000911:testcase=533:user_id=13:scene_id=192:scene_path=description/104.blend:relation=-:relatum=green block 11:referent1=-:referent2=null:task_type=1:response=under a red block
 id=1000911:testcase=533:user_id=13:scene_id=192:scene_path=description/104.blend:relation=-:relatum=green block 11:referent1=-:referent2=null:task_type=1:response=on a red block
 id=1000911:testcase=533:user_id=13:scene_id=192:scene_path=description/104.blend:relation=-:relatum=green block 11:referent1=-:referent2=null:task_type=1:response=above a black block
 id=1000912:testcase=672:user_id=13:scene_id=224:scene_path=description/119.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=behind a blue block
-id=1000912:testcase=672:user_id=13:scene_id=224:scene_path=description/119.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=in between a blue block and a green block
+id=1000912:testcase=672:user_id=13:scene_id=224:scene_path=description/119.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=between a blue block and a green block
 id=1000912:testcase=672:user_id=13:scene_id=224:scene_path=description/119.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=to the right of a green block
 id=1000913:testcase=569:user_id=13:scene_id=191:scene_path=description/116.blend:relation=-:relatum=green block 12:referent1=-:referent2=null:task_type=1:response=to the left of a red block
 id=1000913:testcase=569:user_id=13:scene_id=191:scene_path=description/116.blend:relation=-:relatum=green block 12:referent1=-:referent2=null:task_type=1:response=behind a red block
@@ -1107,7 +1107,7 @@ id=1000919:testcase=600:user_id=13:scene_id=190:scene_path=description/205.blend
 id=1000920:testcase=624:user_id=13:scene_id=219:scene_path=description/122.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=on a black block
 id=1000921:testcase=644:user_id=13:scene_id=214:scene_path=description/128.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=touching a blue block
 id=1000921:testcase=644:user_id=13:scene_id=214:scene_path=description/128.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=in front of a red block
-id=1000921:testcase=644:user_id=13:scene_id=214:scene_path=description/128.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=in between a blue block and a red block
+id=1000921:testcase=644:user_id=13:scene_id=214:scene_path=description/128.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=between a blue block and a red block
 id=1000922:testcase=526:user_id=13:scene_id=187:scene_path=description/102.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=under a block
 id=1000922:testcase=526:user_id=13:scene_id=187:scene_path=description/102.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=under a blue block
 id=1000923:testcase=631:user_id=13:scene_id=213:scene_path=description/124.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=in front of a green block
@@ -1117,9 +1117,9 @@ id=1000926:testcase=579:user_id=13:scene_id=198:scene_path=description/202.blend
 id=1000926:testcase=579:user_id=13:scene_id=198:scene_path=description/202.blend:relation=-:relatum=red book 1:referent1=-:referent2=null:task_type=1:response=near the laptop
 id=1000927:testcase=596:user_id=13:scene_id=206:scene_path=description/204.blend:relation=-:relatum=blue chair 2:referent1=-:referent2=null:task_type=1:response=at the table
 id=1000927:testcase=596:user_id=13:scene_id=206:scene_path=description/204.blend:relation=-:relatum=blue chair 2:referent1=-:referent2=null:task_type=1:response=at the east wall
-id=1000928:testcase=622:user_id=13:scene_id=221:scene_path=description/121.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=in between another red block and a black block
+id=1000928:testcase=622:user_id=13:scene_id=221:scene_path=description/121.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=between another red block and a black block
 id=1000929:testcase=617:user_id=13:scene_id=216:scene_path=description/120.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=to the left of a green block
-id=1000929:testcase=617:user_id=13:scene_id=216:scene_path=description/120.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=in between a black block and a red block
+id=1000929:testcase=617:user_id=13:scene_id=216:scene_path=description/120.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=between a black block and a red block
 id=1000930:testcase=540:user_id=11:scene_id=196:scene_path=description/107.blend:relation=-:relatum=red block 7:referent1=-:referent2=null:task_type=1:response=below a green block
 id=1000931:testcase=567:user_id=11:scene_id=210:scene_path=description/115.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the left of a green block
 id=1000931:testcase=567:user_id=11:scene_id=210:scene_path=description/115.blend:relation=-:relatum=blue block 6:referent1=-:referent2=null:task_type=1:response=to the right of a red block
@@ -1354,7 +1354,7 @@ id=1001071:testcase=571:user_id=9:scene_id=208:scene_path=description/117.blend:
 id=1001072:testcase=635:user_id=9:scene_id=220:scene_path=description/126.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=between a blue block and a blue block
 id=1001072:testcase=635:user_id=9:scene_id=220:scene_path=description/126.blend:relation=-:relatum=red block 8:referent1=-:referent2=null:task_type=1:response=in front of a red block
 id=1001073:testcase=628:user_id=9:scene_id=215:scene_path=description/123.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=to the right of a green block
-id=1001073:testcase=628:user_id=9:scene_id=215:scene_path=description/123.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=to the right of a block block
+id=1001073:testcase=628:user_id=9:scene_id=215:scene_path=description/123.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=to the right of a black block
 id=1001074:testcase=616:user_id=9:scene_id=216:scene_path=description/120.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=near a blue block
 id=1001074:testcase=616:user_id=9:scene_id=216:scene_path=description/120.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=to the right of a green block
 id=1001074:testcase=616:user_id=9:scene_id=216:scene_path=description/120.blend:relation=-:relatum=green block 10:referent1=-:referent2=null:task_type=1:response=in front of a black block
@@ -2370,7 +2370,6 @@ id=1001900:testcase=604:user_id=11:scene_id=190:scene_path=description/205.blend
 id=1001901:testcase=549:user_id=11:scene_id=200:scene_path=description/110.blend:relation=-:relatum=green block 11:referent1=-:referent2=null:task_type=1:response=below two blue blocks
 id=1001901:testcase=549:user_id=11:scene_id=200:scene_path=description/110.blend:relation=-:relatum=green block 11:referent1=-:referent2=null:task_type=1:response=below four other blocks
 id=1001902:testcase=593:user_id=11:scene_id=206:scene_path=description/204.blend:relation=-:relatum=green book 2:referent1=-:referent2=null:task_type=1:response=on a red book
-id=1001902:testcase=593:user_id=11:scene_id=206:scene_path=description/204.blend:relation=-:relatum=green book 2:referent1=-:referent2=null:task_type=1:response=in a bookshelf on a red book
 id=1001903:testcase=672:user_id=11:scene_id=224:scene_path=description/119.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=to the right of a green block
 id=1001903:testcase=672:user_id=11:scene_id=224:scene_path=description/119.blend:relation=-:relatum=black block 1:referent1=-:referent2=null:task_type=1:response=between a green block and a blue block
 id=1001904:testcase=565:user_id=11:scene_id=210:scene_path=description/115.blend:relation=-:relatum=green block 12:referent1=-:referent2=null:task_type=1:response=between two black blocks
@@ -2450,7 +2449,6 @@ id=1001947:testcase=636:user_id=14:scene_id=220:scene_path=description/126.blend
 id=1001947:testcase=636:user_id=14:scene_id=220:scene_path=description/126.blend:relation=-:relatum=black block 3:referent1=-:referent2=null:task_type=1:response=between a blue and a green block
 id=1001947:testcase=636:user_id=14:scene_id=220:scene_path=description/126.blend:relation=-:relatum=black block 3:referent1=-:referent2=null:task_type=1:response=to the right of a green block
 id=1001948:testcase=522:user_id=14:scene_id=195:scene_path=description/100.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=under a red block
-id=1001948:testcase=522:user_id=14:scene_id=195:scene_path=description/100.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=below a green block below another blue block
 id=1001948:testcase=522:user_id=14:scene_id=195:scene_path=description/100.blend:relation=-:relatum=blue block 5:referent1=-:referent2=null:task_type=1:response=between a green and a black block
 id=1001949:testcase=625:user_id=14:scene_id=219:scene_path=description/122.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=under another blue block
 id=1001949:testcase=625:user_id=14:scene_id=219:scene_path=description/122.blend:relation=-:relatum=blue block 4:referent1=-:referent2=null:task_type=1:response=on a green block

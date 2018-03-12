@@ -89,7 +89,7 @@ def get_centroid_distance_scaled(ent_a, ent_b):
 
     #add a small number to denominator in order to
     #avoid division by zero in the case when a_max_dim + b_max_dim == 0
-    return get_centroid_distance(ent_a, ent_b) / (a_max_dim + b_max_dim + 0.0001)
+    return get_centroid_distance(ent_a, ent_b) / (ent_a.radius + ent_b.radius + 0.0001)
 
 
 #Computes the distance between two entities in the special
@@ -145,7 +145,7 @@ def get_planar_distance_scaled(ent_a, ent_b):
 
     #If ent_a is planar, one dimension should be much smaller than the other two
     #Here we check which dimension is that
-    if a_dims[0] <= 0.2 * a_dims[1] and a_dims[0] <= 0.2 * a_dims[2]:
+    if a_dims[0] <= 0.5 * a_dims[1] and a_dims[0] <= 0.5 * a_dims[2]:
         dist = min(get_distance_from_plane(ent_b.centroid, a_bbox[0], a_bbox[1], a_bbox[2]),
                    get_distance_from_plane(ent_b.centroid, a_bbox[4], a_bbox[5], a_bbox[6]))
         if math.fabs(ent_a.centroid[1] - ent_b.centroid[1]) <= a_dims[1] / 2 and \
@@ -155,7 +155,7 @@ def get_planar_distance_scaled(ent_a, ent_b):
             #dist = closest_mesh_distance(ent_a, ent_b)
             dist = math.sqrt(0.6 * ((ent_a.centroid[1] - ent_b.centroid[1]) ** 2 + (ent_a.centroid[2] - ent_b.centroid[2]) ** 2) \
                              + 0.4 * dist ** 2)
-    elif a_dims[1] <= 0.2 * a_dims[0] and a_dims[1] <= 0.2 * a_dims[2]:
+    elif a_dims[1] <= 0.5 * a_dims[0] and a_dims[1] <= 0.5 * a_dims[2]:
         dist = min(get_distance_from_plane(ent_b.centroid, a_bbox[0], a_bbox[1], a_bbox[4]),
                    get_distance_from_plane(ent_b.centroid, a_bbox[2], a_bbox[3], a_bbox[5]))
         if math.fabs(ent_a.centroid[0] - ent_b.centroid[0]) <= a_dims[0] / 2 and \
@@ -165,7 +165,7 @@ def get_planar_distance_scaled(ent_a, ent_b):
             #dist = closest_mesh_distance(ent_a, ent_b)
             dist = math.sqrt(0.6 * ((ent_a.centroid[0] - ent_b.centroid[0]) ** 2 + (ent_a.centroid[2] - ent_b.centroid[2]) ** 2) \
                              + 0.4 * dist ** 2)
-    elif a_dims[2] <= 0.2 * a_dims[0] and a_dims[2] <= 0.2 * a_dims[1]:
+    elif a_dims[2] <= 0.5 * a_dims[0] and a_dims[2] <= 0.5 * a_dims[1]:
         dist = min(get_distance_from_plane(ent_b.centroid, a_bbox[0], a_bbox[2], a_bbox[4]),
                    get_distance_from_plane(ent_b.centroid, a_bbox[1], a_bbox[3], a_bbox[5]))
         if math.fabs(ent_a.centroid[1] - ent_b.centroid[1]) <= a_dims[1] / 2 and \
@@ -274,6 +274,10 @@ def within_cone(v1, v2, threshold):
     cos = cosine_similarity(v1, v2)
     if cos is None:
         return None
-    else:
-        #print ("ARG: {} FUNC: {}".format(0.5 * math.pi * (cos - threshold) / (1 - threshold), math.e ** math.tan(0.5 * math.pi * (cos - threshold) / (1 - threshold))))
-        return 1 / (1 + math.e ** -math.tan(0.5 * math.pi * (cos - threshold) / (1 - threshold)))
+    else:        
+        #print ("DENOM: {}, TAN: {}".format((1 + numpy.sign(threshold - cos) * threshold), 0.5 * math.pi * (cos - threshold) / (1 + numpy.sign(threshold - cos) * threshold)))
+        tangent = -math.tan(0.5 * math.pi * (cos - threshold) / (1 + numpy.sign(threshold - cos) * threshold))
+        if tangent <= 100:
+            return 1 / (1 + math.e ** tangent)
+        else:
+            return 0
