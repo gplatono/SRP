@@ -11,6 +11,7 @@ import random
 import bmesh
 from functools import reduce
 from mathutils import Vector
+import importlib
 
 #The path to the this source file
 filepath = os.path.dirname(os.path.abspath(__file__))
@@ -18,7 +19,8 @@ sys.path.insert(0, filepath)
 
 from entity import Entity
 from geometry_utils import *
-from parser import *
+from annot_parser import *
+
 
 link = False
 #The current scene
@@ -876,6 +878,7 @@ def main():
             avg_dist += dist_obj(pair[0], pair[1])
         avg_dist = avg_dist * 2 / (len(entities) * (len(entities) - 1))
 
+    #print (filepath, sys.path)
     global observer
     observer = get_observer()
     if "--" in sys.argv:

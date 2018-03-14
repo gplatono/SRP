@@ -160,6 +160,7 @@ def set_objects(scene_objects):
     global arguments
     arguments = scene_objects
 
+
 def init_parser(objects):
     global scene_objects
     scene_objects = [name.lower() for name in objects]
