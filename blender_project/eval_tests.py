@@ -122,7 +122,7 @@ for subm in annotations:
         ur_yn[user] = {}
     if user not in ur_relations:
         ur_relations[user] = {}    
-    if task_type == "1" and ID == "000":
+    if task_type == "1":
         print ("ID:", ID, resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data
@@ -168,7 +168,7 @@ for subm in annotations:
         
     elif task_type == "0":# and ("above" == relation or "below" == relation):
         result = []
-        if tj_count < 200:
+        if tj_count < 2000:
             result = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
             result = result.decode("utf-8").split("\n")
         print (result)

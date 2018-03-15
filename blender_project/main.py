@@ -255,7 +255,7 @@ def near(a, b):
         near_measure_final = raw_near_measure * ratio
     near_measure = raw_near_measure + (raw_near_measure - avg_near) * min(raw_near_measure, 1 - raw_near_measure)
     print ("RAW: {}; NEAR: {}; FINAL: {}; AVER: {};".format(raw_near_measure, near_measure, near_measure_final, (average_near_a + average_near_b) / 2))
-    return near_measure_final
+    return near_measure
 
 #Computes the between relation (a is between b and c)
 #Inputs: a, b, c - entities
@@ -817,7 +817,7 @@ def above(a, b):
     #center_a = a.get_bbox_centroid()
     #center_b = b.get_bbox_centroid()
     #scaled_vertical_distance = (center_a[2] - center_b[2]) / ((span_a[5] - span_a[4]) + (span_b[5] - span_b[4]))
-    return within_cone(a.centroid - b.centroid, Vector((0, 0, 1)), 0.2) * e ** (- 0.01 * get_centroid_distance_scaled(a, b))
+    return within_cone(a.centroid - b.centroid, Vector((0, 0, 1)), 0.05) * e ** (- 0.01 * get_centroid_distance_scaled(a, b))
 
 #Computes the below relation, which is taken to be symmetric to above
 #Inputs: a, b - entities
