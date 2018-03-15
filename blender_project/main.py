@@ -218,7 +218,7 @@ def near_raw(a, b):
         dist = min(dist, closest_mesh_distance_scaled(a, b))
 
     fr_size = get_frame_size()
-    raw_metric = e ** (-0.05 * dist)
+    raw_metric = e ** (- 0.05 * dist)
     '''0.5 * (1 - min(1, dist / avg_dist + 0.01) +'''    
     return raw_metric * (1 - raw_metric / fr_size)
 
@@ -243,10 +243,19 @@ def near(a, b):
     #print ("RAW:", a.name, b.name, raw_near_measure)
     average_near_a = sum(raw_near_a) / len(raw_near_a)
     average_near_b = sum(raw_near_b) / len(raw_near_b)
+    avg_near = 0.5 * (average_near_a + average_near_b)
+    max_near_a = max(raw_near_a)
+    max_near_b = max(raw_near_b)
+    max_near = max(raw_near_measure, max_near_a, max_near_b)
     #print ("AVER: ", average_near_a, average_near_b)
-    near_measure = raw_near_measure + (raw_near_measure - (average_near_a + average_near_b) / 2) * (1 - raw_near_measure)
-    #print (near_measure)
-    return near_measure
+    ratio = raw_near_measure / max_near
+    if (raw_near_measure < avg_near):
+        near_measure_final = 0.5 * raw_near_measure
+    else:        
+        near_measure_final = raw_near_measure * ratio
+    near_measure = raw_near_measure + (raw_near_measure - avg_near) * min(raw_near_measure, 1 - raw_near_measure)
+    print ("RAW: {}; NEAR: {}; FINAL: {}; AVER: {};".format(raw_near_measure, near_measure, near_measure_final, (average_near_a + average_near_b) / 2))
+    return near_measure_final
 
 #Computes the between relation (a is between b and c)
 #Inputs: a, b, c - entities
@@ -366,10 +375,11 @@ def in_front_of_deic(a, b):
                     bbox_a[7][2] - bbox_a[0][2]) + 0.0001
     dist = get_distance_from_line(observer.centroid, b.centroid, a.centroid)
     #print ("{}, {}, CLOSER: {}, WC_DEIC: {}, WC_EXTR: {}, DIST: {}".format(a.name, b.name, closer_than(a, b, observer), within_cone(b.centroid - observer.centroid, a.centroid - observer.centroid, 0.95), within_cone(b.centroid - a.centroid, Vector((0, -1, 0)) - a.centroid, 0.8), e ** (- 0.1 * get_centroid_distance_scaled(a, b))))
-    return 0.5 * (closer_than(a, b, observer) + \
-                  max(within_cone(b.centroid - observer.centroid, a.centroid - observer.centroid, 0.95),
-                      within_cone(b.centroid - a.centroid, Vector((1, 0, 0)), 0.7))) * \
-                      e ** (- 0.05 * get_centroid_distance_scaled(a, b))#e ** (-dist / max_dim_a))
+    return e ** (- 0.01 * get_centroid_distance_scaled(a, b)) * within_cone(b.centroid - a.centroid, Vector((1, 0, 0)), 0.7)
+    '''0.3 * closer_than(a, b, observer) + \
+                  0.7 * (max(within_cone(b.centroid - observer.centroid, a.centroid - observer.centroid, 0.95),
+                  within_cone(b.centroid - a.centroid, Vector((1, 0, 0)), 0.7)) * \
+                  e ** (- 0.2 * get_centroid_distance_scaled(a, b)))#e ** (-dist / max_dim_a))'''
 
 #Enable SVA
 #Computes the deictic version of the "behind" relation
@@ -807,7 +817,7 @@ def above(a, b):
     #center_a = a.get_bbox_centroid()
     #center_b = b.get_bbox_centroid()
     #scaled_vertical_distance = (center_a[2] - center_b[2]) / ((span_a[5] - span_a[4]) + (span_b[5] - span_b[4]))
-    return within_cone(a.centroid - b.centroid, Vector((0, 0, 1)), 0.45) * e ** (- 0.05 * get_centroid_distance_scaled(a, b))
+    return within_cone(a.centroid - b.centroid, Vector((0, 0, 1)), 0.2) * e ** (- 0.01 * get_centroid_distance_scaled(a, b))
 
 #Computes the below relation, which is taken to be symmetric to above
 #Inputs: a, b - entities

@@ -166,9 +166,9 @@ for subm in annotations:
             suggested_rels[testcase] = res.split("#")
             print (res.split("#"))'''
         
-    elif task_type == "0":# and int(ID) > 1001135 and tj_count < 200:        
+    elif task_type == "0":# and ("above" == relation or "below" == relation):
         result = []
-        if tj_count < 100:
+        if tj_count < 200:
             result = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
             result = result.decode("utf-8").split("\n")
         print (result)
@@ -196,59 +196,49 @@ for subm in annotations:
 if descr_count != 0:
     print ("DESCRIPTION TASK ACCURACY: {}".format(descr_success / descr_count))
     print ("PER-RELATION ACCURACY: {}".format([(key, rel_accuracy[key], float(rel_accuracy[key][1]) / rel_accuracy[key][0]) for key in rel_accuracy]))
+    
+    correct_suggestions = 0
+    for key in suggested_rels:
+        for user in ur_relations[key]:
+            if ur_relations[key][user] in suggested_rels[key]:
+                correct_suggestions += 1
+                break
 
-correct_suggestions = 0
-for key in suggested_rels:
-    for user in ur_relations[key]:
-        if ur_relations[key][user] in suggested_rels[key]:
-            correct_suggestions += 1
-            break
-
-#print ("SUGGESTION ACCURACY: {}".format(correct_suggestions / descr_count))
+    print ("SUGGESTION ACCURACY: {}".format(correct_suggestions / descr_count))
 
 #Compute and print the interannotator agreement
-avg_hh = 0.0
-avg_hs = 0.0
-total_hh = 0
-total_hs = 0
-for keys in itertools.combinations(ur_yn.keys(), r = 2):
-    #for testcase in tjs_by_testcase:    
-    #test1 = sorted([id for id in ur_yn[keys[0]]])
-    #test2 = sorted([id for id in ur_yn[keys[1]]])
-    #shared_testcases = sorted([testcase for testcase in tjs_by_testcase \
-    #if (keys[0] in tjs_by_testcase[testcase] and keys[1] in tjs_by_testcase[testcase])])
-    intersect = [testcase for testcase in ur_yn[keys[0]] if testcase in ur_yn[keys[1]]]
-    if intersect != []:
-        print (keys)
-        resp1 = [ur_yn[keys[0]][testcase] for testcase in intersect]
-        resp2 = [ur_yn[keys[1]][testcase] for testcase in intersect]
-        result = weighted_cohen_kappa(resp1, resp2, True)
-        print ("SKLEARN KAPPA: {}".format(cohen_kappa_score(resp1, resp2)))
-        taskdata = [[0, str(i), str(resp1[i])] for i in range(len(resp1))] + [[1, str(i), str(resp2[i])] for i in range(len(resp2))]
-        task = agreement.AnnotationTask(data = taskdata)
-        print ("NLTK KAPPA: {}".format(str(task.kappa())))
-        if "system" in keys:
-            avg_hs += result
-            total_hs += 1
-        else:
-            avg_hh += result
-            total_hh += 1
+if tj_count != 0:
+    avg_hh = 0.0
+    avg_hs = 0.0
+    total_hh = 0
+    total_hs = 0
+    avg_hh_kappa = 0.0
+    avg_hs_kappa = 0.0
+    for keys in itertools.combinations(ur_yn.keys(), r = 2):
+        #for testcase in tjs_by_testcase:    
+        #test1 = sorted([id for id in ur_yn[keys[0]]])
+        #test2 = sorted([id for id in ur_yn[keys[1]]])
+        #shared_testcases = sorted([testcase for testcase in tjs_by_testcase \
+        #if (keys[0] in tjs_by_testcase[testcase] and keys[1] in tjs_by_testcase[testcase])])
+        intersect = [testcase for testcase in ur_yn[keys[0]] if testcase in ur_yn[keys[1]]]
+        if intersect != []:
+            print (keys)
+            resp1 = [ur_yn[keys[0]][testcase] for testcase in intersect]
+            resp2 = [ur_yn[keys[1]][testcase] for testcase in intersect]
+            result = weighted_cohen_kappa(resp1, resp2, True)
+            print ("SKLEARN KAPPA: {}".format(cohen_kappa_score(resp1, resp2)))
+            taskdata = [[0, str(i), str(resp1[i])] for i in range(len(resp1))] + [[1, str(i), str(resp2[i])] for i in range(len(resp2))]
+            task = agreement.AnnotationTask(data = taskdata)
+            print ("NLTK KAPPA: {}".format(str(task.kappa())))
+            if "system" in keys:
+                avg_hs += result
+                avg_hs_kappa += cohen_kappa_score(resp1, resp2)
+                total_hs += 1
+            else:
+                avg_hh += result
+                avg_hh_kappa += cohen_kappa_score(resp1, resp2)
+                total_hh += 1
 
-print ("AVG KAPPA. HUMAN-HUMAN: {}; HUMAN-SYSTEM: {}".format(avg_hh / total_hh, avg_hs / total_hs))
-print (by_relation)
-#print ("KAPPA1: {}".format(cohen_kappa(resp1, resp2)))
-'''keys = [key for key in iter(ur_yn)]
-for us1 in range(len(keys)):
-    for us2 in range(us1, len(keys)):
-        if us1 != us2:
-            print (keys[us1], keys[us2])
-            result = weighted_cohen_kappa(ur_yn[keys[us1]], ur_yn[keys[us2]], False)
-            print ("KAPPA1: {}".format(cohen_kappa(ur_yn[keys[us1]], ur_yn[keys[us2]])))
-            if result is not None:
-                avg += result
-                tot += 1
-print ("AVG KAPPA:", 1.0 * avg / tot)'''
-
-'''for user in ur_yn:
-    print ("USER:", user)
-    weighted_cohen_kappa(ur_yn[user], system_yn, True)'''
+    print ("AVG WEIGHTED KAPPA. HUMAN-HUMAN: {}; HUMAN-SYSTEM: {}".format(avg_hh / total_hh, avg_hs / total_hs))
+    print ("AVG KAPPA. HUMAN-HUMAN: {}; HUMAN-SYSTEM: {}".format(avg_hh_kappa / total_hh, avg_hs_kappa / total_hs))
+    print (by_relation)
