@@ -5,9 +5,9 @@ import sys
 import numpy as np
 import math
 import itertools
-import nltk
-from sklearn.metrics import cohen_kappa_score
-from nltk import agreement
+#import nltk
+#from sklearn.metrics import cohen_kappa_score
+#from nltk import agreement
 
 filepath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, filepath)
@@ -52,7 +52,7 @@ def weighted_cohen_kappa(resp1, resp2, use_weighted=False):
                 denom += weights[i][j] * np.sum(resp_distr[i,:]) * np.sum(resp_distr[:,j])
         weighted_kappa = 1 - total_resp * 1.0 * num / denom
         #print (resp_distr, total_resp, total_coincidence, observed_agreement, "Kappa:", kappa, "weighted kappa:", weighted_kappa)
-        print ("KAPPA METRIC: {}; WEIGHTED_KAPPA: {}".format(kappa, weighted_kappa))
+        #print ("KAPPA METRIC: {}; WEIGHTED_KAPPA: {}".format(kappa, weighted_kappa))
         return weighted_kappa
     return 0
 
@@ -122,7 +122,7 @@ for subm in annotations:
         ur_yn[user] = {}
     if user not in ur_relations:
         ur_relations[user] = {}    
-    if task_type == "1":
+    if task_type == "1" and int(ID) > 1002396:
         print ("ID:", ID, resp, user, testcase, task_type)
 
         #Call Blender with the extracted annotation data
@@ -166,7 +166,7 @@ for subm in annotations:
             suggested_rels[testcase] = res.split("#")
             print (res.split("#"))'''
         
-    elif task_type == "0":# and ("above" == relation or "below" == relation):
+    elif task_type == "0" and int(ID) > 1002396:# and ("above" == relation or "below" == relation):
         result = []
         if tj_count < 2000:
             result = subprocess.check_output(["blender", scene_path, "--background", "--python", "main.py", "--", relation, relatum, referent1, referent2, task_type, resp])
@@ -195,7 +195,7 @@ for subm in annotations:
 
 if descr_count != 0:
     print ("DESCRIPTION TASK ACCURACY: {}".format(descr_success / descr_count))
-    print ("PER-RELATION ACCURACY: {}".format([(key, rel_accuracy[key], float(rel_accuracy[key][1]) / rel_accuracy[key][0]) for key in rel_accuracy]))
+    print ("PER-RELATION ACCURACY: {}".format([(key, rel_accuracy[key], float(rel_accuracy[key][1]) / rel_accuracy[key][0]) for key in rel_accuracy if rel_accuracy[key][0] != 0]))
     
     correct_suggestions = 0
     for key in suggested_rels:
@@ -208,8 +208,8 @@ if descr_count != 0:
 
 #Compute and print the interannotator agreement
 if tj_count != 0:
-    avg_hh = 0.0
-    avg_hs = 0.0
+    avg_hh_weighted = 0.0
+    avg_hs_weighted = 0.0
     total_hh = 0
     total_hs = 0
     avg_hh_kappa = 0.0
@@ -225,20 +225,21 @@ if tj_count != 0:
             print (keys)
             resp1 = [ur_yn[keys[0]][testcase] for testcase in intersect]
             resp2 = [ur_yn[keys[1]][testcase] for testcase in intersect]
-            result = weighted_cohen_kappa(resp1, resp2, True)
-            print ("SKLEARN KAPPA: {}".format(cohen_kappa_score(resp1, resp2)))
-            taskdata = [[0, str(i), str(resp1[i])] for i in range(len(resp1))] + [[1, str(i), str(resp2[i])] for i in range(len(resp2))]
-            task = agreement.AnnotationTask(data = taskdata)
-            print ("NLTK KAPPA: {}".format(str(task.kappa())))
+            weighted_kappa = weighted_cohen_kappa(resp1, resp2, True)
+            kappa = weighted_cohen_kappa(resp1, resp2, False)
+            #print ("SKLEARN KAPPA: {}".format(cohen_kappa_score(resp1, resp2)))
+            #taskdata = [[0, str(i), str(resp1[i])] for i in range(len(resp1))] + [[1, str(i), str(resp2[i])] for i in range(len(resp2))]
+            #task = agreement.AnnotationTask(data = taskdata)
+            #print ("NLTK KAPPA: {}".format(str(task.kappa())))
             if "system" in keys:
-                avg_hs += result
-                avg_hs_kappa += cohen_kappa_score(resp1, resp2)
+                avg_hs_weighted += weighted_kappa
+                avg_hs_kappa += kappa
                 total_hs += 1
             else:
-                avg_hh += result
-                avg_hh_kappa += cohen_kappa_score(resp1, resp2)
+                avg_hh_weighted += weighted_kappa
+                avg_hh_kappa += kappa
                 total_hh += 1
 
-    print ("AVG WEIGHTED KAPPA. HUMAN-HUMAN: {}; HUMAN-SYSTEM: {}".format(avg_hh / total_hh, avg_hs / total_hs))
+    print ("AVG WEIGHTED KAPPA. HUMAN-HUMAN: {}; HUMAN-SYSTEM: {}".format(avg_hh_weighted / total_hh, avg_hs_weighted / total_hs))
     print ("AVG KAPPA. HUMAN-HUMAN: {}; HUMAN-SYSTEM: {}".format(avg_hh_kappa / total_hh, avg_hs_kappa / total_hs))
     print (by_relation)

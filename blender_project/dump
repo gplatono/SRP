@@ -301,6 +301,82 @@ near a black block###
 1002249:188:14:179:12_args.jpg:to the left of:Block 1:Block 2:null:0:NO###
 1002250:278:14:161:14_context.jpg:in front of:Block 1:Block 2:null:0:YES###
 1002251:326:14:167:11_context.jpg:behind:Block 1:Block 2:null:0:UNCERTAIN###
+1002820:795:14:239:50_context.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002821:787:14:271:58_context.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002822:701:14:265:57_args.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002823:699:14:263:56_context.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002824:885:14:277:60_args.jpg:under:Block 2:Block 1:null:0:RATHER NO###
+1002825:783:14:267:57_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002826:881:14:277:60_args.jpg:over:Block 1:Block 2:null:0:RATHER YES###
+1002827:753:14:237:50_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002828:852:14:256:54_context_small.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002829:764:14:248:52_context_small.jpg:in front of:Block 1:Block 2:null:0:YES###
+1002830:803:14:247:52_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002831:732:14:256:54_context_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002832:858:14:262:56_args_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002833:733:14:257:55_args.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002834:725:14:249:53_args.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002835:861:14:265:57_args.jpg:near:Block 1:Block 2:null:0:YES###
+1002836:741:14:265:57_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002837:703:14:267:57_context.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002838:830:14:274:59_args_small.jpg:behind:Block 1:Block 2:null:0:RATHER NO###
+1002839:686:14:250:53_args_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002840:714:14:238:50_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002841:797:14:241:51_args.jpg:behind:Block 1:Block 2:null:0:NO###
+1002842:831:14:275:59_context.jpg:behind:Block 1:Block 2:null:0:RATHER NO###
+1002843:883:14:279:60_context.jpg:over:Block 1:Block 2:null:0:RATHER YES###
+1002844:872:14:276:59_context_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002845:882:14:278:60_args_small.jpg:over:Block 1:Block 2:null:0:RATHER YES###
+1002846:796:14:240:50_context_small.jpg:behind:Block 1:Block 2:null:0:RATHER NO###
+1002847:735:14:259:55_context.jpg:to the right of:Block 1:Block 2:null:0:RATHER YES###
+1002848:718:14:242:51_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002849:751:14:275:59_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002850:870:14:274:59_args_small.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002851:747:14:271:58_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002852:866:14:270:58_args_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002853:834:14:238:50_args_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002854:874:14:278:60_args_small.jpg:above:Block 1:Block 2:null:0:YES###
+1002855:692:14:256:54_context_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002856:771:14:255:54_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002857:891:14:279:60_context.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002858:716:14:240:50_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002859:767:14:251:53_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002860:712:14:276:59_context_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002861:799:14:243:51_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002862:683:14:247:52_context.jpg:to the left of:Block 1:Block 2:null:0:RATHER NO###
+1002863:867:14:271:58_context.jpg:near:Block 1:Block 2:null:0:YES###
+1002864:720:14:244:51_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002865:782:14:266:57_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002866:697:14:261:56_args.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002867:719:14:243:51_context.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002868:727:14:251:53_context.jpg:to the right of:Block 1:Block 2:null:0:RATHER YES###
+1002869:821:14:265:57_args.jpg:behind:Block 1:Block 2:null:0:YES###
+1002870:786:14:270:58_args_small.jpg:in front of:Block 1:Block 2:null:0:YES###
+1002871:860:14:264:56_context_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002872:679:14:243:51_context.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002873:884:14:280:60_context_small.jpg:over:Block 1:Block 2:null:0:YES###
+1002874:675:14:239:50_context.jpg:to the left of:Block 1:Block 2:null:0:RATHER NO###
+1002875:865:14:269:58_args.jpg:near:Block 1:Block 2:null:0:YES###
+1002876:740:14:264:56_context_small.jpg:to the right of:Block 1:Block 2:null:0:RATHER NO###
+1002877:835:14:239:50_context.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002878:819:14:263:56_context.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002879:917:18:231:136.jpg:-:Red Block 9:-:null:1:on a red block
+on a green block###
+1002880:942:18:236:210.jpg:-:Blue Chair 1:-:null:1:near the east wall
+near a bed###
+1002881:909:18:229:134.jpg:-:Green Block 10:-:null:1:touching a black block
+touching a blue block###
+1002882:928:18:233:138.jpg:-:Green Block 10:-:null:1:under a blue block###
+1002883:944:18:236:210.jpg:-:Box 2:-:null:1:touching the desk
+near the west wall###
+1002884:934:18:235:209.jpg:-:Red Book 3:-:null:1:on a green book
+touching a yellow book###
+1002885:925:18:233:138.jpg:-:Black Block 3:-:null:1:on a black block
+###
+1002886:952:18:236:210.jpg:-:Laptop 2:-:null:1:on a bed
+near the east wall###
+1002887:902:18:227:132.jpg:-:Green Block 10:-:null:1:touching a black block###
+1002888:950:18:236:210.jpg:-:Green Book 2:-:null:1:on the bookshelf###
 1002252:347:14:120:1_context_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
 1002253:377:14:127:9_args_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
 1002254:366:14:102:6_context.jpg:near:Block 1:Block 2:null:0:YES###
@@ -446,6 +522,486 @@ near a black block###
 1002394:349:14:115:2_args_small.jpg:near:Block 1:Block 2:null:0:RATHER YES###
 1002395:245:14:100:6_args_small.jpg:in front of:Block 1:Block 2:null:0:YES###
 1002396:411:14:175:22_context_small.jpg:above:Block 1:Block 2:null:0:RATHER NO###
+1002889:921:18:232:137.jpg:-:Blue Block 6:-:null:1:touching a red block
+under a red block###
+1002890:674:14:238:50_args_small.jpg:to the left of:Block 1:Block 2:null:0:RATHER YES###
+1002891:694:14:258:55_args_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002892:802:14:246:52_args_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002893:827:14:271:58_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002894:811:14:255:54_context.jpg:behind:Block 1:Block 2:null:0:RATHER NO###
+1002895:779:14:263:56_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002896:784:14:268:57_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002897:678:14:242:51_args_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002898:813:14:257:55_args.jpg:behind:Block 1:Block 2:null:0:NO###
+1002899:805:14:249:53_args.jpg:behind:Block 1:Block 2:null:0:NO###
+1002900:687:14:251:53_context.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002901:838:14:242:51_args_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002902:745:14:269:58_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002903:879:14:279:60_context.jpg:below:Block 2:Block 1:null:0:YES###
+1002904:850:14:254:54_args_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002905:845:14:249:53_args.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002906:700:14:264:56_context_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002907:801:14:245:52_args.jpg:behind:Block 1:Block 2:null:0:NO###
+1002908:880:14:280:60_context_small.jpg:below:Block 2:Block 1:null:0:YES###
+1002909:755:14:239:50_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002910:868:14:272:58_context_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002911:791:14:275:59_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002912:713:14:237:50_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002913:851:14:255:54_context.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002914:695:14:259:55_context.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002915:853:14:257:55_args.jpg:near:Block 1:Block 2:null:0:YES###
+1002916:843:14:247:52_context.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002917:863:14:267:57_context.jpg:near:Block 1:Block 2:null:0:YES###
+1002918:728:14:252:53_context_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002397:911:17:229:134.jpg:-:Black Block 1:-:null:1:behind 11###
+1002398:940:17:235:209.jpg:-:Pencil 1:-:null:1:in front of pencil holder###
+1002399:906:17:228:133.jpg:-:Red Block 9:-:null:1:between 12 and 11###
+1002400:909:8:229:134.jpg:-:Green Block 10:-:null:1:touching a black block
+between a black block and a blue block
+between a black block and a red block###
+1002401:923:8:232:137.jpg:-:Green Block 11:-:null:1:on a black block
+above another green block###
+1002402:906:8:228:133.jpg:-:Red Block 9:-:null:1:between two green blocks
+between a green block and another green block
+to the right of a blue block###
+1002403:942:8:236:210.jpg:-:Blue Chair 1:-:null:1:in front of the bed
+near the East wall
+touching the East wall###
+1002404:941:8:235:209.jpg:-:Desk 1:-:null:1:to the left of another desk
+###
+1002405:920:8:231:136.jpg:-:Blue Block 4:-:null:1:behind a black block
+touching a green block
+under a green block###
+1002406:926:8:233:138.jpg:-:Blue Block 4:-:null:1:on a black block and a green block
+on a black block
+on a green block###
+1002407:929:8:234:139.jpg:-:Black Block 3:-:null:1:near a green block
+to the right of a red block###
+1002408:940:8:235:209.jpg:-:Pencil 1:-:null:1:to the left of the bowl
+near the bowl
+between a note and the bowl###
+1002409:931:8:234:139.jpg:-:Green Block 12:-:null:1:to the left of a black block
+to the left of a blue block###
+1002410:938:8:235:209.jpg:-:Banana 2:-:null:1:on a desk
+near a TV
+near the East Wall
+near the trash can###
+1002411:951:8:236:210.jpg:-:Laptop 1:-:null:1:on a desk
+near the West Wall
+near a book
+near a poster###
+1002412:937:8:235:209.jpg:-:Banana 1:-:null:1:in the bowl
+near the pencil holder###
+1002413:934:8:235:209.jpg:-:Red Book 3:-:null:1:on the green book
+above another red book###
+1002414:907:8:228:133.jpg:-:Green Block 11:-:null:1:between a blue block and another blue block
+to the right of another green block
+behind a blue block###
+1002415:946:8:236:210.jpg:-:Red Book 3:-:null:1:in a box
+above another book###
+1002416:932:8:234:139.jpg:-:Blue Block 4:-:null:1:touching a green block
+between a red block and a green block
+to the right of a red block###
+1002417:917:8:231:136.jpg:-:Red Block 9:-:null:1:on another red block
+on a red block and a green block###
+1002418:895:8:225:130.jpg:-:Green Block 11:-:null:1:in front of another green block
+near a black block###
+1002419:915:8:230:135.jpg:-:Red Block 9:-:null:1:between a blue block and another blue block
+in front of another red block###
+1002420:922:8:232:137.jpg:-:Red Block 9:-:null:1:on another red block
+between a green block and another red block
+###
+1002421:939:8:235:209.jpg:-:Red Chair 1:-:null:1:near the West wall
+to the left of a blue chair
+near a bookshelf###
+1002422:935:8:235:209.jpg:-:Yellow Book 2:-:null:1:on a desk
+touching a red book
+to the left of the pencil holder###
+1002423:943:8:236:210.jpg:-:Blue Chair 2:-:null:1:near the desk
+near the West wall###
+1002424:927:8:233:138.jpg:-:Red Block 7:-:null:1:on a black block and a blue block
+under another red block
+between another red block and a black block###
+1002425:898:8:226:131.jpg:-:Black Block 1:-:null:1:near a red block
+below a red block
+behind a red block###
+1002426:916:8:230:135.jpg:-:Blue Block 4:-:null:1:to the right of a green block###
+1002427:947:8:236:210.jpg:-:Poster 1:-:null:1:on the North wall
+to the left of the bookshelf###
+1002428:936:8:235:209.jpg:-:Green Book 1:-:null:1:on a red book
+between a red book and another red book
+on a desk###
+1002429:894:8:225:130.jpg:-:Black Block 3:-:null:1:to the right of a red block
+behind a blue block###
+1002430:896:8:225:130.jpg:-:Green Block 12:-:null:1:to the right of a red block
+behind another green block
+near a red block###
+1002431:921:8:232:137.jpg:-:Blue Block 6:-:null:1:under a red block
+to the left of another blue block###
+1002432:944:8:236:210.jpg:-:Box 2:-:null:1:on the floor
+near the desk
+touching the desk
+near the West wall
+in front of the desk###
+1002433:914:8:230:135.jpg:-:Green Block 12:-:null:1:in front of a red block
+in front of a blue block
+behind a black block
+behind another green block###
+1002434:925:8:233:138.jpg:-:Black Block 3:-:null:1:on another black block
+on another black block and a blue block
+to the left of a blue block
+to the right of a green block###
+1002435:950:8:236:210.jpg:-:Green Book 2:-:null:1:on the bookshelf
+touching a red book
+between a red book and another red book
+###
+1002436:919:8:231:136.jpg:-:Green Block 12:-:null:1:on a black block
+on a blue block
+on another green block
+on a black block and a blue block###
+1002437:912:8:229:134.jpg:-:Red Block 7:-:null:1:in front of another red block
+###
+1002438:930:8:234:139.jpg:-:Red Block 9:-:null:1:on another red block
+between a black block and another black block
+above another red block###
+1002439:918:8:231:136.jpg:-:Black Block 3:-:null:1:behind a blue block
+between a green block and a blue block###
+1002440:933:8:235:209.jpg:-:Red Book 1:-:null:1:under the green book
+below another red book###
+1002441:945:8:236:210.jpg:-:Red Book 1:-:null:1:to the left of the green book###
+1002442:901:8:227:132.jpg:-:Red Block 7:-:null:1:on the table
+to the right of a black block
+to the left of a green block###
+1002443:910:8:229:134.jpg:-:Blue Block 4:-:null:1:behind a red block###
+1002444:905:8:228:133.jpg:-:Blue Block 5:-:null:1:in front of a green block
+in front of another blue block###
+1002445:897:8:226:131.jpg:-:Black Block 3:-:null:1:on another black block
+###
+1002446:952:8:236:210.jpg:-:Laptop 2:-:null:1:on the bed
+near the East wall###
+1002447:899:8:226:131.jpg:-:Green Block 12:-:null:1:under a red block
+near a black block
+between a blue block and a black block###
+1002448:908:8:228:133.jpg:-:Black Block 3:-:null:1:behind a blue block
+to the left of a green block###
+1002449:949:8:236:210.jpg:-:Green Book 1:-:null:1:on the bookshelf
+touching a red book
+between a red book and another red book###
+1002450:904:8:227:132.jpg:-:Black Block 1:-:null:1:under a red block
+between a green block and a blue block###
+1002451:911:8:229:134.jpg:-:Black Block 1:-:null:1:between another black block and a green block
+to the right of a blue block###
+1002452:928:8:233:138.jpg:-:Green Block 10:-:null:1:on the table
+under a blue block
+below a black block###
+1002453:924:8:232:137.jpg:-:Black Block 2:-:null:1:under a blue block
+between a blue block and a green block###
+1002454:893:8:225:130.jpg:-:Black Block 2:-:null:1:to the left of a green block###
+1002455:948:8:236:210.jpg:-:Poster 2:-:null:1:on the West wall
+above the desk
+to the left of another poster###
+1002456:902:8:227:132.jpg:-:Green Block 10:-:null:1:on the table
+touching a black block###
+1002457:903:8:227:132.jpg:-:Red Block 8:-:null:1:on a black block
+touching a blue block
+under a blue block
+under a green block###
+1002458:900:8:226:131.jpg:-:Red Block 7:-:null:1:touching a blue block
+in front of a black block###
+1002459:913:8:230:135.jpg:-:Black Block 2:-:null:1:to the right of a green block
+to the left of a green block###
+1002460:679:8:243:51_context.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002461:802:8:246:52_args_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002462:870:8:274:59_args_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002463:731:8:255:54_context.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002464:779:8:263:56_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002465:855:8:259:55_context.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002466:740:8:264:56_context_small.jpg:to the right of:Block 1:Block 2:null:0:RATHER NO###
+1002467:769:8:253:54_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002468:706:8:270:58_args_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002469:882:8:278:60_args_small.jpg:over:Block 1:Block 2:null:0:YES###
+1002470:789:8:273:59_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002471:680:8:244:51_context_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002472:840:8:244:51_context_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002473:778:8:262:56_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002474:872:8:276:59_context_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002475:868:8:272:58_context_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002476:744:8:268:57_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002477:787:8:271:58_context.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002478:813:8:257:55_args.jpg:behind:Block 1:Block 2:null:0:NO###
+1002479:822:8:266:57_args_small.jpg:behind:Block 1:Block 2:null:0:YES###
+1002480:785:8:269:58_args.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002481:889:8:277:60_args.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002919:750:14:274:59_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002920:778:14:262:56_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002921:877:14:277:60_args.jpg:below:Block 2:Block 1:null:0:YES###
+1002922:807:14:251:53_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002923:773:14:257:55_args.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002924:757:14:241:51_args.jpg:in front of:Block 1:Block 2:null:0:UNCERTAIN###
+1002925:886:14:278:60_args_small.jpg:under:Block 2:Block 1:null:0:YES###
+1002926:684:14:248:52_context_small.jpg:to the left of:Block 1:Block 2:null:0:RATHER NO###
+1002927:823:14:267:57_context.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002928:826:14:270:58_args_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002929:792:14:276:59_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002930:842:14:246:52_args_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002931:820:14:264:56_context_small.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002482:757:8:241:51_args.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1002483:782:8:266:57_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002484:803:8:247:52_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002485:793:8:237:50_args.jpg:behind:Block 1:Block 2:null:0:YES###
+1002486:690:8:254:54_args_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002487:753:8:237:50_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002488:796:8:240:50_context_small.jpg:behind:Block 1:Block 2:null:0:UNCERTAIN###
+1002489:759:8:243:51_context.jpg:in front of:Block 1:Block 2:null:0:UNCERTAIN###
+1002490:861:8:265:57_args.jpg:near:Block 1:Block 2:null:0:YES###
+1002491:829:8:273:59_args.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002492:739:8:263:56_context.jpg:to the right of:Block 1:Block 2:null:0:RATHER YES###
+1002493:737:8:261:56_args.jpg:to the right of:Block 1:Block 2:null:0:UNCERTAIN###
+1002494:798:8:242:51_args_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002495:852:8:256:54_context_small.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002496:880:8:280:60_context_small.jpg:below:Block 2:Block 1:null:0:YES###
+1002497:856:8:260:55_context_small.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002498:697:8:261:56_args.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002499:730:8:254:54_args_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002500:790:8:274:59_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002501:708:8:272:58_context_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002502:747:8:271:58_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002503:714:8:238:50_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002504:728:8:252:53_context_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002505:729:8:253:54_args.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002506:874:8:278:60_args_small.jpg:above:Block 1:Block 2:null:0:YES###
+1002507:754:8:238:50_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002508:774:8:258:55_args_small.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002509:756:8:240:50_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002510:724:8:248:52_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002511:828:8:272:58_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002512:677:8:241:51_args.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002513:762:8:246:52_args_small.jpg:in front of:Block 1:Block 2:null:0:YES###
+1002514:688:8:252:53_context_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002515:771:8:255:54_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002516:820:8:264:56_context_small.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002517:781:8:265:57_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002518:835:8:239:50_context.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002519:732:8:256:54_context_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002520:871:8:275:59_context.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002521:846:8:250:53_args_small.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002522:805:8:249:53_args.jpg:behind:Block 1:Block 2:null:0:NO###
+1002523:809:8:253:54_args.jpg:behind:Block 1:Block 2:null:0:UNCERTAIN###
+1002524:763:8:247:52_context.jpg:in front of:Block 1:Block 2:null:0:YES###
+1002525:795:8:239:50_context.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002526:689:8:253:54_args.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002527:804:8:248:52_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002528:727:8:251:53_context.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002529:767:8:251:53_context.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1002530:725:8:249:53_args.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002531:691:8:255:54_context.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002532:863:8:267:57_context.jpg:near:Block 1:Block 2:null:0:YES###
+1002533:678:8:242:51_args_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002534:832:8:276:59_context_small.jpg:behind:Block 1:Block 2:null:0:UNCERTAIN###
+1002535:881:8:277:60_args.jpg:over:Block 1:Block 2:null:0:YES###
+1002536:694:8:258:55_args_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002537:801:8:245:52_args.jpg:behind:Block 1:Block 2:null:0:NO###
+1002538:816:8:260:55_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002539:859:8:263:56_context.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002540:705:8:269:58_args.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002541:776:8:260:55_context_small.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002542:786:8:270:58_args_small.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002543:760:8:244:51_context_small.jpg:in front of:Block 1:Block 2:null:0:UNCERTAIN###
+1002544:860:8:264:56_context_small.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002545:682:8:246:52_args_small.jpg:to the left of:Block 1:Block 2:null:0:UNCERTAIN###
+1002546:720:8:244:51_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002547:844:8:248:52_context_small.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002548:864:8:268:57_context_small.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002549:711:8:275:59_context.jpg:to the left of:Block 1:Block 2:null:0:RATHER YES###
+1002550:888:8:280:60_context_small.jpg:under:Block 2:Block 1:null:0:YES###
+1002551:723:8:247:52_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002552:879:8:279:60_context.jpg:below:Block 2:Block 1:null:0:YES###
+1002553:817:8:261:56_args.jpg:behind:Block 1:Block 2:null:0:YES###
+1002554:741:8:265:57_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002555:873:8:277:60_args.jpg:above:Block 1:Block 2:null:0:YES###
+1002556:800:8:244:51_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002557:750:8:274:59_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002558:818:8:262:56_args_small.jpg:behind:Block 1:Block 2:null:0:YES###
+1002559:761:8:245:52_args.jpg:in front of:Block 1:Block 2:null:0:YES###
+1002560:834:8:238:50_args_small.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002561:773:8:257:55_args.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002562:738:8:262:56_args_small.jpg:to the right of:Block 1:Block 2:null:0:UNCERTAIN###
+1002563:866:8:270:58_args_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002564:698:8:262:56_args_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002565:815:8:259:55_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002566:719:8:243:51_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002567:749:8:273:59_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002568:890:8:278:60_args_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002569:848:8:252:53_context_small.jpg:near:Block 1:Block 2:null:0:NO###
+1002570:876:8:280:60_context_small.jpg:above:Block 1:Block 2:null:0:YES###
+1002571:799:8:243:51_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002572:826:8:270:58_args_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002573:814:8:258:55_args_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002574:699:8:263:56_context.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002575:847:8:251:53_context.jpg:near:Block 1:Block 2:null:0:NO###
+1002576:777:8:261:56_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002577:675:8:239:50_context.jpg:to the left of:Block 1:Block 2:null:0:RATHER YES###
+1002578:758:8:242:51_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002579:783:8:267:57_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002580:851:8:255:54_context.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002581:884:8:280:60_context_small.jpg:over:Block 1:Block 2:null:0:YES###
+1002582:685:8:249:53_args.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002583:885:8:277:60_args.jpg:under:Block 2:Block 1:null:0:YES###
+1002584:766:8:250:53_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002585:857:8:261:56_args.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002586:892:8:280:60_context_small.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002587:681:8:245:52_args.jpg:to the left of:Block 1:Block 2:null:0:UNCERTAIN###
+1002588:794:8:238:50_args_small.jpg:behind:Block 1:Block 2:null:0:YES###
+1002589:693:8:257:55_args.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002590:722:8:246:52_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002591:821:8:265:57_args.jpg:behind:Block 1:Block 2:null:0:YES###
+1002592:683:8:247:52_context.jpg:to the left of:Block 1:Block 2:null:0:UNCERTAIN###
+1002593:713:8:237:50_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002594:839:8:243:51_context.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002595:707:8:271:58_context.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002596:692:8:256:54_context_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002597:867:8:271:58_context.jpg:near:Block 1:Block 2:null:0:YES###
+1002598:710:8:274:59_args_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002599:862:8:266:57_args_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002600:743:8:267:57_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002601:831:8:275:59_context.jpg:behind:Block 1:Block 2:null:0:RATHER NO###
+1002602:850:8:254:54_args_small.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002603:836:8:240:50_context_small.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002604:811:8:255:54_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002605:718:8:242:51_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002606:865:8:269:58_args.jpg:near:Block 1:Block 2:null:0:YES###
+1002607:686:8:250:53_args_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002608:823:8:267:57_context.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002609:748:8:272:58_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002610:845:8:249:53_args.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002611:775:8:259:55_context.jpg:in front of:Block 1:Block 2:null:0:UNCERTAIN###
+1002612:765:8:249:53_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002613:673:8:237:50_args.jpg:to the left of:Block 1:Block 2:null:0:RATHER YES###
+1002614:891:8:279:60_context.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002615:703:8:267:57_context.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002616:858:8:262:56_args_small.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002617:780:8:264:56_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002618:751:8:275:59_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002619:733:8:257:55_args.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002620:784:8:268:57_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002621:797:8:241:51_args.jpg:behind:Block 1:Block 2:null:0:NO###
+1002622:764:8:248:52_context_small.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002623:806:8:250:53_args_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002624:824:8:268:57_context_small.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002625:742:8:266:57_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002626:807:8:251:53_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002627:726:8:250:53_args_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002628:735:8:259:55_context.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002629:843:8:247:52_context.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002630:825:8:269:58_args.jpg:behind:Block 1:Block 2:null:0:NO###
+1002631:700:8:264:56_context_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002632:877:8:277:60_args.jpg:below:Block 2:Block 1:null:0:YES###
+1002633:712:8:276:59_context_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002634:869:8:273:59_args.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002635:842:8:246:52_args_small.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002636:746:8:270:58_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002637:701:8:265:57_args.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002638:745:8:269:58_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002639:838:8:242:51_args_small.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002640:674:8:238:50_args_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002641:755:8:239:50_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002642:875:8:279:60_context.jpg:above:Block 1:Block 2:null:0:YES###
+1002643:676:8:240:50_context_small.jpg:to the left of:Block 1:Block 2:null:0:RATHER YES###
+1002644:827:8:271:58_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002645:887:8:279:60_context.jpg:under:Block 2:Block 1:null:0:YES###
+1002646:734:8:258:55_args_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002647:717:8:241:51_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002648:853:8:257:55_args.jpg:near:Block 1:Block 2:null:0:YES###
+1002649:788:8:272:58_context_small.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002650:702:8:266:57_args_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002651:772:8:256:54_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002652:736:8:260:55_context_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002653:833:8:237:50_args.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002654:721:8:245:52_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002655:878:8:278:60_args_small.jpg:below:Block 2:Block 1:null:0:YES###
+1002656:695:8:259:55_context.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002657:768:8:252:53_context_small.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1002658:810:8:254:54_args_small.jpg:behind:Block 1:Block 2:null:0:UNCERTAIN###
+1002659:709:8:273:59_args.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002660:770:8:254:54_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002661:854:8:258:55_args_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002662:752:8:276:59_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002663:812:8:256:54_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002664:819:8:263:56_context.jpg:behind:Block 1:Block 2:null:0:YES###
+1002665:837:8:241:51_args.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002666:808:8:252:53_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002667:849:8:253:54_args.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002668:830:8:274:59_args_small.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002669:791:8:275:59_context.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002670:704:8:268:57_context_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002671:886:8:278:60_args_small.jpg:under:Block 2:Block 1:null:0:YES###
+1002672:715:8:239:50_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002673:792:8:276:59_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002674:687:8:251:53_context.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002675:696:8:260:55_context_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002676:841:8:245:52_args.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002677:684:8:248:52_context_small.jpg:to the left of:Block 1:Block 2:null:0:UNCERTAIN###
+1002678:716:8:240:50_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002679:883:8:279:60_context.jpg:over:Block 1:Block 2:null:0:YES###
+1002680:908:18:228:133.jpg:-:Black Block 3:-:null:1:to the left of a green block###
+1002681:915:18:230:135.jpg:-:Red Block 9:-:null:1:in front of a blue block###
+1002682:927:18:233:138.jpg:-:Red Block 7:-:null:1:touching a red block###
+1002683:943:18:236:210.jpg:-:Blue Chair 2:-:null:1:near the desk###
+1002684:914:18:230:135.jpg:-:Green Block 12:-:null:1:behind a black block###
+1002685:938:18:235:209.jpg:-:Banana 2:-:null:1:on a desk
+in front of a TV
+near the East Wall###
+1002686:899:18:226:131.jpg:-:Green Block 12:-:null:1:below a red block###
+1002687:911:18:229:134.jpg:-:Black Block 1:-:null:1:to the right of a blue block###
+1002688:947:18:236:210.jpg:-:Poster 1:-:null:1:on the North Wall###
+1002689:946:18:236:210.jpg:-:Red Book 3:-:null:1:in a box###
+1002690:898:18:226:131.jpg:-:Black Block 1:-:null:1:behind a black block
+behind a red block###
+1002691:897:18:226:131.jpg:-:Black Block 3:-:null:1:on a black block
+above a black block###
+1002692:937:18:235:209.jpg:-:Banana 1:-:null:1:in a bowl
+near a pencil holder
+near a note###
+1002693:906:18:228:133.jpg:-:Red Block 9:-:null:1:touching a black block
+touching a green block###
+1002694:929:17:234:139.jpg:-:Black Block 3:-:null:1:touching red box 9###
+1002695:937:17:235:209.jpg:-:Banana 1:-:null:1:in the bowl###
+1002696:910:17:229:134.jpg:-:Blue Block 4:-:null:1:behind red box 9###
+1002697:914:17:230:135.jpg:-:Green Block 12:-:null:1:behind black box 1###
+1002698:893:17:225:130.jpg:-:Black Block 2:-:null:1:to the left of green box 11
+###
+1002699:915:17:230:135.jpg:-:Red Block 9:-:null:1:behind blue box 6###
+1002700:945:17:236:210.jpg:-:Red Book 1:-:null:1:behind green book 2###
+1002701:920:17:231:136.jpg:-:Blue Block 4:-:null:1:under green box 12###
+1002702:936:17:235:209.jpg:-:Green Book 1:-:null:1:between red book 3 and red book 1###
+1002703:949:17:236:210.jpg:-:Green Book 1:-:null:1:on desk###
+1002704:903:17:227:132.jpg:-:Red Block 8:-:null:1:over black box 1###
+1002705:907:17:228:133.jpg:-:Green Block 11:-:null:1:between red box 9 and black box 2###
+1002706:900:17:226:131.jpg:-:Red Block 7:-:null:1:to the right of blue box 4###
+1002707:925:17:233:138.jpg:-:Black Block 3:-:null:1:touching blue box 5###
+1002708:941:18:235:209.jpg:-:Desk 1:-:null:1:under a yellow book
+under a note
+under a red book###
+1002709:904:18:227:132.jpg:-:Black Block 1:-:null:1:under a red block###
+1002710:900:18:226:131.jpg:-:Red Block 7:-:null:1:in front of a black block###
+1002711:945:18:236:210.jpg:-:Red Book 1:-:null:1:to the left of a green book###
+1002712:936:18:235:209.jpg:-:Green Book 1:-:null:1:under a red book
+on a desk
+near a yellow book###
+1002713:951:18:236:210.jpg:-:Laptop 1:-:null:1:on the desk
+near a green book###
+1002714:935:18:235:209.jpg:-:Yellow Book 2:-:null:1:on a desk
+near a note
+near a pencil holder###
+1002715:903:18:227:132.jpg:-:Red Block 8:-:null:1:on a black block
+touching a blue block###
+1002716:896:18:225:130.jpg:-:Green Block 12:-:null:1:behind a blue block###
+1002717:894:18:225:130.jpg:-:Black Block 3:-:null:1:behind a blue block###
+1002718:948:18:236:210.jpg:-:Poster 2:-:null:1:on the west wall###
+1002719:920:18:231:136.jpg:-:Blue Block 4:-:null:1:under a green block###
+1002720:929:18:234:139.jpg:-:Black Block 3:-:null:1:to the right of a red block###
+1002721:907:18:228:133.jpg:-:Green Block 11:-:null:1:between a red block and a black block###
+1002722:913:18:230:135.jpg:-:Black Block 2:-:null:1:to the right of a green block###
 1000431:109:1:115:2_args_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
 1000432:166:1:102:6_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
 1000433:167:1:101:6_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
@@ -526,6 +1082,15 @@ near a black block###
 1000508:177:1:127:9_args_small.jpg:to the right of:Block 1:Block 2:null:0:RATHER NO###
 1000509:181:1:134:10_args_small.jpg:to the right of:Block 1:Block 2:null:0:RATHER YES###
 1000510:135:1:125:8_context_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002723:939:18:235:209.jpg:-:Red Chair 1:-:null:1:near a bookshelf
+near the west wall###
+1002724:940:18:235:209.jpg:-:Pencil 1:-:null:1:near a bowl
+near a banana###
+1002725:923:18:232:137.jpg:-:Green Block 11:-:null:1:on a black block###
+1002726:930:18:234:139.jpg:-:Red Block 9:-:null:1:on a red block###
+1002727:919:18:231:136.jpg:-:Green Block 12:-:null:1:on a black block
+on a blue block
+on a green block###
 1000511:112:1:112:3_args.jpg:to the left of:Block 1:Block 2:null:0:RATHER NO###
 1000512:117:1:107:4_args_small.jpg:to the left of:Block 1:Block 2:null:0:RATHER YES###
 1000513:160:1:103:5_args.jpg:to the right of:Block 1:Block 2:null:0:RATHER NO###
@@ -533,6 +1098,11 @@ near a black block###
 1000515:156:1:108:4_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
 1000516:150:1:118:2_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
 1000517:140:1:128:10_args.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002728:922:18:232:137.jpg:-:Red Block 9:-:null:1:touching a red block###
+1002729:932:18:234:139.jpg:-:Blue Block 4:-:null:1:to the right of a red block###
+1002730:933:18:235:209.jpg:-:Red Book 1:-:null:1:under a green book###
+1002731:926:18:233:138.jpg:-:Blue Block 4:-:null:1:on a green block
+on a black block###
 1000537:582:8:198:202.jpg:-:Ceiling Light 1:-:null:1:above the table
 near the West Wall
 over the table###
@@ -729,6 +1299,7 @@ in front of a black block###
 1000623:598:9:206:204.jpg:-:Ceiling Light 2:-:null:1:above the blue chair###
 1000624:579:9:198:202.jpg:-:Red Book 1:-:null:1:on the table and behind the green book###
 1000625:551:9:200:110.jpg:-:Black Block 2:-:null:1:over red block, and over blue block###
+1002932:829:14:273:59_args.jpg:behind:Block 1:Block 2:null:0:RATHER NO###
 1000627:545:9:205:108.jpg:-:Green Block 12:-:null:1:under the black block###
 1000628:550:9:200:110.jpg:-:Blue Block 5:-:null:1:under the red block###
 1000629:587:9:201:203.jpg:-:Cardbox 1:-:null:1:behind another cardbox###
@@ -889,6 +1460,9 @@ to the right of a black block###
 1000751:602:10:190:205.jpg:-:Apple 2:-:null:1:Near the laptop###
 1000752:593:10:206:204.jpg:-:Green Book 2:-:null:1:Above the red book###
 1000753:599:10:190:205.jpg:-:Green Book 1:-:null:1:In the box###
+1002732:949:18:236:210.jpg:-:Green Book 1:-:null:1:on a desk
+near a laptop
+near the west wall###
 1000756:205:1:163:11_args_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
 1000757:527:12:187:102.jpg:-:Black Block 1:-:null:1:to the left of a red block###
 1000758:566:12:210:115.jpg:-:Red Block 8:-:null:1:to the left of a blue block###
@@ -1489,6 +2063,7 @@ in front of a blue block###
 1001007:662:8:211:208.jpg:-:Laptop 1:-:null:1:near a red book
 near a note
 between a book and the pencil holder###
+1002733:897:14:226:131.jpg:-:Black Block 3:-:null:1:On another black block###
 1001010:157:13:107:4_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
 1001011:404:13:160:21_args.jpg:above:Block 1:Block 2:null:0:RATHER YES###
 1001012:240:13:103:5_args.jpg:in front of:Block 1:Block 2:null:0:NO###
@@ -2809,6 +3384,8 @@ behind another banana
 on a blue block
 above a blue block
 between a black and a green block###
+1002734:950:14:236:210.jpg:-:Green Book 2:-:null:1:between two red books
+on the bookshelf###
 1001958:607:14:190:205.jpg:-:Table 2:-:null:1:to the right of another table
 near the east wall
 in front of bookshelf 2
@@ -3047,3 +3624,269 @@ between a blue and a red block###
 1002036:546:14:202:109.jpg:-:Black Block 3:-:null:1:under a blue block
 to the right of another black block
 behind a red block###
+1002735:909:14:229:134.jpg:-:Green Block 10:-:null:1:touching a black block
+near a black block
+between a black and a blue block
+between a red block and a black block###
+1002736:943:14:236:210.jpg:-:Blue Chair 2:-:null:1:Near the desk
+In front of a poster
+To the right of the desk###
+1002737:952:14:236:210.jpg:-:Laptop 2:-:null:1:On the bed###
+1002738:924:14:232:137.jpg:-:Black Block 2:-:null:1:under a blue block
+above two green blocks
+above the other black blocks###
+1002739:901:14:227:132.jpg:-:Red Block 7:-:null:1:to the right of a black block###
+1002740:913:14:230:135.jpg:-:Black Block 2:-:null:1:to the right of a green block###
+1002741:915:14:230:135.jpg:-:Red Block 9:-:null:1:between two blue blocks
+in front of another red block###
+1002742:894:14:225:130.jpg:-:Black Block 3:-:null:1:to the right of a red block
+behind a blue block###
+1002743:927:14:233:138.jpg:-:Red Block 7:-:null:1:under another red block
+on a blue block
+between a red and a black block###
+1002744:900:14:226:131.jpg:-:Red Block 7:-:null:1:near a blue block
+in front of a black block###
+1002745:939:14:235:209.jpg:-:Red Chair 1:-:null:1:near the west wall
+to the left of a blue chair###
+1002746:949:14:236:210.jpg:-:Green Book 1:-:null:1:On the desk
+Near a laptop
+under a poster###
+1002747:912:14:229:134.jpg:-:Red Block 7:-:null:1:in front of another red block###
+1002748:895:14:225:130.jpg:-:Green Block 11:-:null:1:to the right of a black block
+in front of another green block###
+1002749:935:14:235:209.jpg:-:Yellow Book 2:-:null:1:near another book
+touching the red book
+on a desk###
+1002750:933:14:235:209.jpg:-:Red Book 1:-:null:1:under a green book
+below another red book###
+1002751:917:14:231:136.jpg:-:Red Block 9:-:null:1:on another red block
+on a green block###
+1002752:918:14:231:136.jpg:-:Black Block 3:-:null:1:touching a blue block
+to the left of a blue block###
+1002753:928:14:233:138.jpg:-:Green Block 10:-:null:1:under a blue block
+below a black block
+to the right of a black block###
+1002754:916:14:230:135.jpg:-:Blue Block 4:-:null:1:to the right of a green block###
+1002755:902:14:227:132.jpg:-:Green Block 10:-:null:1:touching a black block
+at a black block
+near a black block
+to the left of a black block###
+1002756:898:14:226:131.jpg:-:Black Block 1:-:null:1:to the right of a green block
+between a green and a blue block###
+1002757:926:14:233:138.jpg:-:Blue Block 4:-:null:1:on a black block
+on a green block
+to the right of a black block
+to the right of the other blue blocks###
+1002758:923:14:232:137.jpg:-:Green Block 11:-:null:1:on a black block
+under a black block
+above another green block
+between two black blocks###
+1002759:944:14:236:210.jpg:-:Box 2:-:null:1:at the desk
+near the desk
+near the west wall###
+1002760:904:14:227:132.jpg:-:Black Block 1:-:null:1:under a red block
+between a green and a blue block
+below green block
+below blue block###
+1002761:922:14:232:137.jpg:-:Red Block 9:-:null:1:on another red block
+under a green block
+between a green and a red block###
+1002762:942:14:236:210.jpg:-:Blue Chair 1:-:null:1:Near the east wall
+in front of the bed
+near the bed
+at the bed###
+1002763:940:14:235:209.jpg:-:Pencil 1:-:null:1:near the bowl
+between the bowl and a note
+to the right of another pencil###
+1002764:905:14:228:133.jpg:-:Blue Block 5:-:null:1:in front of a green block
+in front of another blue block###
+1002765:920:14:231:136.jpg:-:Blue Block 4:-:null:1:under a green block
+touching a green block
+behind a black block###
+1002766:941:14:235:209.jpg:-:Desk 1:-:null:1:to the left of another desk
+in front of the north wall###
+1002767:936:14:235:209.jpg:-:Green Book 1:-:null:1:between two red books
+on a red book
+on the desk
+near a laptop###
+1002768:925:14:233:138.jpg:-:Black Block 3:-:null:1:on another black block
+to the left of a blue block###
+1002769:911:14:229:134.jpg:-:Black Block 1:-:null:1:between a black and a green block
+to the right of another black block
+to the right of a blue block###
+1002770:919:14:231:136.jpg:-:Green Block 12:-:null:1:on a black block
+on another green block
+on a blue block###
+1002771:906:14:228:133.jpg:-:Red Block 9:-:null:1:between two green blocks
+touching a black block
+to the right of a green block###
+1002772:921:14:232:137.jpg:-:Blue Block 6:-:null:1:under a red block
+below the red blocks
+to the left of another blue block###
+1002773:938:14:235:209.jpg:-:Banana 2:-:null:1:near tv
+near a laptop###
+1002774:947:14:236:210.jpg:-:Poster 1:-:null:1:on the north wall
+behind a chair
+to the left of the bookshelf###
+1002775:948:14:236:210.jpg:-:Poster 2:-:null:1:above the desk
+on the west wall
+above a laptop###
+1002776:910:14:229:134.jpg:-:Blue Block 4:-:null:1:behind a red block###
+1002777:934:14:235:209.jpg:-:Red Book 3:-:null:1:on a green book
+above another red book
+touching a yellow book###
+1002778:931:14:234:139.jpg:-:Green Block 12:-:null:1:to the left of black block
+to the left of a blue block###
+1002779:899:14:226:131.jpg:-:Green Block 12:-:null:1:under a red block
+between a blue block and a black block
+behind a blue block###
+1002780:893:14:225:130.jpg:-:Black Block 2:-:null:1:to the left of a green block
+in front of a red block###
+1002781:929:14:234:139.jpg:-:Black Block 3:-:null:1:on a blue block
+to the right of a red block###
+1002782:932:14:234:139.jpg:-:Blue Block 4:-:null:1:to the right of a red block
+touching green block
+at the green block
+between a red and a green block###
+1002783:903:14:227:132.jpg:-:Red Block 8:-:null:1:on a black block
+under a blue block
+under a green block
+below a green block
+below another red block###
+1002784:907:14:228:133.jpg:-:Green Block 11:-:null:1:between two blue blocks
+to the right of another green block
+behind a blue block
+###
+1002785:937:14:235:209.jpg:-:Banana 1:-:null:1:in the bowl###
+1002786:896:14:225:130.jpg:-:Green Block 12:-:null:1:behind another green block
+to the right of a red block###
+1002787:914:14:230:135.jpg:-:Green Block 12:-:null:1:behind a black block
+behind another green block###
+1002788:908:14:228:133.jpg:-:Black Block 3:-:null:1:to the left of a green block
+behind a blue block###
+1002789:930:14:234:139.jpg:-:Red Block 9:-:null:1:on another red block
+between two black blocks###
+1002790:946:14:236:210.jpg:-:Red Book 3:-:null:1:in the box###
+1002791:951:14:236:210.jpg:-:Laptop 1:-:null:1:on the desk
+near a green book
+under the poster###
+1002792:945:14:236:210.jpg:-:Red Book 1:-:null:1:to the left of a green book
+to the left of another red book###
+1002793:769:14:253:54_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002794:873:14:277:60_args.jpg:above:Block 1:Block 2:null:0:YES###
+1002795:824:14:268:57_context_small.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002796:673:14:237:50_args.jpg:to the left of:Block 1:Block 2:null:0:UNCERTAIN###
+1002797:822:14:266:57_args_small.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002798:677:14:241:51_args.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002799:754:14:238:50_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002800:810:14:254:54_args_small.jpg:behind:Block 1:Block 2:null:0:RATHER NO###
+1002801:892:14:280:60_context_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002802:685:14:249:53_args.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002803:717:14:241:51_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002804:760:14:244:51_context_small.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1002805:809:14:253:54_args.jpg:behind:Block 1:Block 2:null:0:RATHER NO###
+1002806:887:14:279:60_context.jpg:under:Block 2:Block 1:null:0:RATHER YES###
+1002807:848:14:252:53_context_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002808:690:14:254:54_args_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002809:828:14:272:58_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002810:878:14:278:60_args_small.jpg:below:Block 2:Block 1:null:0:YES###
+1002811:734:14:258:55_args_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002812:832:14:276:59_context_small.jpg:behind:Block 1:Block 2:null:0:UNCERTAIN###
+1002813:711:14:275:59_context.jpg:to the left of:Block 1:Block 2:null:0:RATHER YES###
+1002814:744:14:268:57_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002815:857:14:261:56_args.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002816:739:14:263:56_context.jpg:to the right of:Block 1:Block 2:null:0:UNCERTAIN###
+1002817:794:14:238:50_args_small.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002818:846:14:250:53_args_small.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1002819:837:14:241:51_args.jpg:near:Block 1:Block 2:null:0:YES###
+1002933:680:14:244:51_context_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002934:772:14:256:54_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002935:790:14:274:59_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002936:746:14:270:58_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002937:762:14:246:52_args_small.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002938:702:14:266:57_args_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002939:681:14:245:52_args.jpg:to the left of:Block 1:Block 2:null:0:RATHER NO###
+1002940:847:14:251:53_context.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002941:706:14:270:58_args_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002942:759:14:243:51_context.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1002943:737:14:261:56_args.jpg:to the right of:Block 1:Block 2:null:0:RATHER NO###
+1002944:743:14:267:57_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002945:789:14:273:59_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002946:815:14:259:55_context.jpg:behind:Block 1:Block 2:null:0:NO###
+1002947:856:14:260:55_context_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002948:710:14:274:59_args_small.jpg:to the left of:Block 1:Block 2:null:0:RATHER YES###
+1002949:849:14:253:54_args.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002950:774:14:258:55_args_small.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002951:814:14:258:55_args_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002952:855:14:259:55_context.jpg:near:Block 1:Block 2:null:0:YES###
+1002953:696:14:260:55_context_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002954:721:14:245:52_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002955:817:14:261:56_args.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002956:693:14:257:55_args.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002957:804:14:248:52_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002958:770:14:254:54_args_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002959:676:14:240:50_context_small.jpg:to the left of:Block 1:Block 2:null:0:RATHER NO###
+1002960:889:14:277:60_args.jpg:near:Block 1:Block 2:null:0:UNCERTAIN###
+1002961:736:14:260:55_context_small.jpg:to the right of:Block 1:Block 2:null:0:RATHER YES###
+1002962:825:14:269:58_args.jpg:behind:Block 1:Block 2:null:0:NO###
+1002963:749:14:273:59_args.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002964:705:14:269:58_args.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002965:839:14:243:51_context.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002966:818:14:262:56_args_small.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002967:768:14:252:53_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002968:836:14:240:50_context_small.jpg:near:Block 1:Block 2:null:0:NO###
+1002969:840:14:244:51_context_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002970:724:14:248:52_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002971:715:14:239:50_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002972:738:14:262:56_args_small.jpg:to the right of:Block 1:Block 2:null:0:RATHER NO###
+1002973:800:14:244:51_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002974:730:14:254:54_args_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002975:781:14:265:57_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002976:761:14:245:52_args.jpg:in front of:Block 1:Block 2:null:0:YES###
+1002977:704:14:268:57_context_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002978:722:14:246:52_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002979:723:14:247:52_context.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1002980:708:14:272:58_context_small.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002981:812:14:256:54_context_small.jpg:behind:Block 1:Block 2:null:0:RATHER YES###
+1002982:864:14:268:57_context_small.jpg:near:Block 1:Block 2:null:0:YES###
+1002983:780:14:264:56_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002984:798:14:242:51_args_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002985:707:14:271:58_context.jpg:to the left of:Block 1:Block 2:null:0:YES###
+1002986:709:14:273:59_args.jpg:to the left of:Block 1:Block 2:null:0:RATHER YES###
+1002987:777:14:261:56_args.jpg:in front of:Block 1:Block 2:null:0:NO###
+1002988:691:14:255:54_context.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002989:729:14:253:54_args.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1002990:793:14:237:50_args.jpg:behind:Block 1:Block 2:null:0:YES###
+1002991:758:14:242:51_args_small.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1002992:871:14:275:59_context.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1002993:808:14:252:53_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002994:806:14:250:53_args_small.jpg:behind:Block 1:Block 2:null:0:NO###
+1002995:788:14:272:58_context_small.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1002996:763:14:247:52_context.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1002997:689:14:253:54_args.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1002998:776:14:260:55_context_small.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1002999:752:14:276:59_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1003000:765:14:249:53_args.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1003001:844:14:248:52_context_small.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1003002:854:14:258:55_args_small.jpg:near:Block 1:Block 2:null:0:YES###
+1003003:698:14:262:56_args_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1003004:876:14:280:60_context_small.jpg:above:Block 1:Block 2:null:0:YES###
+1003005:742:14:266:57_args_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1003006:888:14:280:60_context_small.jpg:under:Block 2:Block 1:null:0:RATHER YES###
+1003007:688:14:252:53_context_small.jpg:to the left of:Block 1:Block 2:null:0:NO###
+1003008:833:14:237:50_args.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1003009:731:14:255:54_context.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1003010:869:14:273:59_args.jpg:near:Block 1:Block 2:null:0:RATHER NO###
+1003011:766:14:250:53_args_small.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1003012:785:14:269:58_args.jpg:in front of:Block 1:Block 2:null:0:RATHER YES###
+1003013:748:14:272:58_context_small.jpg:to the right of:Block 1:Block 2:null:0:NO###
+1003014:726:14:250:53_args_small.jpg:to the right of:Block 1:Block 2:null:0:YES###
+1003015:841:14:245:52_args.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1003016:862:14:266:57_args_small.jpg:near:Block 1:Block 2:null:0:YES###
+1003017:756:14:240:50_context_small.jpg:in front of:Block 1:Block 2:null:0:NO###
+1003018:775:14:259:55_context.jpg:in front of:Block 1:Block 2:null:0:RATHER NO###
+1003019:890:14:278:60_args_small.jpg:near:Block 1:Block 2:null:0:RATHER YES###
+1003020:859:14:263:56_context.jpg:near:Block 1:Block 2:null:0:NO###
+1003021:875:14:279:60_context.jpg:above:Block 1:Block 2:null:0:YES###
+1003022:682:14:246:52_args_small.jpg:to the left of:Block 1:Block 2:null:0:RATHER NO###
+1003023:816:14:260:55_context_small.jpg:behind:Block 1:Block 2:null:0:NO###
