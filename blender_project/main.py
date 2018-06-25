@@ -21,7 +21,7 @@ from entity import Entity
 from geometry_utils import *
 from annot_parser import *
 from spatial import *
-
+import spatial
 
 link = False
 #The current scene
@@ -67,25 +67,6 @@ types_ids = {
     'wall': 'world.plane.wall'
 }
     
-#Dictionary that maps the relation names to the names of the functions that implement them
-rf_mapping = {'to the left of': 'to_the_left_of_deic',
-              'to the right of': 'to_the_right_of_deic',
-              'near': 'near',
-              'on': 'on',
-              'above': 'above',
-              'below': 'below',
-              'over': 'over',
-              'under': 'under',
-              'in': 'inside',
-              'inside': 'inside',
-              'touching': 'touching',
-              'right': 'to_the_right_of_deic',
-              'left': 'to_the_left_of_deic',
-              'at': 'at',
-              'in front of': 'in_front_of_deic',
-              'front': 'in_front_of_deic',
-              'behind': 'behind_deic',
-              'between': 'between'}
 
 #The list of entities
 entities = []
@@ -597,9 +578,14 @@ def pick_descriptions(relatum):
 #The observer object (camera)
 observer = get_observer()
 
+def get_entities():
+    print (entities)
+    return entities
+
 #Entry point
 #Implementation of the evaluation pipeline
 def main():
+    global entities
     for obj in scene.objects:
         if obj.get('main') is not None:
             entities.append(Entity(obj))
@@ -639,11 +625,14 @@ def main():
     bl4 = get_entity_by_name("Block 4")
     bl9 = get_entity_by_name("Block 9")
     bl11 = get_entity_by_name("Block 11")
-    gb = get_entity_by_name("Green Book")
-    rb = get_entity_by_name("Red Book")
+    #gb = get_entity_by_name("Green Book")
+    #rb = get_entity_by_name("Red Book")
     #pict = get_entity_by_name("Picture 1")
-    #pen = get_entity_by_name("Black Pencil")    
-    print (on(gb, rb))
+    #pen = get_entity_by_name("Black Pencil")
+    #print (entities)
+    spatial.entities = get_entities()
+    print (superlative("behind",None, [e for e in entities if e.name != "Table"]).name)
+	
 
 if __name__ == "__main__":
     #save_screenshot()
