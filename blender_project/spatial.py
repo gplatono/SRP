@@ -3,6 +3,29 @@ import math
 from geometry_utils import *
 from main import *
 
+#Dictionary that maps the relation names to the names of the functions that implement them
+rf_mapping = {'to the left of': 'to_the_left_of_deic',
+              'to the right of': 'to_the_right_of_deic',
+              'near': 'near',
+              'on': 'on',
+              'above': 'above',
+              'below': 'below',
+              'over': 'over',
+              'under': 'under',
+              'in': 'inside',
+              'inside': 'inside',
+              'touching': 'touching',
+              'right': 'to_the_right_of_deic',
+              'left': 'to_the_left_of_deic',
+              'at': 'at',
+              'in front of': 'in_front_of_deic',
+              'front': 'in_front_of_deic',
+              'behind': 'behind_deic',
+              'between': 'between',
+              'next to': 'at' 
+}
+
+
 #Raw metric for the nearness relation
 #Doesn't take into account the nearness statistics in the scene
 #Inputs: a, b - entities
@@ -34,12 +57,15 @@ def near_raw(a, b):
     '''0.5 * (1 - min(1, dist / avg_dist + 0.01) +'''    
     return raw_metric * (1 - raw_metric / fr_size)
 
+entities = None
 #Computes the nearness measure for two entities
 #Takes into account the scene statistics:
 #The raw nearness score is updated depending on whether one object is the closest to another
 #Inputs: a, b - entities
 #Return value: real number from [0, 1], the nearness measure
 def near(a, b):
+    #entities = get_entities()
+    #print (entities)
     raw_near_a = []
     raw_near_b = []
     raw_near_measure = near_raw(a, b)
@@ -99,7 +125,6 @@ def larger_than(a, b):
                           - (bbox_a[7][0] - bbox_a[0][0] \
                              + bbox_a[7][1] - bbox_a[0][1] \
                              + bbox_a[7][2] - bbox_a[0][2])))
-
 
 #Computes the "on" relation
 #Inputs: a, b - entities
@@ -283,3 +308,15 @@ def in_front_of_intr(a, b):
 def behind_intr(a, b):
     in_front_of_intr(b, a)
 
+
+def superlative(relation, arg, entities):
+    func = globals()[rf_mapping[relation]]
+    if arg != None:
+        result = max([(e, func(e, arg)) for e in entities if e != arg], key=lambda x: x[1])[0]
+    else:
+        result = entities[0]
+        if len(entities) > 1:
+            for e in entities[1:]:
+                if func(e, result) > func(result, e):
+                    result = e
+    return result
