@@ -1,0 +1,5 @@
+(? ((the.d (|SRI|.n block.n)) on.p (the.d (|Target|.n block.n))))
+(? ((some.d block.n) on.p (the.d (|Target|.n block.n))))
+((what.d block.n) on.p (the.d (|SRI|.n block.n)))
+((the.d (|SRI|.n block.n)) on.p what.pro)
+((coll-of |B1| |B2| |B3|) (semval (what.d shape-pred.n)))

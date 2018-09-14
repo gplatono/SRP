@@ -25,6 +25,126 @@ rf_mapping = {'to the left of': 'to_the_left_of_deic',
               'next to': 'at' 
 }
 
+def dist_obj(a, b):
+    if type(a) is not Entity or type(b) is not Entity:
+        return -1
+    bbox_a = a.get_bbox()
+    bbox_b = b.get_bbox()
+    center_a = a.get_bbox_centroid()
+    center_b = b.get_bbox_centroid()
+    if a.get('extended') is not None:
+        return a.get_closest_face_distance(center_b)
+    if b.get('extended') is not None:
+        return b.get_closest_face_distance(center_a)
+    return point_distance(center_a, center_b)
+
+#Computes the normalized area of the intersection of projection of two entities onto the XY-plane
+#Inputs: a, b - entities
+#Return value: real number
+def get_proj_intersection(a, b):
+    bbox_a = a.get_bbox()
+    bbox_b = b.get_bbox()
+    axmin = a.span[0]
+    axmax = a.span[1]
+    aymin = a.span[2]
+    aymax = a.span[3]
+    bxmin = b.span[0]
+    bxmax = b.span[1]
+    bymin = b.span[2]
+    bymax = b.span[3]
+    xdim = 0
+    ydim = 0
+    if axmin >= bxmin and axmax <= bxmax:
+        xdim = axmax - axmin
+    elif bxmin >= axmin and bxmax <= axmax:
+        xdim = bxmax - bxmin
+    elif axmin <= bxmin and axmax <= bxmax and axmax >= bxmin:
+        xdim = axmax - bxmin
+    elif axmin >= bxmin and axmin <= bxmax and axmax >= bxmax:
+        xdim = bxmax - axmin
+
+    if aymin >= bymin and aymax <= bymax:
+        ydim = aymax - aymin
+    elif bymin >= aymin and bymax <= aymax:
+        ydim = bymax - bymin
+    elif aymin <= bymin and aymax <= bymax and aymax >= bymin:
+        ydim = aymax - bymin
+    elif aymin >= bymin and aymin <= bymax and aymax >= bymax:
+        ydim = bymax - aymin
+    area = xdim * ydim
+    
+    #Normalize the intersection area to [0, 1]
+    return e ** (area - min((axmax - axmin) * (aymax - aymin), (bxmax - bxmin) * (bymax - bymin)))
+    
+#Returns the orientation of the entity relative to the coordinate axes
+#Inputs: a - entity
+#Return value: triple representing the coordinates of the orientation vector
+def get_planar_orientation(a):
+    dims = a.get_dimensions()
+    if dims[0] == min(dims):
+        return (1, 0, 0)
+    elif dims[1] == min(dims):
+        return (0, 1, 0)
+    else: return (0, 0, 1)
+
+
+
+#Returns the frame size of the current scene
+#Inputs: none
+#Return value: real number
+def get_frame_size(entities):
+    max_x = -100
+    min_x = 100
+    max_y = -100
+    min_y = 100
+    max_z = -100
+    min_z = 100
+
+    #Computes the scene bounding box
+    for entity in entities:
+        max_x = max(max_x, entity.span[1])
+        min_x = min(min_x, entity.span[0])
+        max_y = max(max_y, entity.span[3])
+        min_y = min(min_y, entity.span[2])
+        max_z = max(max_z, entity.span[5])
+        min_z = min(min_z, entity.span[4])
+    return max(max_x - min_x, max_y - min_y, max_z - min_z)
+
+
+
+
+#Computes the degree of vertical alignment (coaxiality) between two entities
+#The vertical alignment takes the max value if one of the objects is directly above the other
+#Inputs: a, b - entities
+#Return value: real number from [0, 1]
+def v_align(a, b):
+    dim_a = a.get_dimensions()
+    dim_b = b.get_dimensions()
+    center_a = a.get_bbox_centroid()
+    center_b = b.get_bbox_centroid()
+    return gaussian(0.9 * point_distance((center_a[0], center_a[1], 0), (center_b[0], center_b[1], 0)) / 
+                                (max(dim_a[0], dim_a[1]) + max(dim_b[0], dim_b[1])), 0, 1 / math.sqrt(2*pi))
+
+#Computes the degree of vertical offset between two entities
+#The vertical offset measures how far apart are two entities one
+#of which is above the other. Takes the maximum value when one is
+#directly on top of another
+#Inputs: a, b - entities
+#Return value: real number from [0, 1]
+def v_offset(a, b):
+    dim_a = a.get_dimensions()    
+    dim_b = b.get_dimensions()
+    center_a = a.get_bbox_centroid()
+    center_b = b.get_bbox_centroid()
+    h_dist = math.sqrt((center_a[0] - center_b[0]) ** 2 + (center_a[1] - center_b[1]) ** 2)    
+    return gaussian(2 * (center_a[2] - center_b[2] - 0.5*(dim_a[2] + dim_b[2])) /  \
+                    (1e-6 + dim_a[2] + dim_b[2]), 0, 1 / math.sqrt(2*pi))
+
+
+#==========================================================================================
+
+
+    
 
 #Raw metric for the nearness relation
 #Doesn't take into account the nearness statistics in the scene
@@ -52,7 +172,7 @@ def near_raw(a, b):
     elif a.get('concave') is not None or b.get('concave') is not None:
         dist = min(dist, closest_mesh_distance_scaled(a, b))
 
-    fr_size = get_frame_size()
+    fr_size = get_frame_size(entities)
     raw_metric = e ** (- 0.05 * dist)
     '''0.5 * (1 - min(1, dist / avg_dist + 0.01) +'''    
     return raw_metric * (1 - raw_metric / fr_size)
