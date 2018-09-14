@@ -112,7 +112,7 @@ class ULFQuery(object):
                 return grammar[(type(tree[0]), type(tree[1]))](tree[0], tree[1])
         elif len(tree) == 3:
             if (type(tree[0]), type(tree[1]), type(tree[2])) in grammar:
-                return grammar[(type(tree[0]), type(tree[1], type(tree[2]))](tree[0], tree[1], tree[2])      
+                return grammar[(type(tree[0]), type(tree[1]), type(tree[2]))](tree[0], tree[1], tree[2])      
         
     def lispify(self, input):
         stack = []
