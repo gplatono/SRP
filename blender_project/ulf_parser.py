@@ -7,10 +7,12 @@ class TreeNode(object):
     def printable(self):
         return self.content + " [" + " ".join([child.printable() for child in self.children]) + "]" if self.children is not None else ""
 
+relations = ['on', 'to the left of', 'to the right of', 'in front of', 'behind', 'above', 'below', 'over', 'under', 'near', 'touching', 'at', 'between']
+
 grammar = {}
 
-grammar[("TName", "TNoun")] = lambda x: NArg(name = x.content)
-grammar[("TAdj", "NArg")] = lambda x, y: NArg(name = y.name, mod = y.mod + [x.content], det = y.det, plur = y.plur)
+grammar[(<class 'ulf_parser.TName'>, <class 'ulf_parser.TNoun'>)] = lambda x: NArg(name = x.content)
+grammar[(<class 'ulf_parser.TAdj'>, <class 'ulf_parser.NArg'>)] = lambda x, y: NArg(name = y.name, mod = y.mod + [x.content], det = y.det, plur = y.plur)
 grammar[("TDet", "NArg")] = lambda x, y: NArg(name = y.name, mod = y.mod, det = x.content, plur = y.plur)
 grammar[("TPlur", "TNoun")] = lambda x, y: NArg(name = None, mod = None, det = None, plur = True)
 grammar[("TDet", "TNoun")] = lambda x, y: NArg(name = None, mod = None, det = x.content, plur = False)
@@ -79,7 +81,7 @@ class NArg(TreeNode):
        
 class ULFQuery(object):
     def __init__(self, input):
-        self.query = self.lispify(input)
+        self.query = self.parse_tree(self.lispify(input))
 
     def terminal_node(self, token):
         if token in relations:
@@ -99,16 +101,20 @@ class ULFQuery(object):
         elif token == 'plur':
             return TPlur()
 
-    def parse_tree(tree):
-        print (tree)
+    def parse_tree(self, tree):
+        #print ("TREE:", tree)
         if type(tree) != list:
-            return terminal_node(tree)
+            return self.terminal_node(tree)
         else:
-            tree = map(parse_tree, tree)            
+            old_tree = tree
+            tree = list(map(self.parse_tree, tree))
+            #print ("TREE:", old_tree, tree)
         if type(tree[0]) == TQ:
             return NYesNo(tree[1])
         elif len(tree) == 2:
+            print (type(tree[0]))
             if (type(tree[0]), type(tree[1])) in grammar:
+                print("result", grammar[(type(tree[0]), type(tree[1]))](tree[0], tree[1]))
                 return grammar[(type(tree[0]), type(tree[1]))](tree[0], tree[1])
         elif len(tree) == 3:
             if (type(tree[0]), type(tree[1]), type(tree[2])) in grammar:
@@ -136,10 +142,8 @@ class ULFQuery(object):
                     token = ""
             else:
                 token += char
-        return current[0]
-                
-                
-
+        return current[0]               
+             
     def parse(self, input):
         current = ""
         nodes = []        
@@ -168,5 +172,5 @@ query = ULFQuery(str)
 print (query.query)
 '''
 
-det = Det("test", ["children"])
-print(det.printable())
+#det = Det("test", ["children"])
+#print(det.printable())
