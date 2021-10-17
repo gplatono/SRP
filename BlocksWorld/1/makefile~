@@ -1,2 +1,0 @@
-main.o: main_apr.cpp
-	g++ main_apr.cpp -o main -L/usr/lib -I/usr/local/include/apriltag -lapriltag `pkg-config opencv --libs`
